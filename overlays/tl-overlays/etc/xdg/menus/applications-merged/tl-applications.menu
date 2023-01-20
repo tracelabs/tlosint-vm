@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN" "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+<Menu>
+  <Name>Applications</Name>
+  <Layout>
+    <Menuname>OSINT</Menuname>
+    <Merge type="all"/>
+  </Layout>
+
+  <Menu>
+    <Name>OSINT</Name>
+    <Directory>tl.directory</Directory>
+    <Include>
+      <And>
+        <Category>WebBrowser</Category>
+      </And> 
+      <And>
+        <Category>tl-links</Category>
+      </And>
+    </Include>
+
+  <Menu>
+    <Name>Phone Numbers</Name>
+    <Directory>01-phone-numbers.directory</Directory>
+    <Include>
+      <And>
+        <Category>01-phone-numbers</Category>
+      </And>
+    </Include>
+  </Menu>
+
+
+  <Menu>
+    <Name>Email</Name>
+    <Directory>02-email.directory</Directory>
+    <Include>
+      <And>
+        <Category>02-email</Category>
+      </And>
+    </Include>
+  </Menu>
+
+
+  <Menu>
+    <Name>Data Analysis</Name>
+    <Directory>03-data-analysis.directory</Directory>
+    <Include>
+      <And>
+        <Category>03-data-analysis</Category>
+      </And>
+    </Include>
+  </Menu>
+
+
+  <Menu>
+    <Name>Usernames</Name>
+    <Directory>04-usernames.directory</Directory>
+    <Include>
+      <And>
+        <Category>04-usernames</Category>
+      </And>
+    </Include>
+  </Menu>
+
+
+
+  <Menu>
+    <Name>Social Media</Name>
+    <Directory>05-social-media.directory</Directory>
+    <Include>
+      <And>
+        <Category>05-social-media</Category>
+      </And>
+    </Include>
+  </Menu>
+
+
+  <Menu>
+    <Name>Downloaders</Name>
+    <Directory>06-downloaders.directory</Directory>
+    <Include>
+      <And>
+        <Category>06-downloaders</Category>
+      </And>
+    </Include>
+  </Menu>
+
+
+  <Menu>
+    <Name>Reporting Tools</Name>
+    <Directory>07-note-taking.directory</Directory>
+    <Include>
+      <And>
+        <Category>07-note-taking</Category>
+      </And>
+      <And>
+        <Filename>joplin.desktop</Filename>
+      </And>
+      <And>
+        <Filename>cherrytree.desktop</Filename>
+      </And>
+      <And>
+        <Filename>mousepad.desktop</Filename>
+      </And>
+      <And>
+        <Filename>com.github.maoschanz.drawing.desktop</Filename>
+      </And>
+    </Include>
+  </Menu>
+
+
+  <Menu>
+    <Name>Frameworks</Name>
+    <Directory>08-frameworks.directory</Directory>
+    <Include>
+      <And>
+        <Category>08-frameworks</Category>
+      </And>
+      <And>
+          <Category>01-07-osint-analysis</Category>
+      </And>
+      <And>
+          <Filename>kali-recon-ng.desktop</Filename>
+      </And>
+    </Include>
+  </Menu>
+
+  <Menu>
+    <Name>Domains</Name>
+    <Directory>09-domains.directory</Directory>
+    <Include>
+      <And>
+        <Filename>kali-recon-ng.desktop</Filename>
+      </And>
+      <And>
+        <Filename>kali-theharvester.desktop</Filename>
+      </And>
+    </Include>
+  </Menu>
+
+  </Menu>
+</Menu>
+

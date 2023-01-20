@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=OSRFramework
+Comment=A set of libraries to perform Open Source Intelligence collection tasks
+Type=Application
+Categories=08-frameworks
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo osrf -h
+Path=
+StartupNotify=false

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Twayback
+Comment=Twayback Machine
+Type=Application
+Categories=05-social-media;
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell "twayback -h"
+

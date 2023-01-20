@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Spiderpig
+Comment=Spiderpig Document Downloader
+Type=Application
+Terminal=true
+Icon=utilities-terminal
+Categories=06-downloaders
+Exec=/usr/share/kali-menu/exec-in-shell 'ruby /usr/share/Spiderpig/spiderpig.rb' 

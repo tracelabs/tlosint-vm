@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Usufy
+Comment=Looks for registered accounts with given nicknames
+Type=Application
+Categories=04-usernames
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo usufy -h
+Path=
+StartupNotify=false

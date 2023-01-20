@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Checkfy
+Comment=Verifies if a given email address matches a pattern
+Type=Application
+Categories=02-email
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo checkfy -h
+Path=
+StartupNotify=false

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Photon
+Comment=Web Crawling
+Type=Application
+Categories=03-data-analysis
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell "photon -h"
+Path=
+Terminal=true
+StartupNotify=false

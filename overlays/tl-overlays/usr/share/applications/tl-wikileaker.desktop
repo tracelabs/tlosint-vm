@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=WikiLeaker
+Comment=WikiLeaker
+Terminal=true
+Exec=/usr/share/kali-menu/exec-in-shell 'wikileaker -h'
+Categories=08-frameworks;
+Icon=utilities-terminal

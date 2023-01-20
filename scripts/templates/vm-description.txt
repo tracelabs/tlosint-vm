@@ -1,0 +1,11 @@
+TLOSINT VM (%version%) %platform%
+%date%
+
+- - - - - - - - - - - - - - - - - -
+
+Username: tlosint
+Password: please-change-me
+(%kbdlayout%)
+
+- - - - - - - - - - - - - - - - - -
+

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=theHarvester
+Comment=theHarvester
+Type=Application
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell "/usr/bin/theHarvester -h"
+Categories=02-email
+Path=
+StartupNotify=false

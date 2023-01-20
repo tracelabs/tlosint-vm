@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Spiderfoot
+Comment=Spiderfoot
+Terminal=true
+Exec=/usr/share/kali-menu/exec-in-shell 'spiderfoot --help'
+Categories=08-frameworks;
+Icon=utilities-terminal

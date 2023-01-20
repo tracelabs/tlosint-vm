@@ -1,0 +1,46 @@
+{
+  "alternate_error_pages": {
+    "enabled": false
+  },
+  "bookmark_bar": {
+    "show_on_all_tabs": true
+  },
+  "browser": {
+    "check_default_browser": false,
+    "show_home_button": false
+  },
+  "distribution": {
+    "create_all_shortcuts": true,
+    "do_not_create_desktop_shortcut": true,
+    "do_not_create_quick_launch_shortcut": true,
+    "do_not_launch_chrome": true,
+    "do_not_register_for_update_launch": true,
+    "import_bookmarks_from_file": "/usr/share/chromium/initial_bookmarks.html",
+    "import_bookmarks": true,
+    "import_history": false,
+    "import_home_page": false,
+    "import_search_engine": false,
+    "make_chrome_default_for_user": true,
+    "make_chrome_default": true,
+    "ping_delay": 60,
+    "show_welcome_page": false,
+    "skip_first_run_ui": true,
+    "suppress_first_run_bubble": true,
+    "suppress_first_run_default_browser_prompt": true,
+    "system_level": true,
+    "verbose_logging": true
+  },
+  "first_run_tabs": [],
+  "homepage": "https://tracelabs.org/",
+  "homepage_is_newtabpage": false,
+  "safebrowsing": {
+    "enabled": true
+  },
+  "session": {
+    "restore_on_startup": 5,
+    "startup_urls": []
+  },
+  "sync_promo": {
+    "show_on_first_run_allowed": false
+  }
+}

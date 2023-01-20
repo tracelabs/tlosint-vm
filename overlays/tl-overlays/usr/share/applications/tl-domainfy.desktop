@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Domainfy
+Comment=Checks whether domain names using words and nicknames are available
+Type=Application
+Categories=09-domains
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo domainfy -h
+Path=
+StartupNotify=false

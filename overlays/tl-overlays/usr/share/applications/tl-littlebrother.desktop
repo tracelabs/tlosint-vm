@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=LittleBrother
+Comment=OSINT Framework
+Type=Application
+Categories=08-frameworks
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell "littlebrother -h"
+
+Path=
+StartupNotify=false

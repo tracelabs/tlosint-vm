@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Sherlock
+Comment=Username OSINT
+Type=Application
+Icon=utilities-terminal
+Categories=04-usernames
+Exec=/usr/share/kali-menu/exec-in-shell "sherlock -h"
+Terminal=true
+Path=
+StartupNotify=false

@@ -1,0 +1,175 @@
+{
+  "policies": {
+    "AppAutoUpdate": true,
+    "BlockAboutAddons": true,
+    "BlockAboutConfig": true,
+    "BlockAboutProfiles": true,
+    "BlockAboutSupport": true,
+    "CaptivePortal": false,
+    "DefaultDownloadDirectory": "${home}/Downloads",
+    "DisableAppUpdate": false,
+    "DisableBuiltinPDFViewer": true,
+    "DisabledCiphers": {
+      "TLS_DHE_RSA_WITH_AES_128_CBC_SHA": false,
+      "TLS_DHE_RSA_WITH_AES_256_CBC_SHA": false,
+      "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256": false,
+      "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA": false,
+      "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256": false,
+      "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA": false,
+      "TLS_RSA_WITH_3DES_EDE_CBC_SHA": true,
+      "TLS_RSA_WITH_AES_128_CBC_SHA": false,
+      "TLS_RSA_WITH_AES_128_GCM_SHA256": false,
+      "TLS_RSA_WITH_AES_256_CBC_SHA": false,
+      "TLS_RSA_WITH_AES_256_GCM_SHA384": false
+    },
+    "DisableDefaultBrowserAgent": true,
+    "DisableFormHistory": true,
+    "DisablePasswordReveal": true,
+    "DisableProfileImport": true,
+    "DisableProfileRefresh": true,
+    "DisableSafeMode": true,
+    "DisableSecurityBypass": {
+      "InvalidCertificate": true,
+      "SafeBrowsing": true
+    },
+    "DisableSystemAddonUpdate": false,
+    "DisableTelemetry": true,
+    "DisplayBookmarksToolbar": true,
+    "DisplayMenuBar": "default-on",
+    "DNSOverHTTPS": {
+      "Enabled":  false,
+      "Locked": true
+    },
+    "DontCheckDefaultBrowser": true,
+    "DownloadDirectory": "${home}/Downloads",
+    "EnableTrackingProtection": {
+      "Cryptomining": true,
+      "Exceptions": [],
+      "Fingerprinting": true,
+      "Locked": true,
+      "Value": true
+    },
+    "EncryptedMediaExtensions": {
+      "Enabled": false,
+      "Locked": false
+    },
+    "Extensions": {
+      "Install": [
+        "https://addons.mozilla.org/firefox/downloads/latest/https-everywhere/latest.xpi",
+        "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+      ],
+      "Locked":  ["*"],
+      "Uninstall": ["*"]
+    },
+    "ExtensionSettings": {
+      "*": {
+        "allowed_types": [],
+        "blocked_install_message": "Software installation has been disabled by your system administrator.",
+        "install_sources": ["about:addons","https://addons.mozilla.org/"],
+        "installation_mode": "blocked"
+      },
+      "https-everywhere@eff.org": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/https-everywhere/latest.xpi",
+        "installation_mode": "force_installed"
+      },
+      "uBlock0@raymondhill.net": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
+        "installation_mode": "force_installed"
+      }
+    },
+    "ExtensionUpdate": true,
+    "FirefoxHome": {
+      "Highlights": false,
+      "Locked": false,
+      "Pocket": false,
+      "Search": true,
+      "Snippets": false,
+      "TopSites": true
+    },
+    "FlashPlugin": {
+      "Allow": [],
+      "Block": ["*"],
+      "Default": false,
+      "Locked": true
+    },
+    "Homepage": {
+      "Locked": false,
+      "StartPage": "homepage",
+      "URL": "https://google.com/",
+    },
+    "InstallAddonsPermission": {
+      "Allow": [],
+      "Default": false
+    },
+    "NetworkPrediction": false,
+    "NoDefaultBookmarks": true,
+    "OfferToSaveLogins": false,
+    "OfferToSaveLoginsDefault": false,
+    "OverrideFirstRunPage": "",
+    "OverridePostUpdatePage": "",
+    "PasswordManagerEnabled": false,
+    "PDFjs": {
+      "Enabled": false,
+      "EnablePermissions": false
+    },
+    "Permissions": {
+      "Autoplay": {
+        "Allow": [],
+        "Block": ["*"],
+        "Default": "block-audio-video",
+        "Locked": true
+      },
+      "Camera": {
+        "Allow": [],
+        "Block": ["*"],
+        "BlockNewRequests": true,
+        "Locked": true
+      },
+      "Location": {
+        "Allow": [],
+        "Block": ["*"],
+        "BlockNewRequests": true,
+        "Locked": true
+      },
+      "Microphone": {
+        "Allow": [],
+        "Block": ["*"],
+        "BlockNewRequests": true,
+        "Locked": true
+      },
+      "Notifications": {
+        "Allow": [],
+        "Block": ["*"],
+        "BlockNewRequests": true,
+        "Locked": true
+      },
+      "VirtualReality": {
+        "Allow": [],
+        "Block": ["*"],
+        "BlockNewRequests": true,
+        "Locked": true
+      }
+    },
+    "PopupBlocking": {
+      "Allow": [],
+      "Default": true,
+      "Locked": true
+    },
+    "Preferences": {
+      "browser.formfill.enable": false,
+      "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons": false,
+      "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features": false,
+      "dom.battery.enabled": false,
+      "dom.event.clipboardevents.enabled": false,
+      "geo.enabled": false,
+      "media.navigator.enabled": false,
+      "media.peerconnection.enabled": false,
+      "network.cookie.lifetimePolicy": 2,
+      "webgl.disabled": true
+    },
+    "PromptForDownloadLocation": false,
+    "SanitizeOnShutdown": true,
+    "SSLVersionMax": "tls1.3",
+    "SSLVersionMin": "tls1.2"
+  }
+}

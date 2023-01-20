@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=OSRFramework Upgrade
+Comment=Updates OSRFramework modules
+Type=Application
+Categories=08-frameworks
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo osrf upgrade
+Path=
+StartupNotify=false

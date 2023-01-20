@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Exiftool
+Comment=Exiftool
+Type=Application
+Icon=utilities-terminal
+Categories=03-data-analysis
+Exec=/usr/share/kali-menu/exec-in-shell exiftool -h
+Path=
+Terminal=true
+StartupNotify=false

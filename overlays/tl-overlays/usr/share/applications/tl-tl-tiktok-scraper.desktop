@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Tiktok Scraper
+Comment=Scrape and download useful information from TikTok
+Type=Application
+Categories=05-social-media
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo tiktok-scraper -h
+Path=
+StartupNotify=false

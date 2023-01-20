@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Metagoofil
+Comment=OSINT document downloader
+Type=Application
+Categories=06-downloaders
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell python3 /usr/share/metagoofil/metagoofil.py -h
+Terminal=true
+Path=
+StartupNotify=false

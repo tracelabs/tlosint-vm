@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Instaloader
+Comment=Instagram OSINT
+Type=Application
+Terminal=true
+Icon=utilities-terminal
+Categories=05-social-media
+Exec=/usr/share/kali-menu/exec-in-shell "instaloader -h"
+Path=
+StartupNotify=false

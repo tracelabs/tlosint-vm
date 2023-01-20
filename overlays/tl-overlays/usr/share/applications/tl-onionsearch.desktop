@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=OnionSearch
+Comment=OnionSearch scrapes urls on different ".onion" search engines
+Type=Application
+Categories=08-frameworks
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo onionsearch -h
+Terminal=true
+Path=
+StartupNotify=false

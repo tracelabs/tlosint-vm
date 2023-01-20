@@ -1,0 +1,32 @@
+name: Releases
+
+on: 
+  push:
+    tags:
+    - '*'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build OVA
+        run:  |
+          sudo apt -y install debos p7zip qemu-utils zerofree
+          cd $GITHUB_WORKSPACE
+          chmod +x scripts/tl/*.sh
+          chmod +x scripts/*.sh
+          chmod +x *.sh
+          sudo ./build.sh
+
+      - name: Release with Notes
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "images/*.*"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

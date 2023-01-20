@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Alias Generator
+Comment=Generates a list of candidate usernames based on known information
+Type=Application
+Categories=04-usernames
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo alias-generator -h
+Path=
+StartupNotify=false

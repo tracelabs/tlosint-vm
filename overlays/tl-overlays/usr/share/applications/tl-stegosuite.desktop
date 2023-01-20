@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Stegosuite
+Categories=03-data-analysis;
+Comment=A steganography tool
+Exec=stegosuite %u
+Icon=stegosuite
+MimeType=image/gif;image/bmp;image/jpeg;image/png;
+Keywords=steganography;embed;extract;image;hide;stego;
+Terminal=false
+Type=Application

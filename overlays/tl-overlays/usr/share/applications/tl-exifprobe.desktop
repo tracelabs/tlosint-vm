@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Exifprobe
+Comment=Exifprobe
+Type=Application
+Icon=utilities-terminal
+Categories=03-data-analysis
+Exec=/usr/share/kali-menu/exec-in-shell exifprobe -h
+Path=
+Terminal=true
+StartupNotify=false

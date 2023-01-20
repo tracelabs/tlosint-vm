@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Exifgrep
+Comment=Exifgrep
+Exec=/usr/share/kali-menu/exec-in-shell exifgrep -h
+Terminal=true
+Categories=03-data-analysis
+Icon=utilities-terminal
+Type=Application
+Path=
+StartupNotify=false

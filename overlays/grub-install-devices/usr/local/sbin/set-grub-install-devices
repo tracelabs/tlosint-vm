@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Set the value grub-pc/install_devices in the debconf database.
+# Otherwise when the GRUB package gets updated, dpkg will ask on
+# which device to install GRUB, and for most users this question
+# is confusing.
+
+set -eu
+
+# Bail out if the value is already set in the debconf database
+if debconf-show grub-pc | grep -q "^* grub-pc/install_devices: "; then
+	exit 0
+fi
+
+# Bail ouf if grub-pc is not installed
+if ! dpkg -s grub-pc 2>/dev/null | grep -q "ok installed"; then
+	exit 0
+fi
+
+# Find the root disk, make sure that GRUB is installed there
+ROOTDISK=$(findmnt -n -o SOURCE / | sed "s/[0-9]*$//")
+ROOTDISK=$(realpath $ROOTDISK)
+if ! dd if=$ROOTDISK bs=512 count=1 2>/dev/null | grep -a -q GRUB; then
+	echo "Detected rootdisk=$ROOTDISK, but GRUB doesn't seem to be installed." >&2
+	exit 1
+fi
+
+# Set the value in the debconf database
+debconf-set-selections -v << EOF
+grub-pc grub-pc/install_devices string $ROOTDISK
+EOF

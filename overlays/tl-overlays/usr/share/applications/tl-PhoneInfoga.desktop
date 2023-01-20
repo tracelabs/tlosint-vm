@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=PhoneInfoga
+Comment=PhoneInfoga
+Type=Application
+Icon=utilities-terminal
+Terminal=true
+Exec=/usr/share/kali-menu/exec-in-shell "phoneinfoga help"
+Categories=01-phone-numbers

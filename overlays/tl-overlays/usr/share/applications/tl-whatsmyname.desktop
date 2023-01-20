@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=WhatsMyName
+Comment=WhatsMyName
+Terminal=true
+Exec=/usr/share/kali-menu/exec-in-shell 'whatsmyname -h'
+Categories=04-usernames;
+Icon=utilities-terminal

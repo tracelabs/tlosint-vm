@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Phonefy
+Comment=Looks for information linked to spam practices by a phone number
+Type=Application
+Categories=01-phone-numbers
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo phonefy -h
+Path=
+StartupNotify=false

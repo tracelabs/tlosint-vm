@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Sublist3r
+Comment=Subdomain enumeration
+Type=Application
+Icon=utilities-terminal
+Terminal=true
+Exec=/usr/share/kali-menu/exec-in-shell "sublist3r -h"
+Categories=09-domains
+Path=
+StartupNotify=false

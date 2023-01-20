@@ -1,0 +1,14 @@
+[Unit]
+Description=Set GRUB install devices if unset
+ConditionFileIsExecutable=/usr/local/sbin/set-grub-install-devices
+ConditionPathExists=!/sys/firmware/efi/
+ConditionVirtualization=yes
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/set-grub-install-devices
+ExecStartPost=/usr/bin/rm -v /usr/local/sbin/set-grub-install-devices
+
+[Install]
+WantedBy=multi-user.target

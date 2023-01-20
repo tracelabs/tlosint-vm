@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Mailfy
+Comment=Gets information about email accounts
+Type=Application
+Categories=02-email
+Terminal=true
+Icon=utilities-terminal
+Exec=/usr/share/kali-menu/exec-in-shell sudo mailfy -h
+Path=
+StartupNotify=false

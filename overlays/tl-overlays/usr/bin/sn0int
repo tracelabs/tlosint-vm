@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec /usr/share/sn0int/target/release/sn0int "$@"
