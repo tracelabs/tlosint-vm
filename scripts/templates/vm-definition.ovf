@@ -54,12 +54,12 @@
       </Item>
       <Item>
         <rasd:AllocationUnits>MegaBytes</rasd:AllocationUnits>
-        <rasd:Caption>2048 MB of memory</rasd:Caption>
+        <rasd:Caption>4096 MB of memory</rasd:Caption>
         <rasd:Description>Memory Size</rasd:Description>
-        <rasd:ElementName>2048 MB of memory</rasd:ElementName>
+        <rasd:ElementName>4096 MB of memory</rasd:ElementName>
         <rasd:InstanceID>2</rasd:InstanceID>
         <rasd:ResourceType>4</rasd:ResourceType>
-        <rasd:VirtualQuantity>2048</rasd:VirtualQuantity>
+        <rasd:VirtualQuantity>4096</rasd:VirtualQuantity>
       </Item>
       <Item>
         <rasd:Address>0</rasd:Address>
@@ -137,7 +137,7 @@
           <X2APIC enabled="true"/>
           <HardwareVirtExLargePages enabled="true"/>
         </CPU>
-        <Memory RAMSize="2048"/>
+        <Memory RAMSize="4096"/>
         <HID Pointing="USBTablet"/>
         <Boot>
           <Order position="1" device="HardDisk"/>

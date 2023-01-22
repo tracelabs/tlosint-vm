@@ -20,7 +20,7 @@
         <X2APIC enabled="true"/>
         <HardwareVirtExLargePages enabled="true"/>
       </CPU>
-      <Memory RAMSize="2048"/>
+      <Memory RAMSize="4096"/>
       <HID Pointing="USBTablet"/>
       <Boot>
         <Order position="1" device="HardDisk"/>

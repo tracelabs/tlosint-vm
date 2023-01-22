@@ -3,8 +3,8 @@ TLOSINT VM (%version%) %platform%
 
 - - - - - - - - - - - - - - - - - -
 
-Username: tlosint
-Password: please-change-me
+Username: osint
+Password: osint
 (%kbdlayout%)
 
 - - - - - - - - - - - - - - - - - -

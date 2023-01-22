@@ -20,9 +20,9 @@ jobs:
           sudo apt -y install debos p7zip qemu-utils zerofree
           cd $GITHUB_WORKSPACE
           chmod +x scripts/tl/*.sh
-          chmod +x scripts/*.sh
           chmod +x *.sh
-          sudo ./build.sh
+          sudo ./build-vbox.sh
+          sudo ./build-vmware.sh
 
       - name: Release with Notes
         uses: softprops/action-gh-release@v1
