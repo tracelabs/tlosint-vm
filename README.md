@@ -19,7 +19,10 @@ chmod +x *.sh
 sudo ./build.sh
 Locate the OVA in the images/ directory
 
-## Applications included in the build 
+## Applications included in the build
+
+**Reporting**
+TJ Null's OSINT Joplin template
 
 **Browsers**
 * Firefox ESR
@@ -78,6 +81,7 @@ Locate the OVA in the images/ directory
 * Photon
 * Sherlock
 * Shodan
+* Joplin
 
 ## Configuration Settings
 **Firefox**
