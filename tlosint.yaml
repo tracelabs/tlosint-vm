@@ -27,6 +27,10 @@ actions:
     components: [ main, contrib, non-free ]
     keyring-file: kali-archive-keyring.gpg
 
+  - description: "Install usr-is-merged (cf. debos #361 and #362)"
+    action: apt
+    packages: [ usr-is-merged ]
+
   - description: "Preseed package configuration"
     action: run
     chroot: true
