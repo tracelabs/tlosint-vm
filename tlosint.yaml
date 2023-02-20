@@ -66,21 +66,6 @@ actions:
   - action: overlay
     source: overlays/tl-overlays
 
-  - description: "Install tl Tooling (apt)"
-    action: run
-    chroot: true
-    script: scripts/tl/install-tooling.sh
-    
-  - description: "Install Programs with Git (apt)"
-    action: run
-    chroot: true
-    script: scripts/tl/install-tooling-ci.sh
-    
-  - description: "Install tl Tooling (python modules)"
-    action: run
-    chroot: true
-    script: scripts/tl/install-tooling-py.sh
-
   {{ if ne $packages "" }}
   - description: "Install extra packages: {{ $packages }}"
     action: apt
