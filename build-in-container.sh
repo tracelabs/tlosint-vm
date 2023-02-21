@@ -2,12 +2,12 @@
 
 set -eu
 
-IMAGE=ccxosint-builder
+IMAGE=tlvm-builder
 OPTS=(
-    --rm --interactive --tty --net host
+   --rm --interactive --tty --net host
     --privileged
+    --group-add $(stat -c '%g' /dev/kvm)
     --volume $(pwd):/recipes -v $(pwd)/images/:/images --workdir /recipes
-    --workdir /recipes
 )
 
 
