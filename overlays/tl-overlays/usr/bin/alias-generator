@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec  alias_generator "$@"

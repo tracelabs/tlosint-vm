@@ -1,7 +1,0 @@
-#!/bin/sh
-
-#dumpster diver reference files relatively not absolutetly
-#must be run from directory it resides in
-
-cd /usr/share/DumpsterDiver
-exec python3 /usr/share/DumpsterDiver/DumpsterDiver.py "$@"

@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec python3 /usr/share/WhatsMyName/web_accounts_list_checker.py -in /usr/share/WhatsMyName/web_accounts_list.json -u "$@"

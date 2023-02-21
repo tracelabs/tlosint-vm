@@ -1,7 +1,0 @@
-#!/bin/sh
-
-#finalrecon reference files relatively not absolutetly
-#must be run from directory it resides in
-
-cd /usr/share/FinalRecon
-exec python3 /usr/share/FinalRecon/finalrecon.py "$@"
