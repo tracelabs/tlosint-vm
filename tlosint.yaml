@@ -81,6 +81,11 @@ actions:
     chroot: true
     script: scripts/create-user.sh {{ $username }} "{{ $password }}"
 
+  - description: "chmod +x files that need it"
+    action: run
+    chroot: true
+    script: scripts/tl/change-mod.sh
+
   - description: "Disable tmpfiles.d/systemd-resolve.conf, cf. #1007018"
     action: run
     chroot: false
