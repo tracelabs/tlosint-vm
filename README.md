@@ -5,28 +5,49 @@ The repository includes a recipe file to build a Linux OSINT Distribution for Tr
 
 https://www.tracelabs.org/initiatives/osint-vm
 
-## How to download/build
+## How to download
 
-Download - You may download the latest version in GitHub https://github.com/tracelabs/tlosint-vm/releases
-Build -
-```From a Kali Linux machine run the following commands:
+You may download the latest version in GitHub https://github.com/tracelabs/tlosint-vm/releases
+
+## How to Build
+From a Kali Linux machine run the following commands:
+```
 git clone https://github.com/tracelabs/tlosint-vm
 sudo apt -y install debos p7zip qemu-utils zerofree
 cd tlosint-vm
-chmod +x scripts/tl/*.sh
-chmod +x scripts/*.sh
-chmod +x *.sh
-sudo ./build.sh
-Locate the OVA in the images/ directory
+```
+either
+```
+./build-vbox.sh -z
+```
+ or 
+ ```
+ ./build-vmware.sh -z
+ ```
 
-## Applications included in the build
+
+You can also build inside of a Docker container. Make sure that your user is a memeber of the kvm group and then:
+```
+./build-in-container.sh -v (either ova or vmware) -z
+```
+
+Locate the file(s) in the images/ directory
+
+## Applications can be installed after you start the VM
+
+From inside a terminal in the VM
+```cd ~/Desktop
+sudo ~/Desktop/install-tools.sh
+```
+
 
 **Reporting**
-TJ Null's OSINT Joplin template
+* TJ Null's OSINT Joplin template
 
 **Browsers**
 * Firefox ESR
 * Tor Browser
+* Chromium
 
 **Data Analysis**
 * DumpsterDiver
@@ -44,6 +65,7 @@ TJ Null's OSINT Joplin template
 * Spiderpig
 * WebHTTrack Website Copier
 * Youtube-DL
+* YT-DLP
 
 **Email**
 * Buster
@@ -82,6 +104,7 @@ TJ Null's OSINT Joplin template
 * Sherlock
 * Shodan
 * Joplin
+* Obsidian
 
 ## Configuration Settings
 **Firefox**
@@ -89,4 +112,4 @@ TJ Null's OSINT Joplin template
 * Block geo tracking
 * Block mic/camera detection
 * Block Firefox tracking
-* Preload OSINT Bookmarks
+* Preloaded OSINT Bookmarks
