@@ -33,6 +33,10 @@ sudo apt install osrframework -y
 sudo apt install joplin -y
 sudo apt install drawing -y
 sudo apt install finalrecon -y
+sudo apt install cargo -y
+sudo apt install pkg-config -y
+sudo apt install npm -y
+sudo apt install curl -y
 
 
 pip3 install --upgrade tweepy
@@ -50,18 +54,14 @@ mkdir -p ~/github-tools
 cd ~/github-tools
 
 
-if [ -d "~/github-tools/sn0int" ]; then
-    cd sn0int
-    git pull 
-    sudo cargo install -f --path .
-    cd ..
-else
-    git clone --recursive https://github.com/kpcyrd/sn0int.git 
-    cd ~/github-tools/sn0int
-    sudo cargo install -f --path .
-    export PATH=/root/.cargo/bin:$PATH
-    cd ..
-fi
+# sn0int
+#sudo apt install debian-keyring
+#gpg -a --export --keyring /usr/share/keyrings/debian-maintainers.gpg kpcyrd@archlinux.org | sudo tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg
+#echo deb http://apt.vulns.sexy stable main | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list
+#sudo apt update
+#sudo apt install sn0int
+
+
 
 
 sudo npm i -g tiktok-scraper
