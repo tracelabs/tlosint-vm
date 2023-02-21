@@ -54,7 +54,7 @@ mkdir -p ~/github-tools
 cd ~/github-tools
 
 
-# sn0int
+# sn0int, will come back to this and test the install better
 #sudo apt install debian-keyring
 #gpg -a --export --keyring /usr/share/keyrings/debian-maintainers.gpg kpcyrd@archlinux.org | sudo tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg
 #echo deb http://apt.vulns.sexy stable main | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list
@@ -86,6 +86,18 @@ else
     cd twayback
     pip3 install -r  requirements.txt
     cd ..
+fi
+
+# TJ Null Jopolin Notebook
+if [ -d "~/Desktop/TJ-OSINT-Notebook" ]; then
+    cd ~/Desktop/TJ-OSINT-Notebook
+    git pull
+    cd
+    
+else
+    cd ~/Desktop
+    git clone https://github.com/tjnull/TJ-OSINT-Notebook.git 
+    cd
 fi
 
 # Install Obsidian app image
