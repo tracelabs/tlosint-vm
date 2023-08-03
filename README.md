@@ -1,4 +1,5 @@
-![99865509-235c4500-2bfa-11eb-89fe-70d6685e1454](https://github.com/tracelabs/tlosint-vm/assets/22546578/05951c65-0379-438f-8f2a-0bedcb7de543)
+![Image](https://github.com/Apollo-o/tlosint-vm/assets/22546578/db6e5343-c08c-4ab1-8a1e-41112f80e18f)
+[![Version](https://img.shields.io/badge/tlosintvm-1.0.0-brightgreen.svg?maxAge=259200)]()
 ![event workflow](https://github.com/tracelabs/tlosint-vm/actions/workflows/releases.yml/badge.svg?event=push)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Github All Releases](https://img.shields.io/github/downloads/tracelabs/tlosint-vm/total.svg)]()
