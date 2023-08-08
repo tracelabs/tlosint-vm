@@ -1,6 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# ./$0
+# http_proxy= ./$0
+#
 
 set -eu
+
+# Chmod entire directories
+find ./ -type f -iname "*.sh" -exec chmod +x {} \;
+
+# Remove previous images
+rm -f images/*
+
+# Clear the terminal
+clear
 
 WELL_KNOWN_CACHING_PROXIES="\
 3142 apt-cacher-ng
@@ -10,11 +23,11 @@ DETECTED_CACHING_PROXY=
 
 SUPPORTED_ARCHITECTURES="amd64 i386"
 SUPPORTED_BRANCHES="kali-dev kali-last-snapshot kali-rolling"
-SUPPORTED_DESKTOPS="e17 gnome headless i3 kde lxde mate xfce"
-SUPPORTED_TOOLSETS="default everything large none"
+SUPPORTED_DESKTOPS="e17 gnome headless i3 kde lxde mate xfce none"
+SUPPORTED_TOOLSETS="default everything headless large none"
+SUPPORTED_FORMATS="hyperv ova ovf qemu raw virtualbox vmware"
+SUPPORTED_VARIANTS="generic hyperv qemu rootfs virtualbox vmware"
 
-SUPPORTED_FORMATS="ova ovf raw qemu virtualbox vmware"
-SUPPORTED_VARIANTS="generic qemu rootfs virtualbox vmware"
 
 DEFAULT_ARCH=amd64
 DEFAULT_BRANCH=kali-rolling
@@ -24,11 +37,12 @@ DEFAULT_MIRROR=http://http.kali.org/kali
 DEFAULT_TIMEZONE=Etc/UTC
 DEFAULT_TOOLSET=default
 DEFAULT_USERPASS=osint:osint
+DEFAULT_VARIANT=generic
 
 ARCH=
 BRANCH=
 DESKTOP=
-FORMAT=
+FORMAT=ova
 KEEP=false
 LOCALE=
 MIRROR=
@@ -40,12 +54,18 @@ TIMEZONE=
 TOOLSET=
 USERNAME=
 USERPASS=
-VARIANT=vmware
-VERSION=2023.01
+VARIANT=generic
+VERSION=2023.2
 ZIP=true
 OUTDIR=images
 
-default_toolset() { [ ${DESKTOP:-$DEFAULT_DESKTOP} = headless ] && echo none || echo default; }
+MEMORY=4G
+SCRATCHSIZE=45G
+
+# Add User to Group
+adduser $USER kvm
+
+default_toolset() { [ ${DESKTOP:-$DEFAULT_DESKTOP} = none ] && echo headless || echo $DEFAULT_TOOLSET; }
 default_version() { echo ${BRANCH:-$DEFAULT_BRANCH} | sed "s/^kali-//"; }
 
 # Output bold only if both stdout/stderr are opened on a terminal
@@ -116,11 +136,6 @@ ask_confirmation() {
         (*)     return 1 ;;
     esac
 }
-
-if [ $(id -u) -eq 0 ]; then
-    warn "This script does not require root privileges."
-    warn "Please consider running it as a non-root user."
-fi
 
 USAGE="Usage: $(basename $0) [<option>...] [-- <debos option>...]
 
@@ -206,7 +221,7 @@ echo $SUPPORTED_VARIANTS | grep -qw $VARIANT \
 if [ $VARIANT != rootfs ]; then
     if [ -z "$FORMAT" ]; then
         case $VARIANT in
-            (generic)    FORMAT=raw ;;
+            (generic)    FORMAT=ova ;;
             (qemu)       FORMAT=qemu ;;
             (virtualbox) FORMAT=virtualbox ;;
             (vmware)     FORMAT=vmware ;;
@@ -321,6 +336,7 @@ mkdir -p $OUTDIR
 echo "Building image from recipe $(b tlosint.yaml) ..."
 OUTPUT=$OUTDIR/tl-osint-$VERSION-$VARIANT-$ARCH
 debos "$@" \
+        -b qemu \
         -t arch:$ARCH \
         -t branch:$BRANCH \
         -t desktop:$DESKTOP \
