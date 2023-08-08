@@ -32,7 +32,6 @@ python3-shodan
 theharvester
 webhttrack
 outguess
-stegosuite
 wireshark
 openvpn
 metagoofil
