@@ -23,15 +23,15 @@ tl-osint-2023.2-generic-amd64.ova   34D148C3784559720F6F9E9D87278836138A1EA9FEB3
 
 ## Debos Backends
 
-You can change the backend in the **build.sh** script. 
+You can change the backend in **build.sh** 
 | Backend  |    Time    |  Requirements  |
 | --------- | --------- | ------------- |
-| kvm  |  9 min  | access to /dev/kvm  |
-| uml  |  18 min  | package user-mode-linux installed  |
-| qemu  |  166 min  | none  |
+| kvm  |  ≈ 9 min  | access to /dev/kvm  |
+| uml  |  ≈ 18 min  | package user-mode-linux installed  |
+| qemu  |  ≈ 166 min  | none  |
 
 ## Build
-From a Kali Linux machine run the following commands:
+From a Debian OS run the following commands:
 ```
 git clone https://github.com/tracelabs/tlosint-vm
 cd tlosint-vm && chmod +x ./packages.sh && sudo ./packages.sh   # Reboot the system when done.
