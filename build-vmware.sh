@@ -41,7 +41,7 @@ TOOLSET=
 USERNAME=
 USERPASS=
 VARIANT=vmware
-VERSION=kali-last-snapshot
+VERSION=2023.2
 ZIP=true
 OUTDIR=images
 
