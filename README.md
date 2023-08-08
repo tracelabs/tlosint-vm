@@ -52,7 +52,6 @@ cd tlosint-vm && chmod +x ./build.sh && sudo ./build.sh         # Time can vary 
 * [DumpsterDiver](https://github.com/securing/DumpsterDiver)
 * [Exifprobe](https://github.com/hfiguiere/exifprobe)
 * [Exifscan](https://github.com/rcook/exifscan/) (Private)
-* [Stegosuite](https://github.com/osde8info/stegosuite)
 
 **Domains**
 * [Domainfy (OSRFramework)](https://github.com/i3visio/osrframework)
