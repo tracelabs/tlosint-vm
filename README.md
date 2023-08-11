@@ -35,8 +35,8 @@ You can change the backend in **build.sh**
 From a Debian OS run the following commands:
 ```
 git clone https://github.com/tracelabs/tlosint-vm
-chmod +x ./tlosint-vm/packages.sh && sudo ./packages.sh   # Reboot the system when done.
-chmod +x ./tlosint-vm/build.sh && sudo ./build.sh         # Time can vary based on backend and system specs.
+chmod +x ./tlosint-vm/packages.sh && sudo ./packages.sh   # Reboot the system when done
+chmod +x ./tlosint-vm/build.sh && sudo ./build.sh         # Time can vary based on backend and system specs
                                                           # Locate the OVA in the images/ directory
 ```
 
