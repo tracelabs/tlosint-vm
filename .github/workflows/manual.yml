@@ -31,7 +31,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     - name: Run a multi-line script (build the ISO)
       run: |
-        CD $GITHUB_WORKSPACE
+        cd $GITHUB_WORKSPACE
         sudo chmod +x ./packages.sh && sudo ./packages.sh
         sudo chmod +x ./build.sh && sudo ./build.sh
 
