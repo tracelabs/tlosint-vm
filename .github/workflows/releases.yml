@@ -14,7 +14,7 @@ on:
         # Input has to be provided for the workflow to run
         required: true
       tags:
-        description: 'Trace Labs - v1.0.0'
+        description: 'v1.0.0'
 
 jobs:
 
