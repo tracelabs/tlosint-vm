@@ -3,7 +3,7 @@
 set -eu
 
 # Chmod entire directories
-# find ./ -type f -iname "*.sh" -exec chmod +x {} \;
+find ./ -type f -iname "*.sh" -exec chmod +x {} \;
 
 # Remove previous images
 # rm -f images/*
