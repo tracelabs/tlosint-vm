@@ -43,7 +43,7 @@ jobs:
         id: Changelog
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            REPO: ${{ github.repository }
+            REPO: ${{ github.repository }}
 
       # Create Release
       - name: Create Release
