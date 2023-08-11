@@ -1,19 +1,15 @@
 #!/bin/bash
-#
-# ./$0
-# http_proxy= ./$0
-#
 
 set -eu
 
 # Chmod entire directories
-find ./ -type f -iname "*.sh" -exec chmod +x {} \;
+# find ./ -type f -iname "*.sh" -exec chmod +x {} \;
 
 # Remove previous images
-rm -f images/*
+# rm -f images/*
 
 # Clear the terminal
-clear
+# clear
 
 WELL_KNOWN_CACHING_PROXIES="\
 3142 apt-cacher-ng
