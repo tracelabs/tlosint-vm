@@ -31,8 +31,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     - name: Run a multi-line script (build the ISO)
       run: |
-        sudo chmod +x ./$GITHUB_WORKSPACE/packages.sh && sudo ./packages.sh   
-        sudo chmod +x ./$GITHUB_WORKSPACE/build.sh && sudo ./build.sh
+        CD $GITHUB_WORKSPACE
+        sudo chmod +x ./packages.sh && sudo ./packages.sh
+        sudo chmod +x ./build.sh && sudo ./build.sh
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
