@@ -62,6 +62,8 @@ OUTDIR=images
 MEMORY=4G
 SCRATCHSIZE=45G
 
+echo "PART 1"
+
 # Add User to Group
 adduser $USER kvm
 
