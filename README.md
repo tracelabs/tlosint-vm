@@ -12,11 +12,6 @@ https://github.com/tracelabs/tlosint-vm/releases
 
 ## SHA256 Checksum
 ``` 
-tl-osint-2023.01-virtualbox-amd64.7z   996EE74CB6D8C4FF130A4F05DE037E267590932E1E0EF35714505444219CF845
-tl-osint-2023.01-vmware-amd64.7z       F57DA9EA6BC42D5A101A6BA99CC59EEF89968827AC1B1DB1B5331E2586574F15
-tlosint-vm-2023.1-beta.zip             C8BC07596DB6E1D3CF1CA4A1C9C5F838FAEDD2B39081877D2EEAC8910DACA928
-tlosint-vm-2023.1-beta.tar.gz          A44C4822B298B81DE8EB7D0857F1E706DA135337ACEDAE67F67C6438148C95FC
-
 tl-osint-2023.2-generic-amd64.ova      34D148C3784559720F6F9E9D87278836138A1EA9FEB3D46875D5747F5179776F
 ```
 
@@ -24,6 +19,7 @@ tl-osint-2023.2-generic-amd64.ova      34D148C3784559720F6F9E9D87278836138A1EA9F
 | Hypervisor  | Backend | OS |
 | ------------- | ------------- | ------------- |
 | WSL2  | QEMU  | Debian  |
+| VBox | QEMU  | Kali  |
 | VMWare | QEMU  | Kali  |
 
 ## Debos Backends
