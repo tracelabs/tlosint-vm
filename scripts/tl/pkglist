@@ -27,7 +27,3 @@ perl
 wget
 libpsl5
 libslirp-helper
-dbus
-dbus-bin
-dbus-daemon
-dbus-system-bus-common
