@@ -334,7 +334,7 @@ mkdir -p $OUTDIR
 echo "Building image from recipe $(b tlosint.yaml) ..."
 OUTPUT=$OUTDIR/tl-osint-$VERSION-$VARIANT-$ARCH
 debos "$@" \
-        -b qemu \
+        -b auto \
         -t arch:$ARCH \
         -t branch:$BRANCH \
         -t desktop:$DESKTOP \
