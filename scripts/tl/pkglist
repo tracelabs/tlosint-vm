@@ -1,6 +1,5 @@
 debos
 curl
-usr-is-merged
 bind9-dnsutils
 bind9-libs
 libprotobuf-c1
@@ -13,7 +12,6 @@ libexpat1
 libmagic1
 groff-base
 init-system-helpers
-usr-is-merged
 iucode-tool
 initramfs-tools
 bsdextrautils
@@ -26,11 +24,8 @@ xauth
 pciutils
 libpci3
 perl
-perl-modules-5.36
-libperl5.36
 wget
 libpsl5
-user-mode-linux
 libslirp-helper
 dbus
 dbus-bin
