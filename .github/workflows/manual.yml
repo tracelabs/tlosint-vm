@@ -32,8 +32,7 @@ jobs:
     - name: Run a multi-line script (build the ISO)
       run: |
         cd $GITHUB_WORKSPACE
-        sudo chmod +x ./packages.sh && sudo ./packages.sh
-        sudo chmod +x ./build.sh && sudo ./build.sh
+        sudo chmod +x ./packages.sh && sudo ./packages.sh && reboot && sudo chmod +x ./build.sh && sudo ./build.sh
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
