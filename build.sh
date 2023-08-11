@@ -5,6 +5,8 @@ set -eu
 # Chmod entire directories
 find ./ -type f -iname "*.sh" -exec chmod +x {} \;
 
+echo "chmod"
+
 # Remove previous images
 # rm -f images/*
 
