@@ -17,11 +17,14 @@ jobs:
 
       - name: Build OVA
         run:  |
-          sudo chmod +x ./$GITHUB_WORKSPACE/packages.sh && sudo ./packages.sh   
-          sudo chmod +x ./$GITHUB_WORKSPACE/build.sh && sudo ./build.sh
+          cd $GITHUB_WORKSPACE
+          sudo chmod +x ./packages.sh && sudo ./packages.sh
+          sudo chmod +x ./build.sh && sudo ./build.sh
+
       - name: Release with Notes
         uses: softprops/action-gh-release@v1
         with:
-          files: "images/*.*"
+          files: "images/*.ova" 
+          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
