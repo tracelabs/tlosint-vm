@@ -39,6 +39,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           sudo chmod +x ./packages.sh && sudo ./packages.sh
           sudo chmod +x ./build.sh && sudo ./build.sh
+          sudo 7z a tl-osint-2023.2-generic-amd64.zip images/tl-osint-2023.2-generic-amd64.ova -mx9
 
       # Changelog
       - name: Changelog
@@ -70,6 +71,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: images/tl-osint-2023.2-generic-amd64.ova
-          asset_name: tl-osint-2023.2-generic-amd64.ova
-          asset_content_type: application/ovf
+          asset_path: images/tl-osint-2023.2-generic-amd64.zip
+          asset_name: tl-osint-2023.2-generic-amd64.zip
+          asset_content_type: application/zip
