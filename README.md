@@ -35,7 +35,6 @@ OVA.zip    36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 **Downloaders**
 * [Browse Mirrored Websites](http://www.httrack.com/)
 * [Metagoofil](https://github.com/opsdisk/metagoofil)
-* [Spiderpig](https://github.com/hatlord/Spiderpig)
 * [WebHTTrack Website Copier](http://www.httrack.com/)
 * [Youtube-DL](https://github.com/ytdl-org/youtube-dl)
 
