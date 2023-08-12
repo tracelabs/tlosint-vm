@@ -24,7 +24,7 @@ actions:
   - action: debootstrap
     mirror: {{ $mirror }}
     suite: {{ $branch }}
-    components: [ main, contrib ]
+    components: [ main, contrib, non-free, non-free-firmware ]
     keyring-file: kali-archive-keyring.gpg
 
   - description: "Install usr-is-merged"
