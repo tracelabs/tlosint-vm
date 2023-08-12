@@ -52,7 +52,7 @@ OVA.zip    36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 * [sn0int](https://github.com/kpcyrd/sn0int)
 * [Spiderfoot](https://github.com/smicallef/spiderfoot)
 * [Maltego](https://www.maltego.com/downloads/)
-* [OnionSearch](https://github.com/sundowndev/phoneinfoga)
+* [OnionSearch](https://github.com/megadose/OnionSearch)
 
 **Phone Numbers**
 * [Phonefy (OSRFramework)](https://github.com/i3visio/osrframework)
