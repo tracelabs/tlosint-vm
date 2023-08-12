@@ -141,13 +141,6 @@ actions:
     chroot: true
     script: scripts/install-virt-support.sh {{ $variant }}
 
-  {{ if eq $variant "vmware" }}
-  - description: "Finish install for {{ $variant }}"
-    action: run
-    chroot: true
-    script: scripts/finish-install-vmware.sh
-  {{ end }}
-
   - description: "Configure apt sources.list"
     action: run
     chroot: true
