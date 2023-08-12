@@ -27,7 +27,6 @@ OVA.zip    36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 **Data Analysis**
 * [DumpsterDiver](https://github.com/securing/DumpsterDiver)
 * [Exifprobe](https://github.com/hfiguiere/exifprobe)
-* [Exifscan](https://github.com/rcook/exifscan/) (Private)
 
 **Domains**
 * [Domainfy (OSRFramework)](https://github.com/i3visio/osrframework)
@@ -49,7 +48,6 @@ OVA.zip    36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 * [h8mail](https://github.com/khast3x/h8mail)
 
 **Frameworks**
-* [Little Brother](https://github.com/lulz3xploit/LittleBrother) (Archived)
 * [OSRFramework](https://github.com/i3visio/osrframework)
 * [sn0int](https://github.com/kpcyrd/sn0int)
 * [Spiderfoot](https://github.com/smicallef/spiderfoot)
@@ -62,10 +60,8 @@ OVA.zip    36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 
 **Social Media**
 * [Instaloader](https://github.com/instaloader/instaloader)
-* [Twint](https://github.com/twintproject/twint) (Archived)
 * [Searchfy (OSRFramework)](https://github.com/i3visio/osrframework)
 * [Tiktok Scraper](https://github.com/drawrowfly/tiktok-scraper)
-* [Twayback](https://github.com/humandecoded/twayback)
 
 **Usernames**
 * [Alias Generator (OSRFramework)](https://github.com/i3visio/osrframework)
