@@ -15,24 +15,6 @@ https://github.com/Apollo-o/tlosint-vm/releases
 tl-osint-2023.2-generic-amd64.ova      34D148C3784559720F6F9E9D87278836138A1EA9FEB3D46875D5747F5179776F
 ```
 
-## Debos Backends
-
-You can change the backend in **build.sh** 
-| Backend  |    Time    |  Requirements  |
-| --------- | --------- | ------------- |
-| kvm  |  ≈ 9 min  | access to /dev/kvm  |
-| uml  |  ≈ 18 min  | package user-mode-linux installed  |
-| qemu  |  ≈ 166 min  | none  |
-
-## Build
-From a Ubuntu OS run the following commands:
-```
-git clone https://github.com/Apollo-o/tlosint-vm
-chmod +x ./tlosint-vm/packages.sh && sudo ./packages.sh   # Reboot the system when done.
-chmod +x ./tlosint-vm/build.sh && sudo ./build.sh         # Time can vary based on backend and system specs.
-                                                          # Locate the OVA in the images/ directory.
-```
-
 ## Applications
 
 **Reporting**
