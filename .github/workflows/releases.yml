@@ -60,7 +60,6 @@ jobs:
           release_name: Release v1.0.0
           body: |
             ${{ steps.Changelog.outputs.changelog }}
-            <LINK>
           draft: false
           prerelease: true
 
