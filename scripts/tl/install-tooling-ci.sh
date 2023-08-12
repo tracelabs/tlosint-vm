@@ -6,6 +6,12 @@ pip install -r requirements.txt
 chmod 757 /usr/share/DumpsterDiver
 chmod +x /usr/bin/dumpsterdiver
 
+#OnionSearch
+git clone --recursive https://github.com/megadose/OnionSearch.git /usr/share/OnionSearch
+cd /usr/share/OnionSearch
+python3 setup.py install
+chmod +x /usr/bin/OnionSearch
+
 #Infoga
 git clone --recursive https://github.com/m4ll0k/Infoga.git /usr/share/Infoga
 cd /usr/share/Infoga
