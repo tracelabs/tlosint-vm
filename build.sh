@@ -5,14 +5,6 @@ set -eu
 # Chmod entire directories
 find ./ -type f -iname "*.sh" -exec chmod +x {} \;
 
-echo "chmod"
-
-# Remove previous images
-# rm -f images/*
-
-# Clear the terminal
-# clear
-
 WELL_KNOWN_CACHING_PROXIES="\
 3142 apt-cacher-ng
 8000 squid-deb-proxy
@@ -59,8 +51,6 @@ OUTDIR=images
 
 MEMORY=4G
 SCRATCHSIZE=45G
-
-echo "PART 1"
 
 # Add User to Group
 adduser $USER kvm
