@@ -13,11 +13,7 @@ on:
         default: 'World'
         # Input has to be provided for the workflow to run
         required: true
-      tags:
-        description: 'v1.0.0'
-        required: true
-        type: string
-        
+
 jobs:
   build:
     name: Upload Release Asset
@@ -27,8 +23,13 @@ jobs:
     steps:
 
       # Check Out
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: CheckoutCode
+      - uses: actions/checkout@v2
+      - uses: Klemensas/action-autotag@stable
+        with:
+            id: autotag
+            GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+            tag_prefix: "v"
 
       # Build OVA
       - name: Build OVA
@@ -52,8 +53,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.autotag.outputs.tag_name }}
+          release_name: Release ${{ steps.autotag.outputs.tag_name }}
           body: |
             ${{ steps.Changelog.outputs.changelog }}
           draft: false
