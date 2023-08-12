@@ -15,13 +15,6 @@ https://github.com/Apollo-o/tlosint-vm/releases
 tl-osint-2023.2-generic-amd64.ova      34D148C3784559720F6F9E9D87278836138A1EA9FEB3D46875D5747F5179776F
 ```
 
-## Tested Hypervisors
-| Hypervisor  | Backend | OS |
-| ------------- | ------------- | ------------- |
-| WSL2  | QEMU  | Debian  |
-| VBox | QEMU  | Kali  |
-| VMWare | QEMU  | Kali  |
-
 ## Debos Backends
 
 You can change the backend in **build.sh** 
