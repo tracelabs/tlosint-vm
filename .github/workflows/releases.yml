@@ -66,6 +66,6 @@ jobs:
           release_name: Release v1.0.0
           body: |
             ${{ steps.Changelog.outputs.changelog }}
-            [Download the latest OVA](https://github.com/)
+            [Download the latest OVA](https://nightly.link/)
           draft: false
           prerelease: false
