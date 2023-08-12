@@ -1,23 +1,15 @@
 name: Releases
 
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
+# Workflow Dispatch
 on:
   workflow_dispatch:
-    # Inputs the workflow accepts.
     inputs:
       name:
-        # Friendly description to be shown in the UI instead of 'name'
         description: 'Initiate OVA Build'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
+        default: 'OVA'
         required: true
-      tags:
-        description: 'v1.0.0'
-        required: true
-        type: string
 
+# Build OVA
 jobs:
   build:
     name: Upload Release Asset
@@ -63,7 +55,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v1.0.0
-          release_name: Release v1.0.0
+          release_name: Latest OVA
           body: |
             ${{ steps.Changelog.outputs.changelog }}
             [Download the latest OVA](https://nightly.link/)
