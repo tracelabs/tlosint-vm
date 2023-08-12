@@ -81,13 +81,6 @@ actions:
     chroot: true
     script: scripts/tl/install-tooling-py.sh
 
-  #{{ if ne $packages "" }}
-  #- description: "Install extra packages: {{ $packages }}"
-  #  action: apt
-  #  recommends: true
-  #  packages: [ {{ $packages }} ]
-  #{{ end }}
-
   - action: overlay
     source: overlays/loopback-interface
 
