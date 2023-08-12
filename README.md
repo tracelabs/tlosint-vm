@@ -25,7 +25,6 @@ OVA.zip    36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 * [Tor Browser](https://www.torproject.org/download/)
 
 **Data Analysis**
-* [DumpsterDiver](https://github.com/securing/DumpsterDiver)
 * [Exifprobe](https://github.com/hfiguiere/exifprobe)
 
 **Domains**
@@ -47,7 +46,6 @@ OVA.zip    36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 
 **Frameworks**
 * [OSRFramework](https://github.com/i3visio/osrframework)
-* [sn0int](https://github.com/kpcyrd/sn0int)
 * [Spiderfoot](https://github.com/smicallef/spiderfoot)
 * [Maltego](https://www.maltego.com/downloads/)
 * [OnionSearch](https://github.com/megadose/OnionSearch)
