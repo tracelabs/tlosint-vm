@@ -28,8 +28,8 @@ jobs:
 
       # Check Out
       - name: CheckoutCode
-      - uses: actions/checkout@v2
-      - uses: Klemensas/action-autotag@stable
+        uses: actions/checkout@v2
+        uses: Klemensas/action-autotag@stable
         with:
             id: autotag
             GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
