@@ -24,7 +24,7 @@ actions:
   - action: debootstrap
     mirror: {{ $mirror }}
     suite: {{ $branch }}
-    components: [ main, contrib, non-free, non-free-firmware ]
+    components: [ main, contrib, non-free ]
     keyring-file: kali-archive-keyring.gpg
 
   - description: "Install usr-is-merged"
@@ -81,12 +81,12 @@ actions:
     chroot: true
     script: scripts/tl/install-tooling-py.sh
 
-  {{ if ne $packages "" }}
-  - description: "Install extra packages: {{ $packages }}"
-    action: apt
-    recommends: true
-    packages: [ {{ $packages }} ]
-  {{ end }}
+  #{{ if ne $packages "" }}
+  #- description: "Install extra packages: {{ $packages }}"
+  #  action: apt
+  #  recommends: true
+  #  packages: [ {{ $packages }} ]
+  #{{ end }}
 
   - action: overlay
     source: overlays/loopback-interface
