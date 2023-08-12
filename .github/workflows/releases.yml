@@ -63,7 +63,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.UpdateTag.outputs.UpdateTag }}
+          tag_name: ${{github.ref_name}}
           release_name: Latest OVA
           body: |
             ${{ steps.Changelog.outputs.changelog }}
