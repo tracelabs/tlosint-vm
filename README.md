@@ -40,7 +40,6 @@ OVA.zip    36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 * [Youtube-DL](https://github.com/ytdl-org/youtube-dl)
 
 **Email**
-* [Buster](https://github.com/sham00n/buster)
 * [Checkfy (OSRFramework)](https://github.com/i3visio/osrframework)
 * [Infoga](https://github.com/m4ll0k/Infoga)
 * [Mailfy (OSRFramework)](https://github.com/i3visio/osrframework)
