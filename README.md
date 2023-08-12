@@ -12,7 +12,7 @@ https://github.com/Apollo-o/tlosint-vm/releases
 
 ## SHA256 Checksum
 ``` 
-OVA.zip                                36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
+OVA.zip    36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 ```
 
 ## Applications
