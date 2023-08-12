@@ -1,14 +1,14 @@
 ![Image](https://github.com/Apollo-o/tlosint-vm/assets/22546578/db6e5343-c08c-4ab1-8a1e-41112f80e18f)
 [![Version](https://img.shields.io/badge/tlosintvm-1.0.0-brightgreen.svg?maxAge=259200)]()
-![event workflow](https://github.com/tracelabs/tlosint-vm/actions/workflows/releases.yml/badge.svg?event=push)
+![event workflow](https://github.com/Apollo-o/tlosint-vm/actions/workflows/releases.yml/badge.svg?event=push)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Github All Releases](https://img.shields.io/github/downloads/tracelabs/tlosint-vm/total.svg)]()
+[![Github All Releases](https://img.shields.io/github/downloads/Apollo-o/tlosint-vm/total.svg)]()
 
 # Introduction
 The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - https://gitlab.com/kalilinux/build-scripts/kali-vm
 
 ## Releases
-https://github.com/tracelabs/tlosint-vm/releases
+https://github.com/Apollo-o/tlosint-vm/releases
 
 ## SHA256 Checksum
 ``` 
@@ -34,7 +34,7 @@ You can change the backend in **build.sh**
 ## Build
 From a Debian OS run the following commands:
 ```
-git clone https://github.com/tracelabs/tlosint-vm
+git clone https://github.com/Apollo-o/tlosint-vm
 chmod +x ./tlosint-vm/packages.sh && sudo ./packages.sh   # Reboot the system when done.
 chmod +x ./tlosint-vm/build.sh && sudo ./build.sh         # Time can vary based on backend and system specs.
                                                           # Locate the OVA in the images/ directory.
@@ -110,6 +110,3 @@ chmod +x ./tlosint-vm/build.sh && sudo ./build.sh         # Time can vary based 
 * Block mic/camera detection
 * Block Firefox tracking
 * Preload OSINT Bookmarks
-
-## Contributing
-Are you interested in the VM development? Join us on [Discord](https://discord.com/invite/tracelabs) in #osint-vm channel.
