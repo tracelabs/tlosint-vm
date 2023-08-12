@@ -12,7 +12,7 @@ https://github.com/Apollo-o/tlosint-vm/releases
 
 ## SHA256 Checksum
 ``` 
-tl-osint-2023.2-generic-amd64.ova      34D148C3784559720F6F9E9D87278836138A1EA9FEB3D46875D5747F5179776F
+OVA.zip                                36234B79F1B989BE85732719A9373EFF63FEF04E8F0027B1D2378839AA7CE2E8
 ```
 
 ## Applications
