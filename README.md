@@ -25,7 +25,7 @@ You can change the backend in **build.sh**
 | qemu  |  ≈ 166 min  | none  |
 
 ## Build
-From a Debian OS run the following commands:
+From a Ubuntu OS run the following commands:
 ```
 git clone https://github.com/Apollo-o/tlosint-vm
 chmod +x ./tlosint-vm/packages.sh && sudo ./packages.sh   # Reboot the system when done.
