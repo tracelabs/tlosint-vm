@@ -39,7 +39,13 @@ jobs:
           cd $GITHUB_WORKSPACE
           sudo chmod +x ./packages.sh && sudo ./packages.sh
           sudo chmod +x ./build.sh && sudo ./build.sh
-          sudo 7z a tl-osint-2023.2-generic-amd64.zip images/tl-osint-2023.2-generic-amd64.ova -mx9
+
+      # Upload Artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: OVA
+          path: images/*.ova
 
       # Changelog
       - name: Changelog
@@ -61,11 +67,4 @@ jobs:
           body: |
             ${{ steps.Changelog.outputs.changelog }}
           draft: false
-          prerelease: true
-
-      # Upload Artifact
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: OVA
-          path: images/*.ova
+          prerelease: false
