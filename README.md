@@ -57,7 +57,6 @@ OVA.zip    F244D15DEC39BDB8BA88F2C7AD0B3A2504313EC9DCEB296F7857F15EE680C70A
 **Social Media**
 * [Instaloader](https://github.com/instaloader/instaloader)
 * [Searchfy (OSRFramework)](https://github.com/i3visio/osrframework)
-* [Tiktok Scraper](https://github.com/drawrowfly/tiktok-scraper)
 
 **Usernames**
 * [Alias Generator (OSRFramework)](https://github.com/i3visio/osrframework)
