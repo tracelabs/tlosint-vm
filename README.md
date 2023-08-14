@@ -1,9 +1,7 @@
-[![Project Status](http://www.repostatus.org/badges/0.1.0/active.svg)](http://www.repostatus.org/#active)
 ![Image](https://github.com/Apollo-o/tlosint-vm/assets/22546578/db6e5343-c08c-4ab1-8a1e-41112f80e18f)
 [![Version](https://img.shields.io/badge/tlosintvm-1.0.0-brightgreen.svg?maxAge=259200)]()
 ![event workflow](https://github.com/Apollo-o/tlosint-vm/actions/workflows/releases.yml/badge.svg)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![download badge](https://visitor-badge.imlete.cn/?id=github.apollo-o.visitor-badge.releases)
 
 # Introduction
 The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - https://gitlab.com/kalilinux/build-scripts/kali-vm
