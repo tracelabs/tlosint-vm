@@ -66,21 +66,6 @@ actions:
   - action: overlay
     source: overlays/tl-overlays
 
-  - description: "Install tl Tooling (apt)"
-    action: run
-    chroot: true
-    script: scripts/tl/install-tooling.sh
-    
-  - description: "Install Programs with Git (apt)"
-    action: run
-    chroot: true
-    script: scripts/tl/install-tooling-ci.sh
-    
-  - description: "Install tl Tooling (python modules)"
-    action: run
-    chroot: true
-    script: scripts/tl/install-tooling-py.sh
-
   {{ if ne $packages "" }}
   - description: "Install extra packages: {{ $packages }}"
     action: apt
@@ -95,6 +80,11 @@ actions:
     action: run
     chroot: true
     script: scripts/create-user.sh {{ $username }} "{{ $password }}"
+
+  - description: "chmod +x files that need it"
+    action: run
+    chroot: true
+    script: scripts/tl/change-mod.sh
 
   - description: "Disable tmpfiles.d/systemd-resolve.conf, cf. #1007018"
     action: run

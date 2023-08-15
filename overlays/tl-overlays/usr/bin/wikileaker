@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec python3 /usr/share/WikiLeaker/WikiLeaker.py "$@"
