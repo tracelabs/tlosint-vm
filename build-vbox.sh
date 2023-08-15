@@ -41,7 +41,7 @@ TOOLSET=
 USERNAME=
 USERPASS=
 VARIANT=virtualbox
-VERSION=2023.02
+VERSION=2023.03
 ZIP=true
 OUTDIR=images
 
@@ -191,7 +191,7 @@ while getopts ":a:b:D:o:f:hkL:m:P:r:s:S:T:U:v:x:z" opt; do
         (U) USERPASS=$OPTARG ;;
         (v) VARIANT=$OPTARG ;;
         (x) VERSION=$OPTARG ;;
-        (z) ZIP=false ;;
+        (z) ZIP=true ;;
         (*) echo "$USAGE" >&2; exit 1 ;;
     esac
 done
