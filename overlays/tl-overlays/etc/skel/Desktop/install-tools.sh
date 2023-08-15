@@ -75,18 +75,6 @@ curl -O -s $vortimo_debian
 sudo dpkg -i $vortimo_package
 rm $vortimo_package
 
-# install twayback
-if [ -d "~/github-tools/twayback" ]; then
-    cd twayback
-    git pull
-    pip3 install -r requirements.txt
-    cd ..
-else
-    git clone https://github.com/humandecoded/twayback.git 
-    cd twayback
-    pip3 install -r  requirements.txt
-    cd ..
-fi
 
 # TJ Null Jopolin Notebook
 if [ -d "~/Desktop/TJ-OSINT-Notebook" ]; then
@@ -102,5 +90,5 @@ fi
 
 # Install Obsidian app image
 cd ~/Desktop
-wget -O Obsidian-1.1.9.AppImage https://github.com/obsidianmd/obsidian-releases/releases/download/v1.1.9/Obsidian-1.1.9.AppImage 
-chmod +x Obsidian-1.1.9.AppImage
+wget -O Obsidian-1.3.7.AppImage https://github.com/obsidianmd/obsidian-releases/releases/download/v1.3.7/Obsidian-1.3.7.AppImage 
+chmod +x Obsidian-1.3.7.AppImage
