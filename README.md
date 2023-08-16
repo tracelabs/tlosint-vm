@@ -32,6 +32,10 @@ Locate the OVA in the images/ directory
 ```
 ## Applications
 
+**Note**
+* The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a script on the desktop though. This keeps the size of the release small enough to build and host on Github.
+
+
 **Reporting**
 * [TJ Null's OSINT Joplin template](https://github.com/tjnull/TJ-OSINT-Notebook)
 
@@ -104,3 +108,5 @@ Locate the OVA in the images/ directory
 
 ## Contributing
 Are you interested in the VM development? Join us on [Discord](https://discord.com/invite/tracelabs) in #osint-vm channel.
+
+PRs are welcome. We ask that you PR in to the Dev branch.
