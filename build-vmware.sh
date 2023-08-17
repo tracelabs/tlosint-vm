@@ -35,13 +35,13 @@ MIRROR=
 PACKAGES=
 PASSWORD=
 ROOTFS=
-SIZE=86
+SIZE=40
 TIMEZONE=
 TOOLSET=
 USERNAME=
 USERPASS=
 VARIANT=vmware
-VERSION=2023.01
+VERSION=2023.03
 ZIP=true
 OUTDIR=images
 
@@ -191,7 +191,7 @@ while getopts ":a:b:D:o:f:hkL:m:P:r:s:S:T:U:v:x:z" opt; do
         (U) USERPASS=$OPTARG ;;
         (v) VARIANT=$OPTARG ;;
         (x) VERSION=$OPTARG ;;
-        (z) ZIP=true ;;
+        (z) ZIP=false ;;
         (*) echo "$USAGE" >&2; exit 1 ;;
     esac
 done

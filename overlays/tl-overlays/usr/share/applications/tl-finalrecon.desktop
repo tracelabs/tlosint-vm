@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=FinalRecon
-Comment=FinalRecon
-Terminal=true
-Exec=/usr/share/kali-menu/exec-in-shell "finalrecon -h"
-Categories=08-frameworks;
-Icon=utilities-terminal
