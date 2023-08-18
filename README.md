@@ -37,6 +37,9 @@ Locate the OVA in the images/ directory
 **Note**
 * The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a script on the desktop though. This keeps the size of the release small enough to build and host on Github.
 
+**Resources**
+* [Trace Labs OSINT Field Manual](https://github.com/tracelabs/tofm/blob/main/tofm.md)
+* [Trace Labs CTF Contestant Guide](https://download2.tracelabs.org/Trace-Labs-OSINT-Search-Party-CTF-Contestant-Guide_v1.pdf)
 
 **Reporting**
 * [TJ Null's OSINT Joplin template](https://github.com/tjnull/TJ-OSINT-Notebook)
