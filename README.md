@@ -12,12 +12,14 @@ https://github.com/tracelabs/tlosint-vm/releases
 
 ## SHA256 Checksums:
 ``` 
+August 2023 Release: tl-osint-2023.03-virtualbox-amd64.ova 3100c8490dea3c88f5a6625466edac6091fa7ab331e1bb7b9997d1d39ff9c313
+August 2023 Release: tl-osint-2023.03-vmware-amd64.7z 290c335448573de553ab7b4106309dc3b8a10a6f4e75937b5e4018db80874d36
 tl-osint-2023.01-virtualbox-amd64.7z   996EE74CB6D8C4FF130A4F05DE037E267590932E1E0EF35714505444219CF845
 tl-osint-2023.01-vmware-amd64.7z       F57DA9EA6BC42D5A101A6BA99CC59EEF89968827AC1B1DB1B5331E2586574F15
-tlosint-vm-2023.1-beta.zip             C8BC07596DB6E1D3CF1CA4A1C9C5F838FAEDD2B39081877D2EEAC8910DACA928
-tlosint-vm-2023.1-beta.tar.gz          A44C4822B298B81DE8EB7D0857F1E706DA135337ACEDAE67F67C6438148C95FC
 ```
-
+## Login Credntials
+`osint`
+`osint`
 ## Build
 From a Kali Linux machine run the following commands:
 ```
