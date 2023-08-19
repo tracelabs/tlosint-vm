@@ -88,7 +88,3 @@ else
     cd
 fi
 
-# Install Obsidian app image
-cd ~/Desktop
-wget -O Obsidian-1.3.7.AppImage https://github.com/obsidianmd/obsidian-releases/releases/download/v1.3.7/Obsidian-1.3.7.AppImage 
-chmod +x Obsidian-1.3.7.AppImage
