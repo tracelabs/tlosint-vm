@@ -30,6 +30,7 @@ sudo apt install python3-fake_useragent -y
 
 sudo apt install pipx -y
 echo '\nPATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
 
 pipx install youtube-dl
 pipx install h8mail
