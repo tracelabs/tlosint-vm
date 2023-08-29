@@ -8,24 +8,13 @@ echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.zshrc
 export PATH=$PATH:$HOME/.local/bin
 
 sudo apt install sherlock -y
-sudo apt install -y
-sudo apt install python3-shodan -y
-sudo apt install spiderfoot -y
-sudo apt install sherlock -y
 sudo apt install maltego -y
-sudo apt install python3-shodan -y
-sudo apt install theharvester -y
 sudo apt install webhttrack -y
 sudo apt install outguess -y
 sudo apt install stegosuite -y
-sudo apt install wireshark -y
-sudo apt install openvpn -y
 sudo apt install metagoofil -y
 sudo apt install eyewitness -y
 sudo apt install exifprobe -y
-sudo apt install ruby-bundler -y
-sudo apt install recon-ng -y
-sudo apt install cherrytree -y
 sudo apt install instaloader -y
 sudo apt install photon -y
 sudo apt install sublist3r -y
@@ -36,7 +25,6 @@ sudo apt install finalrecon -y
 sudo apt install cargo -y
 sudo apt install pkg-config -y
 sudo apt install npm -y
-sudo apt install curl -y
 
 
 pip3 install --upgrade tweepy
