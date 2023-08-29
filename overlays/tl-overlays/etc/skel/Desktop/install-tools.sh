@@ -25,18 +25,19 @@ sudo apt install finalrecon -y
 sudo apt install cargo -y
 sudo apt install pkg-config -y
 sudo apt install npm -y
+sudo apt install python3-tweepy -y
+sudo apt install python3-fake_useragent -y
 
+sudo apt install pipx -y
+echo '\nPATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 
-pip3 install --upgrade tweepy
-pip3 install --upgrade exifread 
-pip3 install --upgrade youtube-dl
-pip3 install --upgrade fake_useragent
+pipx install youtube-dl
+pipx install h8mail
+pipx install shodan
+pipx install toutatis
+pipx install yt-dlp
+
 pip3 install --upgrade dnsdumpster
-pip3 install --upgrade h8mail
-pip3 install --upgrade shodan
-pip3 install --upgrade toutatis
-pip3 install --upgrade yt-dlp
-
 
 mkdir -p ~/github-tools
 cd ~/github-tools
