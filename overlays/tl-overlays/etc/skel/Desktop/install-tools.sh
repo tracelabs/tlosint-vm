@@ -33,7 +33,7 @@ sudo apt install cargo -y
 sudo apt install pkg-config -y
 sudo apt install npm -y
 sudo apt install curl -y
-
+sudo apt install python3-pip -y
 
 pip3 install --upgrade tweepy
 pip3 install --upgrade exifread 
