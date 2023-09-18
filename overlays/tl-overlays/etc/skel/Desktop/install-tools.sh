@@ -7,9 +7,6 @@ sudo apt-get dist-upgrade -y
 echo '\nexport PATH=$PATH:$HOME/.local/bin' >> ~/.zshrc
 source ~/.zshrc
 
-sudo apt install sherlock -y
-sudo apt install -y
-sudo apt install python3-shodan -y
 sudo apt install spiderfoot -y
 sudo apt install sherlock -y
 sudo apt install maltego -y
@@ -19,7 +16,6 @@ sudo apt install webhttrack -y
 sudo apt install outguess -y
 sudo apt install stegosuite -y
 sudo apt install wireshark -y
-sudo apt install openvpn -y
 sudo apt install metagoofil -y
 sudo apt install eyewitness -y
 sudo apt install exifprobe -y
