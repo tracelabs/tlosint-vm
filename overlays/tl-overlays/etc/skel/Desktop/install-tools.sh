@@ -34,16 +34,17 @@ sudo apt install pkg-config -y
 sudo apt install npm -y
 sudo apt install curl -y
 sudo apt install python3-pip -y
+sudo apt install pipx -y
+sudo apt install python3-tweepy -y
+sudo apt install python3-exifread -y
+sudo apt install python3-fake-useragent -y
+sudo apt install yt-dlp -y
 
-pip3 install --upgrade tweepy
-pip3 install --upgrade exifread 
-pip3 install --upgrade youtube-dl
-pip3 install --upgrade fake_useragent
-pip3 install --upgrade dnsdumpster
-pip3 install --upgrade h8mail
-pip3 install --upgrade shodan
-pip3 install --upgrade toutatis
-pip3 install --upgrade yt-dlp
+
+pipx install youtube-dl
+pip3 install dnsdumpster
+pipx install h8mail
+pipx install toutatis
 
 
 mkdir -p ~/github-tools
