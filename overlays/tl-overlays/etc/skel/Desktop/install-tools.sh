@@ -3,9 +3,9 @@
 
 sudo apt-get update 
 sudo apt-get dist-upgrade -y
-echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.bashrc
-echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.zshrc
-export PATH=$PATH:$HOME/.local/bin
+
+echo '\nexport PATH=$PATH:$HOME/.local/bin' >> ~/.zshrc
+source ~/.zshrc
 
 sudo apt install sherlock -y
 sudo apt install -y
