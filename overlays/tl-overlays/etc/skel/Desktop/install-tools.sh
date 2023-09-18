@@ -51,12 +51,11 @@ mkdir -p ~/github-tools
 cd ~/github-tools
 
 
-# sn0int, will come back to this and test the install better
-#sudo apt install debian-keyring
-#gpg -a --export --keyring /usr/share/keyrings/debian-maintainers.gpg kpcyrd@archlinux.org | sudo tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg
-#echo deb http://apt.vulns.sexy stable main | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list
-#sudo apt update
-#sudo apt install sn0int
+# Install sn0int
+curl -s https://apt.vulns.sexy/kpcyrd.pgp | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg
+echo "deb http://apt.vulns.sexy stable main" | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list
+sudo apt update        
+sudo apt install sn0int -y
 
 
 
