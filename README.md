@@ -18,6 +18,10 @@ https://github.com/tracelabs/tlosint-vm/releases
 ## Login Credntials
 `osint`
 `osint`
+
+## Obsidian
+Note taking app Obsidian comes bundled with the VM. There is an icon on the desktop to launch Obisidian or you can run the appimage located in the home directory. We've already set up a vault for you called "TL Vault" that lives on the Desktop. The first time you run Obsidian open that vault folder. The default theme is the Trace Labs theme. 
+ 
 ## Build
 If you'd rather build your own from source or modify the version we've released then building your own is as straight forward as: (Note: You don't need to do this if you've already downloaded a release and imported to hypervisor)
 
