@@ -1,0 +1,1224 @@
+
+/*Trace Labs color mods made to original Github Theme by */
+/* @settings
+
+name: GitHub theme settings
+id: id
+settings:
+    -
+        # Colorblind 
+
+        id: colorblind
+        title: Colorblind variants
+        type: heading
+        level: 1
+        collapsed: true
+    - 
+        id: colorblind_protan-deutan
+        title: Protanopia & Deuteranopia
+        type: class-toggle
+        default: off
+    -        
+        id: colorblind_tritan
+        title: Tritanopia
+        type: class-toggle
+        default: off
+    -
+
+        # Callout Settings
+
+        id: callout
+        title: Callouts
+        type: heading
+        level: 1
+        collapsed: true
+    - 
+        id: callout-on
+        title: GitHub callout style
+        type: class-toggle
+        default: on
+    -
+
+        # Headers Settings
+
+        id: headers
+        title: Headers colors
+        type: heading
+        level: 1
+        collapsed: true
+    -
+
+        # All Headers
+
+        id: all-headers
+        title: All headers
+        type: heading
+        level: 3
+        collapsed: true
+    -
+        id: headers-one-color
+        title: All headers are the same color
+        type: class-toggle
+        default: on
+    -
+        id: h-color-theme
+        title: Header color
+        type: variable-themed-color
+        opacity: false
+        format: hex
+        default-light: '#24292f'
+        default-dark: '#7ee787'
+    -
+
+        # Particular Headers
+
+        id: particular headers
+        title: Particular headers
+        description: This settings won't work if `All headers are the same color` is ON
+        type: heading
+        level: 3
+        collapsed: true
+    -
+        id: h1-color-theme
+        title: h1 color
+        type: variable-themed-color
+        opacity: false
+        format: hex
+        default-light: '#24292f'
+        default-dark: '#7ee787'
+    -
+        id: h2-color-theme
+        title: h2 color
+        type: variable-themed-color
+        opacity: false
+        format: hex
+        default-light: '#24292f'
+        default-dark: '#7ee787'
+    -
+        id: h3-color-theme
+        title: h3 color
+        type: variable-themed-color
+        opacity: false
+        format: hex
+        default-light: '#24292f'
+        default-dark: '#7ee787'
+    -
+        id: h4-color-theme
+        title: h4 color
+        type: variable-themed-color
+        opacity: false
+        format: hex
+        default-light: '#24292f'
+        default-dark: '#7ee787'
+    -
+        id: h5-color-theme
+        title: h5 color
+        type: variable-themed-color
+        opacity: false
+        format: hex
+        default-light: '#24292f'
+        default-dark: '#7ee787'
+    -
+        id: h6-color-theme
+        title: h6 color
+        type: variable-themed-color
+        opacity: false
+        format: hex
+        default-light: '#24292f'
+        default-dark: '#7ee787'
+    -
+
+        # Kanban Settings
+
+        id: kanban
+        title: Kanban
+        type: heading
+        level: 1
+        collapsed: true
+    -
+        id: kanban-variant
+        title: Kanban variant
+        description: Variations of Kanban styles
+        type: class-select
+        allowEmpty: false
+        default: kanban-full
+        options:
+            -
+                label: GitHub projects style
+                value: kanban-full
+            -
+                label: Minimal style
+                value: kanban-on
+            -
+                label: Disable styles
+                value: kanban-off
+    -
+        id: kanban-same-height-cards
+        title: Minimal height for cards
+        description: All cards will have the same initial height
+        type: class-toggle
+        default: on
+    -
+        id: kanban-full-height-column
+        title: Full height lists
+        description: 
+        type: class-toggle
+        default: on
+*/
+body {
+    /* Animations */
+    --anim-duration-none: 0;
+    --anim-duration-superfast: 70ms;
+    --anim-duration-fast: 140ms;
+    --anim-duration-moderate: 300ms;
+    --anim-duration-slow: 560ms;
+    --anim-motion-smooth: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    --anim-motion-delay: cubic-bezier(0.65, 0.05, 0.36, 1);
+    --anim-motion-jumpy: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    --anim-motion-swing: cubic-bezier(0, 0.55, 0.45, 1);
+    /* Blockquotes */
+    --blockquote-border-thickness: 2px;
+    --blockquote-border-color: var(--interactive-accent);
+    --blockquote-font-style: normal;
+    --blockquote-color: inherit;
+    --blockquote-background-color: transparent;
+    /* Bold */
+    --bold-weight: var(--font-semibold);
+    --bold-color: #d400ff;
+    /* Borders */
+    --border-width: 1px;
+    /* Buttons */
+    --button-radius: var(--input-radius);
+    /* Callouts */
+    --callout-border-width: 0px;
+    --callout-border-opacity: 0.25;
+    --callout-padding: var(--size-4-3) var(--size-4-3) var(--size-4-3) var(--size-4-6);
+    --callout-radius: var(--radius-s);
+    --callout-blend-mode: var(--highlight-mix-blend-mode);
+    --callout-title-color: inherit;
+    --callout-title-padding: 0;
+    --callout-title-size: inherit;
+    --callout-content-padding: 0;
+    --callout-content-background: transparent;
+    --callout-bug: var(--color-red-rgb);
+    --callout-default: var(--color-blue-rgb);
+    --callout-error: var(--color-red-rgb);
+    --callout-example: var(--color-purple-rgb);
+    --callout-fail: var(--color-red-rgb);
+    --callout-important: var(--color-cyan-rgb);
+    --callout-info: var(--color-blue-rgb);
+    --callout-question: var(--color-yellow-rgb);
+    --callout-success: var(--color-green-rgb);
+    --callout-summary: var(--color-cyan-rgb);
+    --callout-tip: var(--color-cyan-rgb);
+    --callout-todo: var(--color-blue-rgb);
+    --callout-warning: var(--color-orange-rgb);
+    --callout-quote: 158, 158, 158;
+    /* Canvas */
+    --canvas-background: var(--background-primary);
+    --canvas-card-label-color: var(--text-faint);
+    --canvas-color-1: var(--color-red-rgb);
+    --canvas-color-2: var(--color-orange-rgb);
+    --canvas-color-3: var(--color-yellow-rgb);
+    --canvas-color-4: var(--color-green-rgb);
+    --canvas-color-5: var(--color-cyan-rgb);
+    --canvas-color-6: var(--color-purple-rgb);
+    --canvas-dot-pattern: var(--color-base-30);
+    /* Checkboxes */
+    --checkbox-radius: var(--radius-s);
+    --checkbox-size: var(--font-text-size);
+    --checkbox-marker-color: var(--background-primary);
+    --checkbox-color: var(--interactive-accent);
+    --checkbox-color-hover: var(--interactive-accent-hover);
+    --checkbox-border-color: var(--text-faint);
+    --checkbox-border-color-hover: var(--text-muted);
+    --checklist-done-decoration: line-through;
+    --checklist-done-color: var(--text-muted);
+    /* Code */
+    --code-white-space: pre-wrap;
+    --code-size: var(--font-smaller);
+    --code-background: var(--background-primary-alt);
+    --code-normal: var(--text-muted);
+    --code-comment: var(--text-faint);
+    --code-function: var(--color-orange);
+    --code-important: var(--color-orange);
+    --code-keyword: var(--color-red);
+    --code-property: var(--color-blue);
+    --code-punctuation: var(--text-muted);
+    --code-string: var(--color-cyan);
+    --code-tag: var(--color-red);
+    --code-value: var(--color-purple);
+    /* Collapse icons */
+    --collapse-icon-color: var(--text-faint);
+    --collapse-icon-color-collapsed: var(--text-accent);
+    /* Cursor */
+    --cursor: default;
+    --cursor-link: pointer;
+    /* Dialogs - e.g. small modals, confirmations */
+    --dialog-width: 560px;
+    --dialog-max-width: 80vw;
+    --dialog-max-height: 85vh;
+    /* Dividers â€” between panes */
+    --divider-color: var(--background-modifier-border);
+    --divider-color-hover: var(--interactive-accent);
+    --divider-width: 1px;
+    --divider-width-hover: 3px;
+    --divider-vertical-height: calc(100% - var(--header-height));
+    /* Dragging */
+    --drag-ghost-background: rgba(0, 0, 0, 0.85);
+    --drag-ghost-text-color: #fff;
+    /* Embeds */
+    --embed-max-height: 4000px;
+    --embed-canvas-max-height: 400px;
+    --embed-background: inherit;
+    --embed-border-left: 2px solid var(--interactive-accent);
+    --embed-border-right: none;
+    --embed-border-top: none;
+    --embed-border-bottom: none;
+    --embed-padding: 0 0 0 var(--size-4-6);
+    --embed-font-style: inherit;
+    /* Blocks */
+    --embed-block-shadow-hover: 0 0 0 1px var(--background-modifier-border),
+        inset 0 0 0 1px var(--background-modifier-border);
+    /* File layout */
+    --file-line-width: 700px;
+    --file-folding-offset: 24px;
+    --file-margins: var(--size-4-8);
+    --file-header-font-size: var(--font-ui-small);
+    --file-header-font-weight: 400;
+    --file-header-border: var(--border-width) solid transparent;
+    --file-header-justify: center;
+    /* Relative font sizes */
+    --font-smallest: 0.8em;
+    --font-smaller: 0.875em;
+    --font-small: 0.933em;
+    /* UI font sizes */
+    --font-ui-smaller: 12px;
+    --font-ui-small: 13px;
+    --font-ui-medium: 15px;
+    --font-ui-large: 20px;
+    /* Font weights */
+    --font-thin: 100;
+    --font-extralight: 200;
+    --font-light: 300;
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 700;
+    --font-bold: 700;
+    --font-extrabold: 800;
+    --font-black: 900;
+    /* Footnotes */
+    --footnote-size: var(--font-smaller);
+    /* Graphs */
+    --graph-controls-width: 240px;
+    --graph-text: var(--text-normal);
+    --graph-line: var(--color-base-35, var(--background-modifier-border-focus));
+    --graph-node: var(--color-tlgreen);
+    --graph-node-unresolved: var(--text-faint);
+    --graph-node-focused: var(--text-accent);
+    --graph-node-tag: var(--color-green);
+    --graph-node-attachment: var(--color-yellow);
+    /* Headings */
+    --heading-formatting: var(--text-faint);
+    --h1-color: var(--h1-color-theme);
+    --h2-color: var(--h2-color-theme);
+    --h3-color: var(--h3-color-theme);
+    --h4-color: var(--h4-color-theme);
+    --h5-color: var(--h5-color-theme);
+    --h6-color: var(--h6-color-theme);
+    --h1-font: inherit;
+    --h2-font: inherit;
+    --h3-font: inherit;
+    --h4-font: inherit;
+    --h5-font: inherit;
+    --h6-font: inherit;
+    --h1-line-height: 1.2;
+    --h2-line-height: 1.2;
+    --h3-line-height: 1.3;
+    --h4-line-height: 1.4;
+    --h5-line-height: var(--line-height-normal);
+    --h6-line-height: var(--line-height-normal);
+    --h1-size: 3.5em;
+    --h2-size: 3.0em;
+    --h3-size: 2.0em;
+    --h4-size: 1.0em;
+    --h5-size: 1.0em;
+    --h6-size: 1.0em;
+    --h1-style: normal;
+    --h2-style: normal;
+    --h3-style: normal;
+    --h4-style: normal;
+    --h5-style: normal;
+    --h6-style: normal;
+    --h1-variant: normal;
+    --h2-variant: normal;
+    --h3-variant: normal;
+    --h4-variant: normal;
+    --h5-variant: normal;
+    --h6-variant: normal;
+    --h1-weight: 700;
+    --h2-weight: 600;
+    --h3-weight: 600;
+    --h4-weight: 600;
+    --h5-weight: 600;
+    --h6-weight: 600;
+    /* View header */
+    --header-height: 40px;
+    /* Horizontal rules */
+    --hr-color: var(--background-modifier-border);
+    --hr-thickness: 2px;
+    /* Icons */
+    --icon-size: var(--icon-m);
+    --icon-stroke: var(--icon-m-stroke-width);
+    --icon-xs: 14px;
+    --icon-s: 16px;
+    --icon-m: 18px;
+    --icon-l: 18px;
+    --icon-xl: 32px;
+    --icon-xs-stroke-width: 2px;
+    --icon-s-stroke-width: 2px;
+    --icon-m-stroke-width: 1.75px;
+    --icon-l-stroke-width: 1.75px;
+    --icon-xl-stroke-width: 1.25px;
+    --icon-color: var(--text-muted);
+    --icon-color-hover: var(--text-muted);
+    --icon-color-active: var(--text-accent);
+    --icon-color-focused: var(--text-normal);
+    --icon-opacity: 0.85;
+    --icon-opacity-hover: 1;
+    --icon-opacity-active: 1;
+    --clickable-icon-radius: var(--radius-s);
+    /* Indentation guide */
+    --indentation-guide-width: 1px;
+    --indentation-guide-color: rgba(var(--mono-rgb-100), 0.12);
+    --indentation-guide-color-active: rgba(var(--mono-rgb-100), 0.3);
+    /* Inline title */
+    --inline-title-color: var(--h1-color);
+    --inline-title-font: var(--h1-font);
+    --inline-title-line-height: var(--h1-line-height);
+    --inline-title-size: var(--h1-size);
+    --inline-title-style: var(--h1-style);
+    --inline-title-variant: var(--h1-variant);
+    --inline-title-weight: var(--h1-weight);
+    --inline-title-margin-bottom: 0.5em;
+    /* Inputs */
+    --input-height: 30px;
+    --input-radius: 5px;
+    --input-font-weight: var(--font-normal);
+    --input-border-width: 1px;
+    /* Italic */
+    --italic-color: #ffd900;
+    --italic-weight: inherit;
+    /* Z-index */
+    --layer-cover: 5;
+    --layer-sidedock: 10;
+    --layer-status-bar: 15;
+    --layer-popover: 30;
+    --layer-slides: 45;
+    --layer-modal: 50;
+    --layer-notice: 60;
+    --layer-menu: 65;
+    --layer-tooltip: 70;
+    --layer-dragged-item: 80;
+    /* Line heights */
+    --line-height-normal: 1.5;
+    --line-height-tight: 1.3;
+    /* Links */
+    --link-color: var(--color-blue);
+    --link-color-hover: var(--color-tlgreen);
+    --link-decoration: none;
+    --link-decoration-hover: underline;
+    --link-decoration-thickness: auto;
+    --link-external-color: var(--color-blue);
+    --link-external-color-hover: var(--text-accent-hover);
+    --link-external-decoration: none;
+    --link-external-decoration-hover: underline;
+    --link-external-filter: none;
+    --link-unresolved-color: var(--color-blue);
+    --link-unresolved-opacity: 0.7;
+    --link-unresolved-filter: none;
+    --link-unresolved-decoration-style: solid;
+    --link-unresolved-decoration-color: hsla(var(--interactive-accent-hsl), 0.3);
+    /* Lists */
+    --list-indent: 3em;
+    --list-spacing: 0.075em;
+    --list-marker-color: var(--color-tlgreen);
+    --list-marker-color-hover: var(--text-muted);
+    --list-marker-color-collapsed: var(--text-accent);
+    --list-bullet-border: none;
+    --list-bullet-radius: 50%;
+    --list-bullet-size: 7px;
+    --list-bullet-transform: none;
+    --list-numbered-style: decimal;
+    /* File navigator */
+    --nav-item-size: var(--font-ui-small);
+    --nav-item-color: var(--text-muted);
+    --nav-item-color-hover: var(--text-normal);
+    --nav-item-color-active: var(--text-normal);
+    --nav-item-color-selected: var(--text-normal);
+    --nav-item-color-highlighted: var(--text-accent-hover);
+    --nav-item-background-hover: var(--background-modifier-hover);
+    --nav-item-background-active: var(--background-modifier-hover);
+    --nav-item-background-selected: hsla(var(--color-accent-hsl), 0.2);
+    --nav-item-padding: var(--size-4-1) var(--size-4-2) var(--size-4-1) var(--size-4-6);
+    --nav-item-parent-padding: var(--nav-item-padding);
+    --nav-item-children-padding-left: var(--size-2-2);
+    --nav-item-children-margin-left: var(--size-4-3);
+    --nav-item-weight: inherit;
+    --nav-item-weight-hover: inherit;
+    --nav-item-weight-active: inherit;
+    --nav-item-white-space: nowrap;
+    --nav-indentation-guide-width: var(--indentation-guide-width);
+    --nav-indentation-guide-color: var(--indentation-guide-color);
+    --nav-collapse-icon-color: var(--collapse-icon-color);
+    --nav-collapse-icon-color-collapsed: var(--text-faint);
+    /* Modals - e.g. settings, community themes, community plugins */
+    --modal-background: var(--background-primary);
+    --modal-width: 90vw;
+    --modal-height: 85vh;
+    --modal-max-width: 1100px;
+    --modal-max-height: 1000px;
+    --modal-max-width-narrow: 800px;
+    --modal-border-width: var(--border-width);
+    --modal-border-color: var(--color-base-30, var(--background-modifier-border-focus));
+    --modal-radius: var(--radius-l);
+    --modal-community-sidebar-width: 280px;
+    /* PDF view */
+    --pdf-background: var(--background-primary);
+    --pdf-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.1);
+    --pdf-spread-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+    --pdf-sidebar-background: var(--background-primary);
+    --pdf-thumbnail-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.2);
+    /* Popovers - file previews */
+    --popover-width: 450px;
+    --popover-height: 400px;
+    --popover-max-height: 70vh;
+    --popover-pdf-width: 600px;
+    --popover-pdf-height: 800px;
+    --popover-font-size: var(--font-text-size);
+    /* Prompts - e.g. quick switcher, command palette */
+    --prompt-width: 700px;
+    --prompt-max-width: 80vw;
+    --prompt-max-height: 70vh;
+    --prompt-border-width: var(--border-width);
+    --prompt-border-color: var(--color-base-40, var(--background-modifier-border-focus));
+    /* Radiuses */
+    --radius-s: 4px;
+    --radius-m: 8px;
+    --radius-l: 12px;
+    --radius-xl: 16px;
+    /* Ribbon */
+    --ribbon-background: var(--background-secondary);
+    --ribbon-background-collapsed: var(--background-primary);
+    --ribbon-width: 44px;
+    --ribbon-padding: var(--size-4-2) var(--size-4-1) var(--size-4-3);
+    /* Scrollbars */
+    --scrollbar-active-thumb-bg: rgba(var(--mono-rgb-100), 0.2);
+    --scrollbar-bg: rgba(var(--mono-rgb-100), 0.05);
+    --scrollbar-thumb-bg: rgba(var(--mono-rgb-100), 0.1);
+    /* Search */
+    --search-clear-button-color: var(--text-muted);
+    --search-clear-button-size: 13px;
+    --search-icon-color: var(--text-muted);
+    --search-icon-size: 18px;
+    --search-result-background: var(--background-primary);
+    /* Layout sizing - for padding and margins */
+    --size-2-1: 2px;
+    --size-2-2: 4px;
+    --size-2-3: 6px;
+    --size-4-1: 4px;
+    --size-4-2: 8px;
+    --size-4-3: 12px;
+    --size-4-4: 16px;
+    --size-4-5: 20px;
+    --size-4-6: 24px;
+    --size-4-8: 32px;
+    --size-4-9: 36px;
+    --size-4-12: 48px;
+    --size-4-16: 64px;
+    --size-4-18: 72px;
+    /* Sidebar */
+    --sidebar-markdown-font-size: calc(var(--font-text-size) * 0.9);
+    --sidebar-tab-text-display: none;
+    /* Sliders */
+    --slider-thumb-border-width: 1px;
+    --slider-thumb-border-color: var(--background-modifier-border-hover);
+    --slider-thumb-height: 18px;
+    --slider-thumb-width: 18px;
+    --slider-thumb-y: -6px;
+    --slider-thumb-radius: 50%;
+    --slider-s-thumb-size: 15px;
+    --slider-s-thumb-position: -5px;
+    --slider-track-background: var(--background-modifier-border);
+    --slider-track-height: 3px;
+    /* Status bar */
+    --status-bar-background: var(--background-secondary);
+    --status-bar-border-color: var(--divider-color);
+    --status-bar-border-width: 1px 0 0 1px;
+    --status-bar-font-size: var(--font-ui-smaller);
+    --status-bar-text-color: var(--text-muted);
+    --status-bar-position: fixed;
+    --status-bar-radius: var(--radius-m) 0 0 0;
+    --status-bar-scroll-padding: calc(var(--status-bar-font-size) + 18px);
+    /* Swatch for color inputs */
+    --swatch-radius: 14px;
+    --swatch-height: 24px;
+    --swatch-width: 24px;
+    --swatch-shadow: inset 0 0 0 1px rgba(var(--mono-rgb-100), 0.15);
+    /* Tabs */
+    --tab-background-active: var(--background-primary);
+    --tab-text-color: var(--text-faint);
+    --tab-text-color-active: var(--text-muted);
+    --tab-text-color-focused: var(--text-muted);
+    --tab-text-color-focused-active: var(--text-muted);
+    --tab-text-color-focused-highlighted: var(--text-accent);
+    --tab-text-color-focused-active-current: var(--text-normal);
+    --tab-font-size: var(--font-ui-small);
+    --tab-font-weight: inherit;
+    --tab-container-background: var(--background-secondary);
+    --tab-divider-color: var(--background-modifier-border-hover);
+    --tab-outline-color: var(--divider-color);
+    --tab-outline-width: 1px;
+    --tab-curve: 6px;
+    --tab-radius: var(--radius-s);
+    --tab-radius-active: 6px 6px 0 0;
+    --tab-width: 200px;
+    --tab-max-width: 320px;
+    /* Stacked tabs */
+    --tab-stacked-pane-width: 700px;
+    --tab-stacked-header-width: var(--header-height);
+    --tab-stacked-font-size: var(--font-ui-small);
+    --tab-stacked-font-weight: 400;
+    --tab-stacked-text-align: left;
+    --tab-stacked-text-transform: rotate(0deg);
+    --tab-stacked-text-writing-mode: vertical-lr;
+    --tab-stacked-shadow: -8px 0 8px 0 rgba(0, 0, 0, 0.05);
+    /* Tables */
+    --table-background: transparent;
+    --table-border-width: 1px;
+    --table-border-color: var(--background-modifier-border);
+    --table-white-space: normal;
+    --table-header-background: var(--table-background);
+    --table-header-background-hover: inherit;
+    --table-header-border-width: var(--table-border-width);
+    --table-header-border-color: var(--table-border-color);
+    --table-header-font: inherit;
+    --table-header-size: var(--font-text-size);
+    --table-header-weight: var(--bold-weight);
+    --table-header-color: var(--text-normal);
+    --table-text-size: inherit;
+    --table-text-color: inherit;
+    --table-column-max-width: none;
+    --table-column-alt-background: var(--table-background);
+    --table-column-first-border-width: var(--table-border-width);
+    --table-column-last-border-width: var(--table-border-width);
+    --table-row-background-hover: var(--table-background);
+    --table-row-alt-background: var(--table-background);
+    --table-row-last-border-width: var(--table-border-width);
+    /* Tags */
+    --tag-size: var(--font-smaller);
+    --tag-color: var(--text-accent);
+    --tag-color-hover: var(--text-accent);
+    --tag-decoration: none;
+    --tag-decoration-hover: none;
+    --tag-background: hsla(var(--interactive-accent-hsl), 0.1);
+    --tag-background-hover: hsla(var(--interactive-accent-hsl), 0.2);
+    --tag-border-color: hsla(var(--interactive-accent-hsl), 0.15);
+    --tag-border-color-hover: hsla(var(--interactive-accent-hsl), 0.15);
+    --tag-border-width: 0px;
+    --tag-padding-x: 0.65em;
+    --tag-padding-y: 0.25em;
+    --tag-radius: 2em;
+    /* Window frame */
+    --titlebar-background: var(--background-secondary);
+    --titlebar-background-focused: var(--background-secondary-alt);
+    --titlebar-border-width: 0px;
+    --titlebar-border-color: var(--background-modifier-border);
+    --titlebar-text-color: var(--text-muted);
+    --titlebar-text-color-focused: var(--text-normal);
+    --titlebar-text-weight: var(--font-bold);
+    /* Toggles */
+    --toggle-border-width: 2px;
+    --toggle-width: 40px;
+    --toggle-radius: 18px;
+    --toggle-thumb-color: white;
+    --toggle-thumb-radius: 18px;
+    --toggle-thumb-height: 18px;
+    --toggle-thumb-width: 18px;
+    --toggle-s-border-width: 2px;
+    --toggle-s-width: 34px;
+    --toggle-s-thumb-height: 15px;
+    --toggle-s-thumb-width: 15px;
+    /* Vault name */
+    --vault-name-font-size: var(--font-ui-small);
+    --vault-name-font-weight: var(--font-medium);
+    --vault-name-color: var(--text-normal);
+    /* Workspace */
+    --workspace-background-translucent: rgba(var(--mono-rgb-0), 0.6);
+    /* Color mappings ------------------------ */
+    /* Accent HSL values */
+    --accent-h: var(--accent-h-theme);
+    --accent-s: var(--accent-s-theme);
+    --accent-l: var(--accent-l-theme);
+    /* Backgrounds */
+    --background-primary: #1d1b1b;
+    --background-primary-alt: var(--color-base-10);
+    --background-secondary: #0f0909;
+    --background-modifier-hover: rgba(var(--rgb-hover), var(--background-modifier-hover-alpha));
+    --background-modifier-active-hover: hsla(var(--interactive-accent-hsl), 0.15);
+    --background-modifier-border: var(--color-base-30);
+    --background-modifier-border-hover: var(--color-base-30);
+    --background-modifier-border-focus: var(--color-accent);
+    --background-modifier-error-rgb: var(--color-red-rgb);
+    --background-modifier-error: var(--color-red);
+    --background-modifier-error-hover: var(--color-red);
+    --background-modifier-success-rgb: var(--color-green-rgb);
+    --background-modifier-success: var(--color-green);
+    --background-modifier-message: rgba(0, 0, 0, 0.9);
+    /* Inputs */
+    --background-modifier-form-field: var(--color-base-25);
+    /* Text */
+    --text-normal: var(--color-base-100);
+    --text-muted: var(--color-base-70);
+    --text-faint: var(--color-base-50);
+    --text-on-accent: white;
+    --text-on-accent-inverted: black;
+    --text-error: var(--color-red);
+    --text-success: var(--color-green);
+    --text-selection: hsla(var(--color-accent-hsl), 0.2);
+    --text-highlight-bg: rgba(255, 208, 0, 0.4);
+    --text-accent: var(--color-accent);
+    --text-accent-hover: var(--color-accent-2);
+    --interactive-normal: var(--color-base-00);
+    --interactive-hover: var(--color-base-10);
+    --interactive-accent-hsl: var(--color-accent-hsl);
+    --interactive-accent: var(--color-accent-1);
+    --interactive-accent-hover: var(--color-accent-2);
+}
+
+.theme-dark {
+    color-scheme: dark;
+    --highlight-mix-blend-mode: lighten;
+    --mono-rgb-0: 0, 0, 0;
+    --mono-rgb-100: 255, 255, 255;
+    --rgb-hover: 177, 186, 196;
+    --color-red-rgb: 248, 81, 73;
+    --color-red: #F47067;
+    --color-green-rgb: 126, 231, 135;
+    --color-green: #7ee787;
+    --color-orange: #FFA657;
+    --color-yellow: #d29922;
+    --color-cyan: #A5D6FF;
+    --color-blue: #00ffff;
+    --color-purple: #D2A8FF;
+    --color-pink: #f778ba;
+
+    --color-base-00: #0d1117;
+    --color-base-10: #161b22;
+    --color-base-20: #161b22;
+    --color-base-25: #010409;
+    --color-base-30: #30363d;
+    --color-base-35: #21262d;
+    --color-base-40: #30363d;
+    --color-base-50: #6e7681;
+    --color-base-60: #999; /* Unused */
+    --color-base-70: #8b949e;
+    --color-base-100: #ffffff;
+    --color-tlgreen: #84EDB5;
+
+    --accent-h-theme: 212;
+    --accent-s-theme: 100%;
+    --accent-l-theme: 67%;
+    --color-accent-hsl: var(--accent-h), var(--accent-s), var(--accent-l);
+    --color-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+    --color-accent-1: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) - 3.8%));
+    --color-accent-2: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + 3.8%));
+
+    --background-secondary-alt: var(--color-base-25);
+    --background-modifier-box-shadow: rgba(0, 0, 0, 0.3);
+    --background-modifier-cover: rgba(10, 10, 10, 0.4);
+    --text-highlight-bg: rgba(255, 208, 0, 0.4);
+    --text-highlight-bg-active: rgba(255, 128, 0, 0.4);
+    --text-selection: hsla(var(--interactive-accent-hsl), 0.4);
+    --input-shadow: inset 0 0 0 1px #f0f6fc1a;
+    --input-shadow-hover: inset 0 0 0 1px var(--color-base-70);
+    --shadow-s: none;
+    --shadow-l: none;
+
+    --inline-code-background: #6e768166;
+    --h-color-theme: var(--color-green);
+    /*--h1-color-theme: var(--color-green);*/
+    --h1-color-theme: var(--color-tlgreen);
+    --h2-color-theme: var(--color-tlgreen);
+    --h3-color-theme: var(--color-tlgreen);
+    --h4-color-theme: var(--color-tlgreen);
+    --h5-color-theme: var(--color-tlgreen);
+    --h6-color-theme: var(--color-tlgreen);
+    --background-modifier-hover-alpha: 0.12;
+    --color-btn-primary-bg: #238636;
+    --color-btn-primary-hover-bg: #2ea043;
+
+    /* Kanban colors */
+    --kanban-background: var(--background-primary);
+    --kanban-lane-background: var(--background-secondary-alt);
+    --kanban-item-background: var(--background-primary-alt);
+    --kanban-lane-border: var(--color-base-35);
+    --kanban-lane-count: var(--color-base-35);
+    --kanban-options-btn: var(--color-base-30);
+}
+.is-mobile.theme-dark {
+    --color-base-00: #0d1117;
+    --color-base-10: #161b22;
+    --color-base-20: #161b22;
+    --tag-background: hsla(var(--interactive-accent-hsl), 0.2);
+    --modal-background: var(--background-secondary);
+    --search-result-background: var(--background-secondary);
+    --background-modifier-form-field: var(--background-modifier-border);
+    --background-modifier-cover: rgba(0, 0, 0, 0.5);
+    --background-modifier-hover: rgba(var(--mono-rgb-100), 0.15);
+    --settings-home-background: var(--background-primary);
+}
+
+.theme-light {
+    color-scheme: light;
+    --highlight-mix-blend-mode: darken;
+    --mono-rgb-0: 255, 255, 255;
+    --mono-rgb-100: 0, 0, 0;
+    --rgb-hover: 208, 215, 222;
+    --color-red-rgb: 228, 55, 75;
+    --color-red: #cf222e;
+    --color-green-rgb: 12, 181, 79;
+    --color-green: #0cb54f;
+    --color-orange: #d96c00;
+    --color-yellow: #BD8E37;
+    --color-cyan: #2db7b5;
+    --color-blue: #086DDD;
+    --color-purple: #876be0;
+    --color-pink: #C32B74;
+
+    --color-base-00: #ffffff;
+    --color-base-05: #fcfcfc;
+    --color-base-10: #f6f8fa;
+    --color-base-20: #f6f8fa;
+    --color-base-25: #f6f8fa;
+    --color-base-30: #d0d7de;
+    --color-base-35: #d4d4d4;
+    --color-base-40: #bdbdbd;
+    --color-base-50: #6e7781;
+    --color-base-60: #707070; /* Unused */
+    --color-base-70: #57606a;
+    --color-base-100: #24292f;
+
+    --accent-h-theme: 212;
+    --accent-s-theme: 92%;
+    --accent-l-theme: 45%;
+    --color-accent-hsl: var(--accent-h), var(--accent-s), var(--accent-l);
+    --color-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+    --color-accent-1: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + 2.5%));
+    --color-accent-2: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + 5%));
+
+    --background-secondary-alt: var(--color-base-05);
+    --background-modifier-box-shadow: rgba(0, 0, 0, 0.1);
+    --background-modifier-cover: rgba(220, 220, 220, 0.4);
+    --text-highlight-bg: rgba(255, 208, 0, 0.4);
+    --text-highlight-bg-active: rgba(255, 128, 0, 0.4);
+    --input-shadow: inset 0 0 0 1px #1b1f2426;
+    --input-shadow-hover: inset 0 0 0 1px #1b1f2426;
+    --shadow-s: none;
+    --shadow-l: none;
+
+    --inline-code-background: #aeb8c133;
+    --h-color-theme: var(--text-normal);
+    --h1-color-theme: var(--text-normal);
+    --h2-color-theme: var(--text-normal);
+    --h3-color-theme: var(--text-normal);
+    --h4-color-theme: var(--text-normal);
+    --h5-color-theme: var(--text-normal);
+    --h6-color-theme: var(--text-normal);
+    --background-modifier-hover-alpha: 0.32;
+    --color-btn-primary-bg: #2da44f;
+    --color-btn-primary-hover-bg: #2c964a;
+
+    /* Kanban colors */
+    --kanban-background: var(--background-primary);
+    --kanban-lane-background: var(--background-primary-alt);
+    --kanban-item-background: var(--background-primary);
+    --kanban-lane-border: #d8dee4;
+    --kanban-lane-count: #aeb8c133;
+    --kanban-options-btn: var(--background-primary-alt);
+}
+
+
+body.colorblind_protan-deutan.theme-dark {
+    --color-red-rgb: 253, 172, 84;
+    --color-red: #fdac54;
+    --color-green-rgb: 165, 214, 255;
+    --color-green: #a3d6ff;
+    --color-orange: #fdac54;
+
+    --color-btn-primary-bg: #1f6feb;
+    --color-btn-primary-hover-bg: #388bfd;
+}
+body.colorblind_protan-deutan.theme-light {
+    --color-red-rgb: 179, 89, 0;
+    --color-red: #b35900;
+    --color-green-rgb: 33, 139, 255;
+    --color-green: #218bff;
+    --color-orange: #dd7815;
+
+    --color-btn-primary-bg: #218bff;
+    --color-btn-primary-hover-bg: #0969da;
+}
+
+body.colorblind_tritan.theme-dark {
+    --color-green-rgb: 165, 214, 255;
+    --color-green: #a5d6ff;
+    --color-orange: #ffa198;
+
+    --text-highlight-bg: rgba(255, 0, 0, 0.4);
+    --text-highlight-bg-active: rgba(255, 50, 0, 0.4);
+
+    --color-btn-primary-bg: #1f6feb;
+    --color-btn-primary-hover-bg: #388bfd;
+}
+body.colorblind_tritan.theme-light {
+    --color-green-rgb: 12, 181, 79;
+    --color-green: #218bff;
+    --color-orange: #fa4549;
+
+    --text-highlight-bg: rgba(255, 0, 0, 0.4);
+    --text-highlight-bg-active: rgba(255, 50, 0, 0.4);
+
+    --color-btn-primary-bg: #218bff;
+    --color-btn-primary-hover-bg: #0969da;
+}
+
+/* Tables */
+.markdown-rendered td, 
+.markdown-rendered th {
+    padding: var(--size-2-3) var(--size-4-3);
+} 
+.markdown-rendered th {
+    text-align: center;
+}
+.markdown-rendered tbody tr:nth-child(2n) {
+    background-color: var(--background-secondary);
+}
+
+/* Buttons */
+button {
+    transition: 80ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+button:hover {
+    cursor: var(--cursor-link);
+}
+button.mod-cta {
+    background-color: var(--color-btn-primary-bg);
+    color: var(--text-on-accent);
+}
+button.mod-cta:hover {
+    background-color: var(--color-btn-primary-hover-bg);
+}
+
+/* Callout */
+body.callout-on {
+    --callout-radius: 0;
+    --callout-border-width: 0;
+    --callout-padding: 0 1em;
+}
+body.callout-on .callout {
+    border-left: 0.25em solid var(--color-base-30);
+    background-color: transparent;
+    color: var(--text-muted);
+}
+body.callout-on .callout-content p {
+    margin: 0.1em 0;
+}
+
+/* Headers */
+body.headers-one-color {
+    --h1-color: var(--h-color-theme);
+    --h2-color: var(--h-color-theme);
+    --h3-color: var(--h-color-theme);
+    --h4-color: var(--h-color-theme);
+    --h5-color: var(--h-color-theme);
+    --h6-color: var(--h-color-theme);
+}
+
+/* Kanban-common */
+.kanban-plugin {
+    --lane-width: 348px;
+}
+body.theme-light .kanban-plugin__lane-items>div {
+    box-shadow: rgb(140 149 159 / 15%) 0px 3px 6px;
+}
+
+/* Kanban-same-height-cards */
+body.kanban-same-height-cards .kanban-plugin__item-content-wrapper,
+body.kanban-same-height-cards .kanban-plugin__item-title-wrapper {
+    min-height: 68px;
+}
+
+/* Kanban-full-height-column */
+body.kanban-full-height-column button.kanban-plugin__new-item-button {
+    align-self: flex-end;
+}
+body.kanban-full-height-column .kanban-plugin__item-button-wrapper {
+    flex-grow: 1;
+    display: flex;
+}
+body.kanban-full-height-column .kanban-plugin__lane-wrapper {
+    min-height: 100%;
+}
+
+/* Kanban-Minimal */
+body.kanban-on .kanban-plugin {
+    background-color: var(--kanban-background);
+}
+body.kanban-on .kanban-plugin__lane {
+    background-color: var(--kanban-lane-background);
+    border: 1px solid var(--kanban-lane-border);
+}
+body.kanban-on .kanban-plugin__lane-title {
+    flex-grow: 0;
+    width: fit-content;
+}
+body.kanban-on .kanban-plugin__item-content-wrapper,
+body.kanban-on .kanban-plugin__item-title-wrapper,
+body.kanban-on .kanban-plugin__item-metadata-wrapper:not(:empty) {
+    background: var(--kanban-item-background);
+}
+body.kanban-on .kanban-plugin__icon>svg {
+    transform: rotate(90deg);
+}
+body.kanban-on .kanban-plugin__lane-settings-button-wrapper {
+    margin-left: auto;
+}
+body.kanban-on div.kanban-plugin__lane-title-count {
+    background-color: var(--kanban-lane-count);
+    border-radius: 1em;
+    padding: 2px 5px;
+}
+body.kanban-on .kanban-plugin__item button.kanban-plugin__item-prefix-button, 
+body.kanban-on .kanban-plugin__item button.kanban-plugin__item-postfix-button, 
+body.kanban-on .kanban-plugin__lane button.kanban-plugin__lane-settings-button {
+    padding: 0 5px;
+    height: 24px;
+    box-shadow: none;
+}
+body.kanban-on .kanban-plugin__item button.kanban-plugin__item-prefix-button:hover, 
+body.kanban-on .kanban-plugin__item button.kanban-plugin__item-postfix-button:hover, 
+body.kanban-on .kanban-plugin__lane button.kanban-plugin__lane-settings-button:hover {
+    background-color: var(--kanban-options-btn);
+    cursor: pointer;
+}
+body.kanban-on button.kanban-plugin__new-item-button {
+    border: none;
+    justify-content: flex-start;
+}
+body.kanban-on .kanban-plugin__new-item-button:hover {
+    color: var(--text-normal);
+    background-color: inherit;
+    box-shadow: none;
+}
+body.kanban-on .kanban-plugin__lane-items {
+    padding: 8px 15px;
+}
+body.kanban-on .kanban-plugin__item-prefix-button-wrapper input[type=checkbox] {
+    filter: none;
+}
+
+/* Kanban-Full */
+/* Main color */
+body.kanban-full .kanban-plugin {
+    background-color: var(--kanban-background);
+}
+
+/* LANE */
+/* Colors */
+body.kanban-full .kanban-plugin__lane {
+    background-color: var(--kanban-lane-background);
+    border: 1px solid var(--kanban-lane-border);
+}
+
+/* Grip icon hiding */
+body.kanban-full .kanban-plugin__lane-grip {
+    position: absolute;
+    opacity: 0;
+    width: calc(var(--lane-width) - 1em);
+    height: 3em;
+    z-index: 0;
+    margin: 0;
+    cursor: default;
+}
+body.kanban-full .kanban-plugin__lane-header-wrapper div {
+    z-index: 1;
+}
+
+/* Header */
+body.kanban-full .kanban-plugin__lane-header-wrapper {
+    padding-left: 14px;
+}
+body.kanban-full .kanban-plugin__markdown-preview-view {
+    font-size: inherit;
+}
+
+/* Header + Counter */
+body.kanban-full .kanban-plugin__lane-title {
+    flex-grow: 0;
+    width: fit-content;
+    font-size: 1em;
+}
+
+/* Counter */
+body.kanban-full div.kanban-plugin__lane-title-count {
+    background-color: var(--kanban-lane-count);
+    border-radius: 1em;
+    padding: 2px 5px;
+}
+
+/* Three dot position */
+body.kanban-full .kanban-plugin__lane-settings-button-wrapper {
+    margin-left: auto;
+}
+
+/* Cards padding */
+body.kanban-full .kanban-plugin__lane-items {
+    padding: 2px 6px;
+}
+
+/* ITEM */
+/* Colors */
+body.kanban-full .kanban-plugin__item-content-wrapper,
+body.kanban-full .kanban-plugin__item-title-wrapper,
+body.kanban-full .kanban-plugin__item-metadata-wrapper:not(:empty) {
+    background: var(--kanban-item-background);
+}
+body.kanban-full .kanban-plugin__item {
+    border-color: var(--kanban-lane-border);
+}
+
+/* Between items */
+body.kanban-full .kanban-plugin__lane-items>div {
+    margin-bottom: 8px;
+    margin-top: 0;
+}
+
+/* Borders */
+body.kanban-full .kanban-plugin__lane-header-wrapper,
+body.kanban-full .kanban-plugin__item-button-wrapper,
+body.kanban-full .kanban-plugin__item-form {
+    border: none;
+}
+
+/* Content */
+body.kanban-full .kanban-plugin__item-title-wrapper {
+    padding: 12px 12px 12px 0;
+}
+body.kanban-full .kanban-plugin__item-title,
+body.kanban-full .kanban-plugin__item-input-wrapper {
+    padding-left: 12px;
+}
+
+/* Archive/checkbox */
+body.kanban-full .kanban-plugin__item-prefix-button-wrapper {
+    align-self: center;
+    margin-left: 5px;
+}
+
+/* Time Date Buttons */
+body.kanban-full .kanban-plugin__item-metadata .is-button:hover {
+    cursor: var(--cursor-link);
+    color: var(--text-normal);
+}
+
+/* THREE DOT BUTTON */
+/* Rotation */
+body.kanban-full .kanban-plugin__icon>svg {
+    transform: rotate(90deg);
+}
+
+/* Size */
+body.kanban-full .kanban-plugin__icon {
+    font-size: 1.4em;
+}
+
+/* Item */
+body.kanban-full .kanban-plugin__item-postfix-button.clickable-icon {
+    opacity: 0;
+}
+body.kanban-full .kanban-plugin__item:hover .kanban-plugin__item-postfix-button.clickable-icon {
+    opacity: 1;
+}
+
+/* ADD A CARD BUTTON */
+/* Position */
+body.kanban-full .kanban-plugin__new-item-button {
+    border: none;
+    justify-content: flex-start;
+    box-shadow: none;
+    padding-left: 0;
+}
+
+/* + Size */
+body.kanban-full .kanban-plugin__item-button-plus {
+    margin-right: 8px;
+    font-size: 1.9em;
+    height: inherit;
+}
+
+/* Hover */
+body.kanban-full .kanban-plugin__new-item-button:hover {
+    background-color: inherit;
+    box-shadow: none;
+    color: var(--text-muted);
+}
+
+/* HOVER EDITOR PLUGIN */
+/* Add borders */
+.popover.hover-editor > .popover-content {
+    border: var(--border-width) var(--color-base-30) solid;
+    box-shadow: 0 0 10px 3px var(--background-modifier-box-shadow);
+}
+
+/* FIXIES */
+body.kanban-full .kanban-plugin__item-prefix-button-wrapper input[type=checkbox] {
+    filter: none;
+    margin: 3px;
+}
+body.kanban-full .kanban-plugin__markdown-preview-view>div>* {
+    overflow-x: unset;
+}
+
+/* fix: input borders */
+textarea:active, 
+input[type='text']:active, 
+input[type='search']:active, 
+input[type='email']:active, 
+input[type='password']:active, 
+input[type='number']:active, 
+textarea:focus, 
+input[type='text']:focus, 
+input[type='search']:focus, 
+input[type='email']:focus, 
+input[type='password']:focus, 
+input[type='number']:focus, 
+textarea:focus-visible, 
+input[type='text']:focus-visible, 
+input[type='search']:focus-visible, 
+input[type='email']:focus-visible, 
+input[type='password']:focus-visible, 
+input[type='number']:focus-visible {
+    box-shadow: 0 0 0 1px var(--background-modifier-border-focus);
+}
+select:focus, .dropdown:focus {
+    box-shadow: 0 0 0 2px var(--background-modifier-border-focus);
+}
+
+/* inline code block */
+.markdown-rendered :not(pre) > code {
+    background-color: var(--inline-code-background);
+    padding: 0.2em 0.4em;
+    border-radius: 6px;
+    color: var(--text-normal);
+}
