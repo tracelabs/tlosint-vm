@@ -8,19 +8,23 @@
 The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - https://gitlab.com/kalilinux/build-scripts/kali-vm
 
 ## Releases
+These are pre-generated bundles that can either import in to Virtualbox or VMWare. They are generated with the code in the Main branch of this repo with interference from us. The goal here is to produce a finished product but give the users insight in to the "recipe" used to build it. 
+
+After you've downloaded the release that applies to you, it should be as simple as importing it in to your hypervisor. 
+
 https://github.com/tracelabs/tlosint-vm/releases
 
-## SHA256 Checksums:
-``` 
-August 2023 Release: tl-osint-2023.03-virtualbox-amd64.ova 3100c8490dea3c88f5a6625466edac6091fa7ab331e1bb7b9997d1d39ff9c313
-August 2023 Release: tl-osint-2023.03-vmware-amd64.7z 290c335448573de553ab7b4106309dc3b8a10a6f4e75937b5e4018db80874d36
-tl-osint-2023.01-virtualbox-amd64.7z   996EE74CB6D8C4FF130A4F05DE037E267590932E1E0EF35714505444219CF845
-tl-osint-2023.01-vmware-amd64.7z       F57DA9EA6BC42D5A101A6BA99CC59EEF89968827AC1B1DB1B5331E2586574F15
-```
+
 ## Login Credntials
 `osint`
 `osint`
+
+## Obsidian
+Note taking app Obsidian comes bundled with the VM. There is an icon on the desktop to launch Obisidian or you can run the appimage located in the home directory. We've already set up a vault for you called "TL Vault" that lives on the Desktop. The first time you run Obsidian open that vault folder. The default theme is the Trace Labs theme. 
+ 
 ## Build
+If you'd rather build your own from source or modify the version we've released then building your own is as straight forward as: (Note: You don't need to do this if you've already downloaded a release and imported to hypervisor)
+
 From a Kali Linux machine run the following commands:
 ```
 git clone https://github.com/tracelabs/tlosint-vm
@@ -34,8 +38,11 @@ Locate the OVA in the images/ directory
 ```
 ## Applications
 
-**Note**
-* The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a script on the desktop though. This keeps the size of the release small enough to build and host on Github.
+
+The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a script on the desktop though. This keeps the size of the release small enough to build and host on Github. If you want to install the tools in the script then: 
+- Open a terminal
+- Navigate to the `Desktop` folder
+- Execute the install script with `./install-tools.sh`
 
 **Resources**
 * [Trace Labs OSINT Field Manual](https://github.com/tracelabs/tofm/blob/main/tofm.md)

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Obsidian
+Comment=Notes
+GenericName=notes
+Exec=/home/osint/Obsidian.AppImage
+Type=Application

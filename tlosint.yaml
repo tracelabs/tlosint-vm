@@ -66,6 +66,7 @@ actions:
   - action: overlay
     source: overlays/tl-overlays
 
+
   {{ if ne $packages "" }}
   - description: "Install extra packages: {{ $packages }}"
     action: apt
@@ -80,6 +81,11 @@ actions:
     action: run
     chroot: true
     script: scripts/create-user.sh {{ $username }} "{{ $password }}"
+
+  - description: "Install obsidian"
+    action: run
+    chroot: true
+    script: scripts/tl/install-obsidian.sh
 
   - description: "chmod +x files that need it"
     action: run

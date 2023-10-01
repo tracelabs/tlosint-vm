@@ -84,9 +84,3 @@ else
     cd
 fi
 
-# Install Obsidian app image
-latest_version=$(curl -sLo /dev/null/ -w %{url_effective} https://github.com/obsidianmd/obsidian-releases/releases/latest/ | grep -oP '(?<=tag/).*')
-latest_link=$(curl -s https://github.com/obsidianmd/obsidian-releases/releases/expanded_assets/$latest_version | grep -v arm64 | grep -oP '(?<=href="/).*AppImage')
-wget -O obsidian https://github.com/$latest_link
-chmod +x obsidian
-sudo mv obsidian /usr/bin/
