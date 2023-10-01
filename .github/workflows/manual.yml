@@ -26,11 +26,12 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     - name: Run a multi-line script (build the ISO)
       run: |
+        sudo apt update
         sudo apt install debos p7zip qemu-utils zerofree
         cd $GITHUB_WORKSPACE
         chmod +x scripts/tl/*.sh
