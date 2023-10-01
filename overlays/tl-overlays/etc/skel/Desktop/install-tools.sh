@@ -3,13 +3,10 @@
 
 sudo apt-get update 
 sudo apt-get dist-upgrade -y
-echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.bashrc
-echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.zshrc
-export PATH=$PATH:$HOME/.local/bin
 
-sudo apt install sherlock -y
-sudo apt install -y
-sudo apt install python3-shodan -y
+echo '\nexport PATH=$PATH:$HOME/.local/bin' >> ~/.zshrc
+source ~/.zshrc
+
 sudo apt install spiderfoot -y
 sudo apt install sherlock -y
 sudo apt install maltego -y
@@ -19,7 +16,6 @@ sudo apt install webhttrack -y
 sudo apt install outguess -y
 sudo apt install stegosuite -y
 sudo apt install wireshark -y
-sudo apt install openvpn -y
 sudo apt install metagoofil -y
 sudo apt install eyewitness -y
 sudo apt install exifprobe -y
@@ -37,29 +33,29 @@ sudo apt install cargo -y
 sudo apt install pkg-config -y
 sudo apt install npm -y
 sudo apt install curl -y
+sudo apt install python3-pip -y
+sudo apt install pipx -y
+sudo apt install python3-tweepy -y
+sudo apt install python3-exifread -y
+sudo apt install python3-fake-useragent -y
+sudo apt install yt-dlp -y
 
 
-pip3 install --upgrade tweepy
-pip3 install --upgrade exifread 
-pip3 install --upgrade youtube-dl
-pip3 install --upgrade fake_useragent
-pip3 install --upgrade dnsdumpster
-pip3 install --upgrade h8mail
-pip3 install --upgrade shodan
-pip3 install --upgrade toutatis
-pip3 install --upgrade yt-dlp
+pipx install youtube-dl
+pip3 install dnsdumpster
+pipx install h8mail
+pipx install toutatis
 
 
 mkdir -p ~/github-tools
 cd ~/github-tools
 
 
-# sn0int, will come back to this and test the install better
-#sudo apt install debian-keyring
-#gpg -a --export --keyring /usr/share/keyrings/debian-maintainers.gpg kpcyrd@archlinux.org | sudo tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg
-#echo deb http://apt.vulns.sexy stable main | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list
-#sudo apt update
-#sudo apt install sn0int
+# Install sn0int
+curl -s https://apt.vulns.sexy/kpcyrd.pgp | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg
+echo "deb http://apt.vulns.sexy stable main" | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list
+sudo apt update        
+sudo apt install sn0int -y
 
 
 
