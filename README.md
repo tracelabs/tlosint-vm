@@ -8,7 +8,7 @@
 The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - https://gitlab.com/kalilinux/build-scripts/kali-vm
 
 ## Releases
-These are pre-generated bundles that can either import in to Virtualbox or VMWare. They are generated with the code in the Main branch of this repo with interference from us. The goal here is to produce a finished product but give the users insight in to the "recipe" used to build it. 
+These are pre-generated bundles that can either import in to Virtualbox or VMWare. They are generated with the code in the Main branch of this repo with no interference from us. The goal here is to produce a finished product but give the users insight in to the "recipe" used to build it. 
 
 After you've downloaded the release that applies to you, it should be as simple as importing it in to your hypervisor. 
 
