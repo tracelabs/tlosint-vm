@@ -102,7 +102,7 @@ sudo -v
 #sudo apt install sn0int
 =======
 install_tools() {
-    local tools=(spiderfoot sherlock maltego python3-shodan theharvester webhttrack outguess stegosuite wireshark metagoofil eyewitness exifprobe ruby-bundler recon-ng cherrytree instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pkg-config npm curl python3-pip pipx python3-exifread python3-fake-useragent yt-dlp ruby bundle)
+    local tools=(spiderfoot sherlock maltego python3-shodan theharvester webhttrack outguess stegosuite wireshark metagoofil eyewitness exifprobe ruby-bundler recon-ng cherrytree instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pkg-config npm curl python3-pip pipx python3-exifread python3-fake-useragent yt-dlp ruby)
     for tool in "${tools[@]}"; do
         if ! dpkg -l | grep -qw $tool; then
             sudo apt install $tool -y 2>>"$LOG_FILE" || {
@@ -119,6 +119,10 @@ install_tools() {
 
 # Function to install spiderpig
 install_spiderpig() {
+    # Install Bundler using
+    if ! command -v bundle &> /dev/null; then
+        sudo gem install bundler || { echo "Failed to install Bundler"; add_to_error_log "Failed to install Bundler"; return 1; }
+    fi
     # Clone the Spiderpig repository and install its dependencies
     local spiderpig_dir="$HOME/spiderpig"
     if [ ! -d "$spiderpig_dir" ]; then
@@ -172,6 +176,7 @@ install_python_packages() {
     pip3 install tweepy || { echo "Failed to install tweepy"; add_to_error_log "Failed to install tweepy"; }
     pip3 install onionsearch || { echo "Failed to install onionsearch"; add_to_error_log "Failed to install onionsearch"; }
 }
+
 
 # Function to install sn0int
 install_sn0int() {
