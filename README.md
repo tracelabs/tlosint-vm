@@ -42,7 +42,6 @@ Locate the OVA in the images/ directory
 **Data Analysis**
 * [DumpsterDiver](https://github.com/securing/DumpsterDiver)
 * [Exifprobe](https://github.com/hfiguiere/exifprobe)
-* [Exifscan](https://github.com/rcook/exifscan/) (Private)
 * [Stegosuite](https://github.com/osde8info/stegosuite)
 
 **Domains**
@@ -52,7 +51,6 @@ Locate the OVA in the images/ directory
 **Downloaders**
 * [Browse Mirrored Websites](http://www.httrack.com/)
 * [Metagoofil](https://github.com/opsdisk/metagoofil)
-* [Spiderpig](https://github.com/hatlord/Spiderpig)
 * [WebHTTrack Website Copier](http://www.httrack.com/)
 * [Youtube-DL](https://github.com/ytdl-org/youtube-dl)
 
@@ -70,7 +68,7 @@ Locate the OVA in the images/ directory
 * [sn0int](https://github.com/kpcyrd/sn0int)
 * [Spiderfoot](https://github.com/smicallef/spiderfoot)
 * [Maltego](https://www.maltego.com/downloads/)
-* [OnionSearch](https://github.com/sundowndev/phoneinfoga)
+* [OnionSearch](https://github.com/megadose/OnionSearch)
 
 **Phone Numbers**
 * [Phonefy (OSRFramework)](https://github.com/i3visio/osrframework)
@@ -82,6 +80,7 @@ Locate the OVA in the images/ directory
 * [Searchfy (OSRFramework)](https://github.com/i3visio/osrframework)
 * [Tiktok Scraper](https://github.com/drawrowfly/tiktok-scraper)
 * [Twayback](https://github.com/humandecoded/twayback)
+* [Stweet](https://github.com/markowanga/stweet)
 
 **Usernames**
 * [Alias Generator (OSRFramework)](https://github.com/i3visio/osrframework)
@@ -90,7 +89,6 @@ Locate the OVA in the images/ directory
 
 **Other Tools**
 * [Photon](https://github.com/s0md3v/Photon)
-* [Sherlock](https://github.com/sherlock-project/sherlock)
 * [Shodan](https://cli.shodan.io/)
 * [Joplin](https://joplinapp.org/help/)
 
@@ -101,6 +99,14 @@ Locate the OVA in the images/ directory
 * Block mic/camera detection
 * Block Firefox tracking
 * Preload OSINT Bookmarks
+
+**Tor Browser**
+* Delete cookies/history on shutdown
+* Block geo tracking
+* Block mic/camera detection
+* Block Firefox tracking
+* Preload OSINT Bookmarks
+
 
 ## Contributing
 Are you interested in the VM development? Join us on [Discord](https://discord.com/invite/tracelabs) in #osint-vm channel.
