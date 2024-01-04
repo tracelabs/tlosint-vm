@@ -68,12 +68,6 @@ sudo npm i -g tiktok-scraper
 
 
 
-# Install Vortimo
-vortimo_debian=$(curl -s https://www.vortimo.com/down/ | grep --color -E "[^\S ]*Vortimo-.*[0-9].deb" -o | awk -F '="' '{print $2}')
-vortimo_package=$(echo $vortimo_debian | awk -F '/' '{print $NF}')
-curl -O -s $vortimo_debian
-sudo dpkg -i $vortimo_package
-rm $vortimo_package
 
 # install twayback
 if [ -d "~/github-tools/twayback" ]; then
