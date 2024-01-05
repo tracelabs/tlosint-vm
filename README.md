@@ -15,7 +15,10 @@ After you've downloaded the release that applies to you, it should be as simple 
 https://github.com/tracelabs/tlosint-vm/releases
 
 
-## Login Credntials
+
+## Login Credentials
+
+
 `osint`
 `osint`
 
@@ -58,7 +61,6 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 **Data Analysis**
 * [DumpsterDiver](https://github.com/securing/DumpsterDiver)
 * [Exifprobe](https://github.com/hfiguiere/exifprobe)
-* [Exifscan](https://github.com/rcook/exifscan/) (Private)
 * [Stegosuite](https://github.com/osde8info/stegosuite)
 
 **Domains**
@@ -68,12 +70,10 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 **Downloaders**
 * [Browse Mirrored Websites](http://www.httrack.com/)
 * [Metagoofil](https://github.com/opsdisk/metagoofil)
-* [Spiderpig](https://github.com/hatlord/Spiderpig)
 * [WebHTTrack Website Copier](http://www.httrack.com/)
 * [Youtube-DL](https://github.com/ytdl-org/youtube-dl)
 
 **Email**
-* [Buster](https://github.com/sham00n/buster)
 * [Checkfy (OSRFramework)](https://github.com/i3visio/osrframework)
 * [Infoga](https://github.com/m4ll0k/Infoga)
 * [Mailfy (OSRFramework)](https://github.com/i3visio/osrframework)
@@ -86,7 +86,7 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 * [sn0int](https://github.com/kpcyrd/sn0int)
 * [Spiderfoot](https://github.com/smicallef/spiderfoot)
 * [Maltego](https://www.maltego.com/downloads/)
-* [OnionSearch](https://github.com/sundowndev/phoneinfoga)
+* [OnionSearch](https://github.com/megadose/OnionSearch)
 
 **Phone Numbers**
 * [Phonefy (OSRFramework)](https://github.com/i3visio/osrframework)
@@ -98,6 +98,7 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 * [Searchfy (OSRFramework)](https://github.com/i3visio/osrframework)
 * [Tiktok Scraper](https://github.com/drawrowfly/tiktok-scraper)
 * [Twayback](https://github.com/humandecoded/twayback)
+* [Stweet](https://github.com/markowanga/stweet)
 
 **Usernames**
 * [Alias Generator (OSRFramework)](https://github.com/i3visio/osrframework)
@@ -106,7 +107,6 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 
 **Other Tools**
 * [Photon](https://github.com/s0md3v/Photon)
-* [Sherlock](https://github.com/sherlock-project/sherlock)
 * [Shodan](https://cli.shodan.io/)
 * [Joplin](https://joplinapp.org/help/)
 
