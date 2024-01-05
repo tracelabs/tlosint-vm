@@ -6,6 +6,7 @@
   "BackgroundModeEnabled": false,
   "BlockThirdPartyCookies": true,
   "BookmarkBarEnabled": true,
+  "BrowserLabsEnabled": false,
   "ClearSiteDataOnExit": true,
   "ContentSecurityPolicy": "default-src 'self'; script-src 'self'; object-src 'none';",
   "DefaultBrowserSettingEnabled": true,
