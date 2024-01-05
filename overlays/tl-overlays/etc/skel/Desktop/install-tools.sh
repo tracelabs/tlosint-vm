@@ -1,17 +1,17 @@
 #!/bin/zsh
 
+
 # Cleanup function to kill the background keep-alive process
 cleanup() {
     # Kill the background keep-alive process
     kill %1
 }
 
-
 # Set trap to call cleanup function upon script exit
 trap cleanup EXIT
 
 
-# keep-alive: every 30 seconds
+# More frequent keep-alive: every 30 seconds
 while true; do
   sudo -n true
   sleep 30
@@ -21,48 +21,7 @@ done 2>/dev/null &
 # Define the log file location
 LOG_FILE="$HOME/osint_logs/osint_install_error.log"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-sudo apt-get update 
-sudo apt-get dist-upgrade -y
-echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.bashrc
-echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.zshrc
-export PATH=$PATH:$HOME/.local/bin
 
-sudo apt install sherlock -y
-sudo apt install -y
-sudo apt install python3-shodan -y
-sudo apt install spiderfoot -y
-sudo apt install sherlock -y
-sudo apt install maltego -y
-sudo apt install python3-shodan -y
-sudo apt install theharvester -y
-sudo apt install webhttrack -y
-sudo apt install outguess -y
-sudo apt install stegosuite -y
-sudo apt install wireshark -y
-sudo apt install openvpn -y
-sudo apt install metagoofil -y
-sudo apt install eyewitness -y
-sudo apt install exifprobe -y
-sudo apt install ruby-bundler -y
-sudo apt install recon-ng -y
-sudo apt install cherrytree -y
-sudo apt install instaloader -y
-sudo apt install photon -y
-sudo apt install sublist3r -y
-sudo apt install osrframework -y
-sudo apt install joplin -y
-sudo apt install drawing -y
-sudo apt install finalrecon -y
-sudo apt install cargo -y
-sudo apt install pkg-config -y
-sudo apt install npm -y
-sudo apt install curl -y
-=======
-=======
-
->>>>>>> c96db52... Refactored install-tools, added keepassxc #38 and VPNs #36
 # Initialize the log file and create the log directory
 init_error_log() {
     mkdir -p "$(dirname "$LOG_FILE")"
@@ -83,7 +42,6 @@ display_log_contents() {
         echo "Installation completed successfully with no errors."
     fi
 }
->>>>>>> 2ed5dc9... Refactor and optimize OSINT tools installation script and added VPNs
 
 
 # Function to update and upgrade the system
@@ -92,18 +50,6 @@ update_system() {
     sudo apt-get dist-upgrade -y || { echo "Failed to upgrade the system"; add_to_error_log "Failed to upgrade the system"; }
 }
 
-<<<<<<< HEAD
-pip3 install --upgrade tweepy
-pip3 install --upgrade exifread 
-pip3 install --upgrade youtube-dl
-pip3 install --upgrade fake_useragent
-pip3 install --upgrade dnsdumpster
-pip3 install --upgrade h8mail
-pip3 install --upgrade shodan
-pip3 install --upgrade toutatis
-pip3 install --upgrade yt-dlp
-=======
->>>>>>> 2ed5dc9... Refactor and optimize OSINT tools installation script and added VPNs
 
 # Function to set up the PATH
 setup_path() {
@@ -114,20 +60,6 @@ setup_path() {
 }
 
 
-<<<<<<< HEAD
-# Extend sudo timeout
-sudo -v
-
-<<<<<<< HEAD
-# sn0int, will come back to this and test the install better
-#sudo apt install debian-keyring
-#gpg -a --export --keyring /usr/share/keyrings/debian-maintainers.gpg kpcyrd@archlinux.org | sudo tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg
-#echo deb http://apt.vulns.sexy stable main | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list
-#sudo apt update
-#sudo apt install sn0int
-=======
-=======
->>>>>>> c96db52... Refactored install-tools, added keepassxc #38 and VPNs #36
 install_tools() {
     local tools=(spiderfoot sherlock maltego python3-shodan theharvester webhttrack outguess stegosuite wireshark metagoofil eyewitness exifprobe ruby-bundler recon-ng cherrytree instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pkg-config npm curl python3-pip pipx python3-exifread python3-fake-useragent yt-dlp keepassxc)
     for tool in "${tools[@]}"; do
@@ -141,7 +73,6 @@ install_tools() {
         fi
     done
 }
->>>>>>> 2ed5dc9... Refactor and optimize OSINT tools installation script and added VPNs
 
 
 install_tor_browser() {
@@ -226,29 +157,11 @@ install_sn0int() {
     sudo apt install sn0int -y || { echo "Failed to install sn0int"; add_to_error_log "Failed to install sn0int"; }
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-# install twayback
-if [ -d "~/github-tools/twayback" ]; then
-    cd twayback
-    git pull
-    pip3 install -r requirements.txt
-    cd ..
-else
-    git clone https://github.com/humandecoded/twayback.git 
-    cd twayback
-    pip3 install -r  requirements.txt
-    cd ..
-fi
-=======
-=======
 
->>>>>>> 4cf8f9a... Refactored install-tools, added keepassxc #38 and VPNs #36
 # Function to install tiktok-scraper
 install_tiktok_scraper() {
     sudo npm i -g tiktok-scraper || { echo "Failed to install tiktok-scraper"; add_to_error_log "Failed to install tiktok-scraper"; return 1; }
 }
->>>>>>> 136218e... Refactor and optimize OSINT tools installation script and added VPNs
 
 
 # Function to install ProtonVPN
@@ -394,16 +307,5 @@ install_protonvpn
 install_atlasvpn
 update_tj_null_joplin_notebook
 
-<<<<<<< HEAD
-# Install Obsidian app image
-cd ~/Desktop
-<<<<<<< HEAD
-wget -O Obsidian-1.1.9.AppImage https://github.com/obsidianmd/obsidian-releases/releases/download/v1.1.9/Obsidian-1.1.9.AppImage 
-chmod +x Obsidian-1.1.9.AppImage
-=======
-wget -O Obsidian-1.3.7.AppImage https://github.com/obsidianmd/obsidian-releases/releases/download/v1.3.7/Obsidian-1.3.7.AppImage 
-chmod +x Obsidian-1.3.7.AppImage
-=======
 display_log_contents
->>>>>>> 2ed5dc9... Refactor and optimize OSINT tools installation script and added VPNs
->>>>>>> 136218e... Refactor and optimize OSINT tools installation script and added VPNs
+
