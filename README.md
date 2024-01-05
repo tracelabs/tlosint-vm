@@ -18,8 +18,6 @@ tlosint-vm-2023.1-beta.zip             C8BC07596DB6E1D3CF1CA4A1C9C5F838FAEDD2B39
 tlosint-vm-2023.1-beta.tar.gz          A44C4822B298B81DE8EB7D0857F1E706DA135337ACEDAE67F67C6438148C95FC
 ```
 
-<<<<<<< HEAD
-=======
 ## Login Credentials
 `osint`
 `osint`
@@ -27,7 +25,6 @@ tlosint-vm-2023.1-beta.tar.gz          A44C4822B298B81DE8EB7D0857F1E706DA135337A
 ## Obsidian
 Note taking app Obsidian comes bundled with the VM. There is an icon on the desktop to launch Obisidian or you can run the appimage located in the home directory. We've already set up a vault for you called "TL Vault" that lives on the Desktop. The first time you run Obsidian open that vault folder. The default theme is the Trace Labs theme. 
  
->>>>>>> 942d06e... Removed Tor config, doesn't allow policies.json
 ## Build
 From a Kali Linux machine run the following commands:
 ```
