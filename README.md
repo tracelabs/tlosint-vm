@@ -65,7 +65,6 @@ Locate the OVA in the images/ directory
 * [Youtube-DL](https://github.com/ytdl-org/youtube-dl)
 
 **Email**
-* [Buster](https://github.com/sham00n/buster)
 * [Checkfy (OSRFramework)](https://github.com/i3visio/osrframework)
 * [Infoga](https://github.com/m4ll0k/Infoga)
 * [Mailfy (OSRFramework)](https://github.com/i3visio/osrframework)
