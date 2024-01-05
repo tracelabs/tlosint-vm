@@ -1,8 +1,27 @@
 #!/bin/zsh
 
+# Cleanup function to kill the background keep-alive process
+cleanup() {
+    # Kill the background keep-alive process
+    kill %1
+}
+
+
+# Set trap to call cleanup function upon script exit
+trap cleanup EXIT
+
+
+# keep-alive: every 30 seconds
+while true; do
+  sudo -n true
+  sleep 30
+done 2>/dev/null &
+
+
 # Define the log file location
 LOG_FILE="$HOME/osint_logs/osint_install_error.log"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 sudo apt-get update 
 sudo apt-get dist-upgrade -y
@@ -41,11 +60,15 @@ sudo apt install pkg-config -y
 sudo apt install npm -y
 sudo apt install curl -y
 =======
+=======
+
+>>>>>>> c96db52... Refactored install-tools, added keepassxc #38 and VPNs #36
 # Initialize the log file and create the log directory
 init_error_log() {
     mkdir -p "$(dirname "$LOG_FILE")"
     echo "Starting OSINT Tools Installation: $(date)" > "$LOG_FILE"
 }
+
 
 # Function to add an error message to the log file
 add_to_error_log() {
@@ -61,6 +84,7 @@ display_log_contents() {
     fi
 }
 >>>>>>> 2ed5dc9... Refactor and optimize OSINT tools installation script and added VPNs
+
 
 # Function to update and upgrade the system
 update_system() {
@@ -90,6 +114,7 @@ setup_path() {
 }
 
 
+<<<<<<< HEAD
 # Extend sudo timeout
 sudo -v
 
@@ -101,8 +126,10 @@ sudo -v
 #sudo apt update
 #sudo apt install sn0int
 =======
+=======
+>>>>>>> c96db52... Refactored install-tools, added keepassxc #38 and VPNs #36
 install_tools() {
-    local tools=(spiderfoot sherlock maltego python3-shodan theharvester webhttrack outguess stegosuite wireshark metagoofil eyewitness exifprobe ruby-bundler recon-ng cherrytree instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pkg-config npm curl python3-pip pipx python3-exifread python3-fake-useragent yt-dlp ruby)
+    local tools=(spiderfoot sherlock maltego python3-shodan theharvester webhttrack outguess stegosuite wireshark metagoofil eyewitness exifprobe ruby-bundler recon-ng cherrytree instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pkg-config npm curl python3-pip pipx python3-exifread python3-fake-useragent yt-dlp keepassxc)
     for tool in "${tools[@]}"; do
         if ! dpkg -l | grep -qw $tool; then
             sudo apt install $tool -y 2>>"$LOG_FILE" || {
@@ -117,38 +144,50 @@ install_tools() {
 >>>>>>> 2ed5dc9... Refactor and optimize OSINT tools installation script and added VPNs
 
 
-# Function to install spiderpig
-install_spiderpig() {
-    # Install Bundler using
-    if ! command -v bundle &> /dev/null; then
-        sudo gem install bundler || { echo "Failed to install Bundler"; add_to_error_log "Failed to install Bundler"; return 1; }
-    fi
-    # Clone the Spiderpig repository and install its dependencies
-    local spiderpig_dir="$HOME/spiderpig"
-    if [ ! -d "$spiderpig_dir" ]; then
-        git clone https://github.com/hatlord/spiderpig.git "$spiderpig_dir" || { echo "Failed to clone Spiderpig"; add_to_error_log "Failed to clone Spiderpig"; return 1; }
-    else
-        echo "Spiderpig directory already exists, skipping clone."
+install_tor_browser() {
+    # Define download directory
+    local download_dir="$HOME/Downloads"
+    mkdir -p "$download_dir"
+
+    # Import the Tor Browser Developers signing key
+    gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org || { echo "Failed to import Tor Browser Developers signing key"; add_to_error_log "Failed to import Tor Browser Developers signing key"; return 1; }
+
+    # Export the key to a file
+    local keyring_path="$download_dir/tor.keyring"
+    gpg --output "$keyring_path" --export 0xEF6E286DDA85EA2A4BA7DE684E2C6E8793298290 || { echo "Failed to export Tor Browser Developers signing key"; add_to_error_log "Failed to export Tor Browser Developers signing key"; return 1; }
+
+    # Fetch the latest Tor Browser download link (assuming the link is on the download page)
+    local tor_browser_link="https://www.torproject.org/dist/torbrowser/13.0.8/tor-browser-linux-x86_64-13.0.8.tar.xz"
+    local tor_browser_dir="$download_dir/tor-browser"
+
+    if [ -z "$tor_browser_link" ]; then
+        echo "Failed to find Tor Browser download link"
+        add_to_error_log "Failed to find Tor Browser download link"
+        return 1
     fi
 
-    cd "$spiderpig_dir" || { echo "Failed to navigate to Spiderpig directory"; add_to_error_log "Failed to navigate to Spiderpig directory"; return 1; }
-    bundle install || { echo "Failed to install Spiderpig dependencies"; add_to_error_log "Failed to install Spiderpig dependencies"; return 1; }
+    # Download the latest Tor Browser tarball and its signature file
+    local tor_browser_tarball="$download_dir/$(basename "$tor_browser_link")"
+    curl -L "$tor_browser_link" -o "$tor_browser_tarball" || { echo "Failed to download Tor Browser"; add_to_error_log "Failed to download Tor Browser"; return 1; }
+    curl -L "${tor_browser_link}.asc" -o "${tor_browser_tarball}.asc" || { echo "Failed to download Tor Browser signature"; add_to_error_log "Failed to download Tor Browser signature"; return 1; }
+
+    # Verify the signature with gpgv
+    gpgv --keyring "$keyring_path" "${tor_browser_tarball}.asc" "$tor_browser_tarball" || { echo "Failed to verify Tor Browser signature"; add_to_error_log "Failed to verify Tor Browser signature"; return 1; }
+
+    # Extract the Tor Browser
+    tar -xf "$tor_browser_tarball" -C "$download_dir" || { echo "Failed to extract Tor Browser"; add_to_error_log "Failed to extract Tor Browser"; return 1; }
+
+if [ -f "$tor_browser_dir/start-tor-browser.desktop" ]; then
+        cd "$tor_browser_dir" || { echo "Failed to navigate to Tor Browser directory"; add_to_error_log "Failed to navigate to Tor Browser directory"; return 1; }
+        ./start-tor-browser.desktop --register-app || { echo "Failed to register Tor Browser as a desktop application"; add_to_error_log "Failed to register Tor Browser as a desktop application"; return 1; }
+    else
+        echo "start-tor-browser.desktop not found in $tor_browser_dir"
+        add_to_error_log "start-tor-browser.desktop not found in $tor_browser_dir"
+        return 1
+    fi
 }
 
-# Function to install buster
-install_buster() {
-    # Clone the Buster repository
-    local buster_dir="$HOME/buster"
-    if [ ! -d "$buster_dir" ]; then
-        git clone git://github.com/sham00n/buster "$buster_dir" || { echo "Failed to clone Buster"; add_to_error_log "Failed to clone Buster"; return 1; }
-    else
-        echo "Buster directory already exists, skipping clone."
-    fi
 
-    # Install Buster
-    cd "$buster_dir" || { echo "Failed to navigate to Buster directory"; add_to_error_log "Failed to navigate to Buster directory"; return 1; }
-    python3 setup.py install || { echo "Failed to install Buster"; add_to_error_log "Failed to install Buster"; return 1; }
-}
 
 install_phoneinfoga() {
     # Download and execute the PhoneInfoga installation script
@@ -164,7 +203,6 @@ install_phoneinfoga() {
     # Install PhoneInfoga globally
     sudo install ./phoneinfoga /usr/local/bin/phoneinfoga || { echo "Failed to install PhoneInfoga globally"; add_to_error_log "Failed to install PhoneInfoga globally"; return 1; }
 }
-
 
 
 # Function to install Python packages
@@ -189,6 +227,7 @@ install_sn0int() {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # install twayback
 if [ -d "~/github-tools/twayback" ]; then
     cd twayback
@@ -202,11 +241,15 @@ else
     cd ..
 fi
 =======
+=======
+
+>>>>>>> 4cf8f9a... Refactored install-tools, added keepassxc #38 and VPNs #36
 # Function to install tiktok-scraper
 install_tiktok_scraper() {
     sudo npm i -g tiktok-scraper || { echo "Failed to install tiktok-scraper"; add_to_error_log "Failed to install tiktok-scraper"; return 1; }
 }
 >>>>>>> 136218e... Refactor and optimize OSINT tools installation script and added VPNs
+
 
 # Function to install ProtonVPN
 install_protonvpn() {
@@ -333,22 +376,20 @@ update_tj_null_joplin_notebook() {
     fi
 }
 
+# Invalidate the sudo timestamp before exiting
+sudo -k
 
 # Main script execution
 init_error_log
 
 update_system
 setup_path
-sudo -v # refreshing sudo before long operations
 install_tools
-install_spiderpig
-install_buster
+install_tor_browser
 install_phoneinfoga
-sudo -v # refreshing sudo before long operations
 install_python_packages
 install_sn0int
 install_tiktok_scraper
-sudo -v # refreshing sudo before long operations
 install_protonvpn
 install_atlasvpn
 update_tj_null_joplin_notebook
