@@ -1,6 +1,7 @@
 FROM docker.io/kalilinux/kali-rolling
 
 RUN apt-get update \
- && apt-get install  -y \
+ && apt-get install -y \
     bmap-tools debos linux-image-amd64 p7zip parted qemu-utils xz-utils zerofree user-mode-linux libslirp-helper \
- && apt-get clean
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
