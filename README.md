@@ -14,7 +14,6 @@ After you've downloaded the release that applies to you, it should be as simple 
 
 https://github.com/tracelabs/tlosint-vm/releases
 
-
 ## Login Credntials
 `osint`
 `osint`
@@ -37,7 +36,6 @@ sudo ./build.sh
 Locate the OVA in the images/ directory
 ```
 ## Applications
-
 
 The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a script on the desktop though. This keeps the size of the release small enough to build and host on Github. If you want to install the tools in the script then: 
 - Open a terminal
