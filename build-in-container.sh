@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# checks for either Podman or Docker, then builds the container image and runs it
+# normal args can be passed to the build.sh script, e.g. --no-cache
 set -eu
 
 IMAGE=tlvm-builder
@@ -28,10 +29,10 @@ fi
 bold() { tput bold; echo "$@"; tput sgr0; }
 vrun() { bold "$" "$@"; "$@"; }
 vexec() { bold "$" "$@"; exec "$@"; }
-
+# build docker image if it doesn't exist
 if ! $PODMAN inspect --type image $IMAGE >/dev/null 2>&1; then
     vrun $PODMAN build -t $IMAGE .
     echo
 fi
-
+# run the build script inside a container
 vexec $PODMAN run "${OPTS[@]}" $IMAGE ./build.sh "$@"

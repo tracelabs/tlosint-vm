@@ -1,3 +1,9 @@
+# playbook that dictates the installation of the TLOSINT VM
+# This playbook is based on the Kali Linux playbook from debos
+# each action is a step in the installation process
+# this playbook will create a bare bones kali linux installation
+# most of our additions will be happening in the overlay section of the playbook
+# in the overaly section we will add in browser bookmarks, custom scripts, and other customizations
 {{ $arch := .arch }}
 {{ $branch := .branch }}
 {{ $format := .format }}
@@ -62,7 +68,9 @@ actions:
     packages:
       - kali-linux-core
       - kali-desktop-xfce
-
+  # this action "layers" a lot of extra stuff on to the installed filesystem
+  # this is where we can add things to the desktop or other parts of the filesystem
+  # note: the user's home directory does not yet exist at this point
   - action: overlay
     source: overlays/tl-overlays
 
@@ -81,11 +89,11 @@ actions:
     action: run
     chroot: true
     script: scripts/create-user.sh {{ $username }} "{{ $password }}"
-
+  # pull down the Obsidian for note taking
   - description: "Install obsidian"
     action: run
     chroot: true
-    script: scripts/tl/install-obsidian.sh
+    script: scripts/tl/install-obsidian.sh {{ $username }}
 
   - description: "chmod +x files that need it"
     action: run
