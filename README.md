@@ -15,7 +15,8 @@ After you've downloaded the release that applies to you, it should be as simple 
 https://github.com/tracelabs/tlosint-vm/releases
 
 
-## Login Credntials
+
+## Login Credentials
 
 `osint`
 `osint`
