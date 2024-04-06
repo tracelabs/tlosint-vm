@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# script that will set up the build environment and run debos
 set -eu
 
 WELL_KNOWN_CACHING_PROXIES="\
@@ -32,7 +32,7 @@ FORMAT=
 KEEP=false
 LOCALE=
 MIRROR=
-PACKAGES=
+PACKAGES=libfuse2
 PASSWORD=
 ROOTFS=
 SIZE=40
@@ -42,6 +42,7 @@ USERNAME=
 USERPASS=
 VARIANT=vmware
 VERSION=2023.03
+# output will be compressed by default
 ZIP=true
 OUTDIR=images
 
@@ -139,7 +140,7 @@ Build options:
   -s SIZE     Size of the disk image in GB, default: $(b $SIZE)
   -v VARIANT  Variant of image to build (see below for details), default: $(b $VARIANT)
               Supported values: $SUPPORTED_VARIANTS
-  -z          Zip images and metadata files after the build
+  -z          Do not zip images and metadata files after the build
 
 Customization options:
   -D DESKTOP  Desktop environment installed in the image, default: $(b $DEFAULT_DESKTOP)
