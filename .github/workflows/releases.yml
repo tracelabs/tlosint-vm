@@ -24,7 +24,9 @@ jobs:
           chmod +x scripts/*.sh
           chmod +x *.sh
           docker build -t tlvm-builder .
-          docker run --rm --interactive --net host --privileged --group-add $(stat -c '%g' /dev/kvm) --volume $(pwd):/recipes -v $(pwd)/images/:/images --workdir /recipes tlvm-builder ./build.sh
+          docker run --rm --interactive --net host --privileged --group-add $(stat -c '%g' /dev/kvm) --volume $(pwd):/recipes -v $(pwd)/images/:/images --workdir /recipes tlvm-builder ./build.sh -v virtualbox -f ova
+          docker run --rm --interactive --net host --privileged --group-add $(stat -c '%g' /dev/kvm) --volume $(pwd):/recipes -v $(pwd)/images/:/images --workdir /recipes tlvm-builder ./build.sh -v vmware -f vmware
+
 
       - name: Release with Notes
         uses: softprops/action-gh-release@v1
