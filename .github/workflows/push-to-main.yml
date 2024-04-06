@@ -1,0 +1,38 @@
+name: push-to-main
+# This action will trigger whenever main gets updated
+# success on this action would imply success when we push a release and files are generated
+# triggers on PRs or direct commits to main or dev branches
+on:
+  push:
+    branches:
+      - main
+      - dev  # Added the dev branch here
+  pull_request:
+    branches:
+      - main
+      - dev  # And here as well
+
+jobs:
+  run-docker:
+    # Specifies that the job runs on an Ubuntu environment
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    # Sets up Docker environment
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    # uses the build in container option to build the vm files
+    # this test only checks the default build but others should work
+    - name: Run Docker command
+      run:  |
+          sudo apt update
+          sudo apt -y install debos p7zip qemu-utils zerofree
+          cd $GITHUB_WORKSPACE
+          chmod +x scripts/tl/*.sh
+          chmod +x scripts/*.sh
+          chmod +x *.sh
+          docker build -t tlvm-builder .
+          docker run --rm --interactive --net host --privileged --group-add $(stat -c '%g' /dev/kvm) --volume $(pwd):/recipes -v $(pwd)/images/:/images --workdir /recipes tlvm-builder ./build.sh
