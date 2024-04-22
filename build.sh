@@ -41,7 +41,7 @@ TOOLSET=
 USERNAME=
 USERPASS=
 VARIANT=vmware
-VERSION=2023.03
+VERSION=2024.2
 # output will be compressed by default
 ZIP=true
 OUTDIR=images
