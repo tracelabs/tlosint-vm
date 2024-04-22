@@ -1,0 +1,955 @@
+{
+  "AllowCrossOriginAuthPrompt": false,
+  "AllowOutdatedPlugins": false,
+  "ApplicationLocaleValue": "en",
+  "AutoFillEnabled": false,
+  "BackgroundModeEnabled": false,
+  "BlockThirdPartyCookies": true,
+  "BookmarkBarEnabled": true,
+  "ClearSiteDataOnExit": true,
+  "ContentSecurityPolicy": "default-src 'self'; script-src 'self'; object-src 'none';",
+  "DefaultBrowserSettingEnabled": true,
+  "DefaultGeolocationSetting": 0,
+  "DefaultNotificationsSetting": 2,
+  "DefaultPopupsSetting": 2,
+  "DeveloperToolsDisabled": false,
+  "DisabledPlugins": [
+    "Chrome PDF Viewer",
+    "Java",
+    "Shockwave Flash"
+  ],
+  "DisablePluginFinder": true,
+  "DisableSafeBrowsingProceedAnyway": true,
+  "DnsPrefetchingEnabled": false,
+  "ExtensionInstallForcelist": [
+    "cjpalhdlnbpafiamejdnhcphjbkeiagm",
+    "gcbommkclmclpchllfjekcdonpmejbdp",
+    "engmbahfeipfbgcjnjgekgkpmdfhkicn"
+  ],
+  "HomepageIsNewTabPage": true,
+  "HomepageLocation": "https://tracelabs.org/",
+  "ImportBookmarks": true,
+  "ImportHistory": false,
+  "ImportHomepage": false,
+  "ImportSavedPasswords": false,
+  "ImportSearchEngine": false,
+  "MetricsReportingEnabled": false,
+  "PasswordManagerAllowShowPasswords": false,
+  "PasswordManagerEnabled": false,
+  "RemoteAccessClientFirewallTraversal": false,
+  "RemoteAccessHostFirewallTraversal": false,
+  "RestoreOnStartup": 5,
+  "SafeBrowsingEnabled": true,
+  "SavingBrowserHistoryDisabled": true,
+  "SearchSuggestEnabled": true,
+  "SyncDisabled": true,
+  "TranslateEnabled": false,
+  "ManagedBookmarks":[
+  {
+    "toplevel_name":"OSINT Bookmarks"
+  },
+  {
+    "name":"Company",
+    "children":[
+      {
+        "name":"Country Specific",
+        "children":[
+          {
+            "name":"Canadian Business Research",
+            "url":"https://www.canada.ca/en/services/business/research.html"
+          },
+          {
+            "name":"Europages",
+            "url":"http://www.europages.co.uk/"
+          },
+          {
+            "name":"Overseas Company Records",
+            "url":"https://www.gov.uk/government/publications/overseas-registries/overseas-registries"
+          },
+          {
+            "name":"Wikipedia National Company Registers",
+            "url":"https://en.wikipedia.org/wiki/List_of_company_registers"
+          }
+        ]
+      },
+      {
+        "name":"Crunchbase",
+        "url":"https://www.crunchbase.com/"
+      },
+      {
+        "name":"Ezilion",
+        "url":"http://www.ezilon.com/"
+      },
+      {
+        "name":"Glassdoor",
+        "url":"https://www.glassdoor.com/"
+      },
+      {
+        "name":"Guidestar",
+        "url":"http://www.guidestar.org/"
+      },
+      {
+        "name":"LinkedIn",
+        "url":"https://www.linkedin.com/"
+      },
+      {
+        "name":"Marketvisual",
+        "url":"http://www.marketvisual.com/"
+      },
+      {
+        "name":"Morningstar Research",
+        "url":"http://library.morningstar.com/"
+      },
+      {
+        "name":"Orbis Directory",
+        "url":"http://orbisdirectory.bvdinfo.com/version-20161014/OrbisDirectory/Companies"
+      },
+      {
+        "name":"OpenCorporates",
+        "url":"https://opencorporates.com/"
+      },
+      {
+        "name":"Owler ",
+        "url":"https://www.owler.com/"
+      },
+      {
+        "name":"Scoot",
+        "url":"http://www.scoot.co.uk/"
+      },
+      {
+        "name":"Serpstat",
+        "url":"https://serpstat.com/"
+      },
+      {
+        "name":"Spyfu",
+        "url":"http://www.spyfu.com/"
+      },
+      {
+        "name":"Accuranker",
+        "url":"https://www.accuranker.com/"
+      }
+    ]
+  },
+  {
+    "name":"Internet Scan",
+    "children":[
+      {
+        "name":"DNS",
+        "children":[
+          {
+            "name":"DNS Dumpster",
+            "url":"https://dnsdumpster.com/"
+          },
+          {
+            "name":"MX Toolbox",
+            "url":"https://mxtoolbox.com/"
+          },
+          {
+            "name":"View DNS",
+            "url":"http://viewdns.info/"
+          }
+        ]
+      },
+      {
+        "name":"Whois",
+        "children":[
+          {
+            "name":"Who Is Hosting This",
+            "url":"http://www.whoishostingthis.com/"
+          },
+          {
+            "name":"Whoisology",
+            "url":"https://whoisology.com/"
+          }
+        ]
+      },
+      {
+        "name":"Ahrefs",
+        "url":"https://ahrefs.com/"
+      },
+      {
+        "name":"Alexa",
+        "url":"http://www.alexa.com/"
+      },
+      {
+        "name":"Builtwith",
+        "url":"http://builtwith.com/"
+      },
+      {
+        "name":"ExoneraTor Tor Relay Search ",
+        "url":"https://exonerator.torproject.org/"
+      },
+      {
+        "name":"Follow.net",
+        "url":"http://follow.net/"
+      },
+      {
+        "name":"Greynoise",
+        "url":"http://greynoise.io/"
+      },
+      {
+        "name":"Intelx.io",
+        "url":"https://intelx.io/"
+      },
+      {
+        "name":"IP Fingerprints ",
+        "url":"http://www.ipfingerprints.com/"
+      },
+      {
+        "name":"IntelliTamper",
+        "url":"http://www.softpedia.com/get/Internet/Other-Internet-Related/IntelliTamper.shtml"
+      },
+      {
+        "name":"Netcraft Site Report",
+        "url":"https://sitereport.netcraft.com/"
+      },
+      {
+        "name":"Moz Research Tools OSE",
+        "url":"https://moz.com/researchtools/ose"
+      },
+      {
+        "name":"Shodan",
+        "url":"https://shodan.io/"
+      },
+      {
+        "name":"Robtex",
+        "url":"https://www.robtex.com/"
+      },
+      {
+        "name":"Spyse",
+        "url":"https://spyse.com/"
+      },
+      {
+        "name":"DNS Trails",
+        "url":"https://securitytrails.com/dns-trails"
+      },
+      {
+        "name":"TCPIP Utils",
+        "url":"http://www.tcpiputils.com/"
+      },
+      {
+        "name":"Website Informer",
+        "url":"http://website.informer.com/"
+      },
+      {
+        "name":"WaybackMachine",
+        "url":"http://archive.org/"
+      }
+    ]
+  },
+  {
+    "name":"Email Search",
+    "children":[
+      {
+        "name":"Dehashed",
+        "url":"https://dehashed.com/"
+      },
+      {
+        "name":"EmailHippo",
+        "url":"https://tools.verifyemailaddress.io/"
+      },
+      {
+        "name":"Email Validator",
+        "url":"https://chema.ga/emailvalidator/index.php"
+      },
+      {
+        "name":"Have I Been Pwned",
+        "url":"https://haveibeenpwned.com/"
+      },
+      {
+        "name":"Hunter.io",
+        "url":"https://hunter.io/"
+      },
+      {
+        "name":"Pipl",
+        "url":"https://pipl.com/"
+      },
+      {
+        "name":"Thats Them",
+        "url":"https://thatsthem.com/reverse-email-lookup"
+      },
+      {
+        "name":"Toofr",
+        "url":"https://www.toofr.com/"
+      },
+      {
+        "name":"Verify Email",
+        "url":"http://verify-email.org/"
+      },
+      {
+        "name":"Voilanorbert",
+        "url":"https://www.voilanorbert.com/"
+      }
+    ]
+  },
+  {
+    "name":"Phone Number",
+    "children":[
+      {
+        "name":"Free Carrier Lookup",
+        "url":"http://freecarrierlookup.com/"
+      },
+      {
+        "name":"National Cellular Directory",
+        "url":"https://www.nationalcellulardirectory.com/"
+      },
+      {
+        "name":"Phone Validator",
+        "url":"https://www.phonevalidator.com/index.aspx"
+      },
+      {
+        "name":"Reverse Phone Lookup",
+        "url":"http://www.reversephonelookup.com/"
+      },
+      {
+        "name":"Spy Dialer",
+        "url":"http://spydialer.com/"
+      },
+      {
+        "name":"Twillo",
+        "url":"https://www.twilio.com/lookup"
+      },
+      {
+        "name":"OpenCNAM",
+        "url":"http://opencnam.com/"
+      }
+    ]
+  },
+  {
+    "name":"People",
+    "children":[
+      {
+        "name":"Alumni.net",
+        "url":"http://www.alumni.net/"
+      },
+      {
+        "name":"Ancestry",
+        "url":"http://www.ancestry.com/"
+      },
+      {
+        "name":"Classmates",
+        "url":"http://www.classmates.com/"
+      },
+      {
+        "name":"Facesearch",
+        "url":"http://facesaerch.com/"
+      },
+      {
+        "name":"Family Search",
+        "url":"https://familysearch.org/"
+      },
+      {
+        "name":"Family Tree Now",
+        "url":"http://www.familytreenow.com/"
+      },
+      {
+        "name":"Genealogy Links",
+        "url":"http://www.genealogylinks.net/"
+      },
+      {
+        "name":"Homemetry",
+        "url":"https://homemetry.com/"
+      },
+      {
+        "name":"Infobel",
+        "url":"http://www.infobel.com/en/world"
+      },
+      {
+        "name":"Interment",
+        "url":"http://www.interment.net/data/search.htm"
+      },
+      {
+        "name":"International White and Yellow Pages",
+        "url":"http://www.wayp.com/"
+      },
+      {
+        "name":"Itools",
+        "url":"http://itools.com/search/people-search"
+      },
+      {
+        "name":"LittleSis",
+        "url":"https://littlesis.org/"
+      },
+      {
+        "name":"Rocket Reach ",
+        "url":"http://rocketreach.co/"
+      },
+      {
+        "name":"Lullar",
+        "url":"http://com.lullar.com/"
+      },
+      {
+        "name":"PeekYou",
+        "url":"http://www.peekyou.com/"
+      },
+      {
+        "name":"Pipl ",
+        "url":"https://pipl.com/"
+      },
+      {
+        "name":"Recruitin",
+        "url":"http://recruitin.net/"
+      },
+      {
+        "name":"Faxvin",
+        "url":"http://faxvin.com/"
+      },
+      {
+        "name":"Search Bug",
+        "url":"http://www.searchbug.com/"
+      },
+      {
+        "name":"Skip Ease",
+        "url":"http://www.skipease.com/"
+      },
+      {
+        "name":"SnoopStation",
+        "url":"http://snoopstation.com/"
+      },
+      {
+        "name":"Spokeo",
+        "url":"http://www.spokeo.com/"
+      },
+      {
+        "name":"Switchboard",
+        "url":"http://www.switchboard.com/"
+      },
+      {
+        "name":"ThatsThem",
+        "url":"https://thatsthem.com/img/favicon-32x32.png"
+      },
+      {
+        "name":"Wink",
+        "url":"https://webmii.com/v3/img/apple-touch-icon.png"
+      },
+      {
+        "name":"Wink",
+        "url":"http://itools.com/tool/wink-people-search"
+      },
+      {
+        "name":"Yasni",
+        "url":"http://www.yasni.com/"
+      },
+      {
+        "name":"Zabasearch",
+        "url":"http://www.zabasearch.com/"
+      },
+      {
+        "name":"Zoominfo",
+        "url":"http://www.zoominfo.com/"
+      },
+      {
+        "name":"411 (US)",
+        "url":"http://www.411.com/"
+      },
+      {
+        "name":"Fold3 (US Military Records) - Browse records of US Military members",
+        "url":"http://www.fold3.com/"
+      },
+      {
+        "name":"192 (UK)",
+        "url":"http://www.192.com/"
+      },
+      {
+        "name":"Canada411 (Canada)",
+        "url":"http://www.canada411.ca/"
+      },
+      {
+        "name":"Inmate Location ",
+        "url":"http://www.bop.gov/inmateloc"
+      },
+      {
+        "name":"LookUpUK (UK)",
+        "url":"http://www.lookupuk.com/"
+      },
+      {
+        "name":"The National Archives (United Kingdom)",
+        "url":"http://www.nationalarchives.gov.uk/"
+      },
+      {
+        "name":"People Search (Australia)",
+        "url":"http://www.peoplesearch.com.au/"
+      },
+      {
+        "name":"White Pages (US)",
+        "url":"http://www.whitepages.com/"
+      },
+      {
+        "name":"USSearch",
+        "url":"http://www.ussearch.com/"
+      }
+    ]
+  },
+  {
+    "name":"Maps & Geography",
+    "children":[
+      {
+        "name":" ",
+        "url":"http://www.bing.com/maps"
+      },
+      {
+        "name":"Dominoc925",
+        "url":"https://dominoc925-pages.appspot.com/mapplets/cs_mgrs.html"
+      },
+      {
+        "name":"Google Earth",
+        "url":"http://www.google.com/earth"
+      },
+      {
+        "name":"Google Maps",
+        "url":"https://www.google.com/maps"
+      },
+      {
+        "name":"Google My Maps",
+        "url":"https://www.google.com/maps/about/mymaps"
+      },
+      {
+        "name":"Wireless Network Mapping",
+        "url":"https://wigle.net/"
+      }
+    ]
+  },
+  {
+    "name":"Search",
+    "children":[
+      {
+        "name":"Country Specific",
+        "children":[
+          {
+            "name":"Alleba (Philippines)",
+            "url":"http://www.alleba.com/"
+          },
+          {
+            "name":"Baidu (China)",
+            "url":"http://www.baidu.com/"
+          },
+          {
+            "name":"Eniro (Sweden)",
+            "url":"http://www.eniro.se/"
+          },
+          {
+            "name":"Goo (Japan)",
+            "url":"http://www.goo.ne.jp/"
+          },
+          {
+            "name":"Najdsi (Slovenia)",
+            "url":"http://www.najdi.si/"
+          },
+          {
+            "name":"Naver (South Korea)",
+            "url":"http://www.naver.com/"
+          },
+          {
+            "name":"Onet.pl (Poland)",
+            "url":"http://www.onet.pl/"
+          },
+          {
+            "name":"SAPO (Portugal)",
+            "url":"http://www.sapo.pt/"
+          },
+          {
+            "name":"Walla (Israel)",
+            "url":"http://www.search.ch/"
+          },
+          {
+            "name":"Yandex (Russia)",
+            "url":"http://www.yandex.com/"
+          }
+        ]
+      },
+      {
+        "name":"Data",
+        "children":[
+          {
+            "name":"Offshore Leak Database",
+            "url":"https://offshoreleaks.icij.org/"
+          },
+          {
+            "name":"Search Code",
+            "url":"https://searchcode.com/"
+          },
+          {
+            "name":"Draugiem",
+            "url":"https://www.draugiem.lv/"
+          }
+        ]
+      },
+      {
+        "name":"Image",
+        "children":[
+          {
+            "name":"Baidu Images",
+            "url":"http://image.baidu.com/"
+          },
+          {
+            "name":"Bing Images",
+            "url":"http://www.bing.com/images"
+          },
+          {
+            "name":"Flickr",
+            "url":"https://secure.flickr.com/"
+          },
+          {
+            "name":"Google Image",
+            "url":"https://images.google.com/"
+          },
+          {
+            "name":"Image Identify",
+            "url":"https://www.imageidentify.com/"
+          },
+          {
+            "name":"KarmaDecay",
+            "url":"http://karmadecay.com/"
+          },
+          {
+            "name":"Lycos Image Search",
+            "url":"http://search.lycos.com/"
+          },
+          {
+            "name":"PhotoBucket",
+            "url":"http://photobucket.com/"
+          },
+          {
+            "name":"Picsearch",
+            "url":"http://www.picsearch.com/"
+          },
+          {
+            "name":"Tineye",
+            "url":"https://tineye.com/"
+          },
+          {
+            "name":"Yahoo Image Search",
+            "url":"https://images.search.yahoo.com/"
+          },
+          {
+            "name":"Yandex Images",
+            "url":"https://www.yandex.com/images"
+          },
+          {
+            "name":"FotoForensics",
+            "url":"http://www.fotoforensics.com/"
+          },
+          {
+            "name":"Jeffreys Image Metadata Viewer",
+            "url":"http://exif.regex.info/"
+          },
+          {
+            "name":"Metapicz",
+            "url":"http://metapicz.com/"
+          },
+          {
+            "name":"Pimeyes",
+            "url":"https://pimeyes.com/"
+          }
+        ]
+      },
+      {
+        "name":"Video",
+        "children":[
+          {
+            "name":"Bing Video",
+            "url":"http://www.bing.com/?scope=video"
+          },
+          {
+            "name":"DailyMotion",
+            "url":"http://www.dailymotion.com/"
+          },
+          {
+            "name":"Earthcam",
+            "url":"http://www.earthcam.com/"
+          },
+          {
+            "name":"Archive.org Open Source Videos",
+            "url":"https://archive.org/details/opensource_movies"
+          },
+          {
+            "name":"LiveLeak",
+            "url":"http://www.liveleak.com/"
+          },
+          {
+            "name":"Vimeo",
+            "url":"https://vimeo.com/"
+          },
+          {
+            "name":"Yahoo Video Search",
+            "url":"http://video.search.yahoo.com/"
+          },
+          {
+            "name":"YouTube",
+            "url":"https://www.youtube.com/"
+          },
+          {
+            "name":"YouTube Data Viewer",
+            "url":"https://www.amnestyusa.org/citizenevidence"
+          }
+        ]
+      },
+      {
+        "name":"Bing",
+        "url":"http://www.bing.com/"
+      },
+      {
+        "name":"DuckDuckGo",
+        "url":"https://duckduckgo.com/"
+      },
+      {
+        "name":"Google",
+        "url":"http://www.google.com/"
+      },
+      {
+        "name":"Yahoo",
+        "url":"http://www.yahoo.com/"
+      },
+      {
+        "name":"Ask",
+        "url":"http://www.ask.com/"
+      },
+      {
+        "name":"Advangle",
+        "url":"http://advangle.com/"
+      },
+      {
+        "name":"Aol",
+        "url":"http://search.aol.com/"
+      },
+      {
+        "name":"Instya",
+        "url":"http://www.instya.com/"
+      },
+      {
+        "name":"Impersonal.me",
+        "url":"http://www.impersonal.me/"
+      },
+      {
+        "name":"iSeek",
+        "url":"http://education.iseek.com/iseek/home.page"
+      },
+      {
+        "name":"IxQuick",
+        "url":"https://www.ixquick.com/"
+      },
+      {
+        "name":"Lycos",
+        "url":"http://www.lycos.com/"
+      },
+      {
+        "name":"Parseek (Iran)",
+        "url":"http://www.parseek.com/"
+      },
+      {
+        "name":"Search.com",
+        "url":"http://www.search.com/"
+      },
+      {
+        "name":"SurfCanyon",
+        "url":"http://www.surfcanyon.com/"
+      },
+      {
+        "name":"Wolfram Alpha",
+        "url":"http://www.wolframalpha.com/"
+      }
+    ]
+  },
+  {
+    "name":"Social Media Tools",
+    "children":[
+      {
+        "name":"Twitter",
+        "children":[
+          {
+            "name":"Backtweets",
+            "url":"http://backtweets.com/"
+          },
+          {
+            "name":"https://tinfoleak.com",
+            "url":"https://tinfoleak.com/favicon/xandroid-icon-192x192.png.pagespeed.ic.SrzO0FouKa.jpg"
+          },
+          {
+            "name":"Twitter Search",
+            "url":"http://search.twitter.com/"
+          }
+        ]
+      },
+      {
+        "name":"Facebook",
+        "children":[
+          {
+            "name":"Facebook Search",
+            "url":"http://search.fb.com/"
+          },
+          {
+            "name":"Find my Facebook ID",
+            "url":"https://findmyfbid.in/"
+          },
+          {
+            "name":"Lookup-ID.com",
+            "url":"https://lookup-id.com/"
+          }
+        ]
+      },
+      {
+        "name":"Instagram",
+        "children":[
+          {
+            "name":"Picodash",
+            "url":"https://www.picodash.com/"
+          },
+          {
+            "name":"Social Rank",
+            "url":"https://www.socialrank.com/"
+          },
+          {
+            "name":"Hashtagify",
+            "url":"http://hashtagify.me/"
+          }
+        ]
+      },
+      {
+        "name":"VK",
+        "children":[
+          {
+            "name":"Vk",
+            "url":"http://vk.com/app3046467"
+          }
+        ]
+      },
+      {
+        "name":"Glass Door",
+        "url":"https://www.glassdoor.co.in/Reviews/index.htm"
+      },
+      {
+        "name":"Social Blade",
+        "url":"https://socialblade.com/"
+      },
+      {
+        "name":"Social Searcher",
+        "url":"https://www.social-searcher.com/"
+      }
+    ]
+  },
+  {
+    "name":"Social Networks",
+    "children":[
+      {
+        "name":"Facebook",
+        "url":"http://www.facebook.com/"
+      },
+      {
+        "name":"Facenama ",
+        "url":"http://facenama.com/"
+      },
+      {
+        "name":"Instagram",
+        "url":"https://www.instagram.com/"
+      },
+      {
+        "name":"LinkedIn",
+        "url":"https://www.linkedin.com/"
+      },
+      {
+        "name":"Mixi",
+        "url":"https://mixi.jp/"
+      },
+      {
+        "name":"Odnoklassniki (Russia)",
+        "url":"http://ok.ru/"
+      },
+      {
+        "name":"Pinterest",
+        "url":"http://www.pinterest.com/"
+      },
+      {
+        "name":"QQ",
+        "url":"http://qzone.qq.com/"
+      },
+      {
+        "name":"Reddit",
+        "url":"https://www.reddit.com/"
+      },
+      {
+        "name":"Taringa",
+        "url":"http://www.taringa.net/"
+      },
+      {
+        "name":"Tinder",
+        "url":"https://www.gotinder.com/"
+      },
+      {
+        "name":"Tumblr",
+        "url":"https://www.tumblr.com/"
+      },
+      {
+        "name":"Twitter",
+        "url":"https://twitter.com/"
+      },
+      {
+        "name":"Weibo China",
+        "url":"http://weibo.com/"
+      }
+    ]
+  },
+  {
+    "name":"User Name Check",
+    "children":[
+      {
+        "name":"Check User Names",
+        "url":"http://www.checkusernames.com/"
+      },
+      {
+        "name":"Knowem",
+        "url":"http://www.knowem.com/"
+      },
+      {
+        "name":"Name Chk",
+        "url":"http://www.namechk.com/"
+      },
+      {
+        "name":"Name Checkr",
+        "url":"http://www.namecheckr.com/"
+      },
+      {
+        "name":"Namecheckup",
+        "url":"https://namecheckup.com/"
+      },
+      {
+        "name":"User Search",
+        "url":"http://www.usersearch.org/"
+      },
+      {
+        "name":"WhatsMyName",
+        "url":"https://whatsmyname.app/"
+      }
+    ]
+  },
+  {
+    "name":"Collections",
+    "children":[
+      {
+        "name":"OhShint!",
+        "url":"https://github.com/OhShINT"
+      },
+      {
+        "name":"Awesome OSINT",
+        "url":"https://github.com/jivoi/awesome-osint"
+      }
+    ]
+  },
+  {
+    "name":"Broad Search Tools",
+    "children":[
+      {
+        "name":"OSINT.industries",
+        "url":"https://osint.industries/"
+      },
+      {
+        "name":"Epieos",
+        "url":"https://epieos.com/"
+      },
+      {
+        "name":"Intel Techniques Tools",
+        "url":"https://inteltechniques.com/tools/"
+      }
+    ]
+  }
+ ]
+}

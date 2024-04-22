@@ -14,7 +14,10 @@ After you've downloaded the release that applies to you, it should be as simple 
 
 https://github.com/tracelabs/tlosint-vm/releases
 
-## Login Credntials
+
+
+## Login Credentials
+
 `osint`
 `osint`
 
@@ -22,19 +25,20 @@ https://github.com/tracelabs/tlosint-vm/releases
 Note taking app Obsidian comes bundled with the VM. There is an icon on the desktop to launch Obisidian or you can run the appimage located in the home directory. We've already set up a vault for you called "TL Vault" that lives on the Desktop. The first time you run Obsidian open that vault folder. The default theme is the Trace Labs theme. 
  
 ## Build
-If you'd rather build your own from source or modify the version we've released then building your own is as straight forward as: (Note: You don't need to do this if you've already downloaded a release and imported to hypervisor)
+If you'd rather build your own from source or modify the version we've released then building your own is fairly straight forward. (Note: You don't need to do this if you've already downloaded a release and imported to hypervisor)
 
-From a Kali Linux machine run the following commands:
+We highly reccommend that you do your build in Docker. This assumes that you already have Docker installed on your system and that you are running the build on an Intel based chip. 
+
+With that in mind you can:
 ```
 git clone https://github.com/tracelabs/tlosint-vm
-sudo apt -y install debos p7zip qemu-utils zerofree
 cd tlosint-vm
-chmod +x scripts/tl/*.sh
-chmod +x scripts/*.sh
-chmod +x *.sh
-sudo ./build.sh
-Locate the OVA in the images/ directory
+chmod +x build-in-container.sh
+./build-in-container.sh
 ```
+
+You can explore the different build options with `-h` flag. 
+
 ## Applications
 
 The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a script on the desktop though. This keeps the size of the release small enough to build and host on Github. If you want to install the tools in the script then: 
@@ -56,7 +60,6 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 **Data Analysis**
 * [DumpsterDiver](https://github.com/securing/DumpsterDiver)
 * [Exifprobe](https://github.com/hfiguiere/exifprobe)
-* [Exifscan](https://github.com/rcook/exifscan/) (Private)
 * [Stegosuite](https://github.com/osde8info/stegosuite)
 
 **Domains**
@@ -66,12 +69,10 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 **Downloaders**
 * [Browse Mirrored Websites](http://www.httrack.com/)
 * [Metagoofil](https://github.com/opsdisk/metagoofil)
-* [Spiderpig](https://github.com/hatlord/Spiderpig)
 * [WebHTTrack Website Copier](http://www.httrack.com/)
 * [Youtube-DL](https://github.com/ytdl-org/youtube-dl)
 
 **Email**
-* [Buster](https://github.com/sham00n/buster)
 * [Checkfy (OSRFramework)](https://github.com/i3visio/osrframework)
 * [Infoga](https://github.com/m4ll0k/Infoga)
 * [Mailfy (OSRFramework)](https://github.com/i3visio/osrframework)
@@ -84,7 +85,7 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 * [sn0int](https://github.com/kpcyrd/sn0int)
 * [Spiderfoot](https://github.com/smicallef/spiderfoot)
 * [Maltego](https://www.maltego.com/downloads/)
-* [OnionSearch](https://github.com/sundowndev/phoneinfoga)
+* [OnionSearch](https://github.com/megadose/OnionSearch)
 
 **Phone Numbers**
 * [Phonefy (OSRFramework)](https://github.com/i3visio/osrframework)
@@ -96,10 +97,10 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 * [Searchfy (OSRFramework)](https://github.com/i3visio/osrframework)
 * [Tiktok Scraper](https://github.com/drawrowfly/tiktok-scraper)
 * [Twayback](https://github.com/humandecoded/twayback)
+* [Stweet](https://github.com/markowanga/stweet)
 
 **Usernames**
 * [Alias Generator (OSRFramework)](https://github.com/i3visio/osrframework)
-* [Sherlock](https://github.com/sherlock-project/sherlock)
 * [Usufy (OSRFramework)](https://github.com/i3visio/osrframework)
 
 **Other Tools**
