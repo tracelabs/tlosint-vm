@@ -164,121 +164,6 @@ install_tiktok_scraper() {
 }
 
 
-# Function to install ProtonVPN
-install_protonvpn() {
-    # Define ProtonVPN configuration
-    PROTONVPN_KEY_URL="https://repo.protonvpn.com/debian/public_key.asc"
-    PROTONVPN_REPO="deb [signed-by=/usr/share/keyrings/protonvpn-archive-keyring.gpg] https://repo.protonvpn.com/debian unstable main"
-    PROTONVPN_KEYRING="/usr/share/keyrings/protonvpn-archive-keyring.gpg"
-    PROTON_WRAPPER_SCRIPT="/usr/local/bin/protonvpn-wrapper.sh"
-    PROTON_PREFERENCE_FILE="$HOME/.do_not_show_vpn_warning"
-    PROTON_DESKTOP_FILE="/usr/share/applications/protonvpn-app.desktop"
-
-    # Check if ProtonVPN is already installed
-    if ! command -v protonvpn &> /dev/null; then
-        # Installation steps for ProtonVPN
-        # Check for add-apt-repository command
-        if ! command -v add-apt-repository &> /dev/null; then
-            sudo apt-get update || { echo "Failed to update package lists for add-apt-repository"; add_to_error_log "Failed to update package lists for add-apt-repository"; return 1; }
-            sudo apt-get install -y software-properties-common || { echo "Failed to install software-properties-common"; add_to_error_log "Failed to install software-properties-common"; return 1; }
-        fi
-
-        # Add ProtonVPN repository and key
-        sudo wget -q -O - $PROTONVPN_KEY_URL | gpg --dearmor | sudo tee $PROTONVPN_KEYRING >/dev/null || { echo "Failed to add ProtonVPN key"; add_to_error_log "Failed to add ProtonVPN key"; return 1; }
-        echo $PROTONVPN_REPO | sudo tee /etc/apt/sources.list.d/protonvpn.list || { echo "Failed to add ProtonVPN to sources list"; add_to_error_log "Failed to add ProtonVPN to sources list"; return 1; }
-
-        # Update package lists and install ProtonVPN
-        sudo apt-get update || { echo "Failed to update package lists for ProtonVPN"; add_to_error_log "Failed to update package lists for ProtonVPN"; return 1; }
-        sudo apt-get -y install protonvpn || { echo "Failed to install ProtonVPN"; add_to_error_log "Failed to install ProtonVPN"; return 1; }
-    else
-        echo "ProtonVPN is already installed. Skipping installation."
-    fi
-
-    # Create or update the ProtonVPN wrapper script if necessary
-    if [ ! -f "$PROTON_WRAPPER_SCRIPT" ] || [ ! -x "$PROTON_WRAPPER_SCRIPT" ]; then
-        # Create the wrapper script with caution notice
-        sudo bash -c "cat > $PROTON_WRAPPER_SCRIPT" << 'EOF'
-#!/bin/bash
-if [ ! -f "$PROTON_PREFERENCE_FILE" ]; then
-    if zenity --question --title="VPN Warning" --text="Caution: Free VPNs may have limitations and risks. They can have slower speeds, data caps, and may lack robust security features. Some free VPNs might track and sell your data, display ads, or contain malware. Always research and choose reputable VPNs. Do you want to display this warning in the future?"; then
-        echo "User chose to display the warning in the future."
-    else
-        touch "$PROTON_PREFERENCE_FILE"
-    fi
-fi
-protonvpn-app
-EOF
-        if [ $? -ne 0 ]; then
-            echo "Failed to create ProtonVPN wrapper script"; add_to_error_log "Failed to create ProtonVPN wrapper script"; return 1;
-        fi
-
-        # Make the wrapper script executable
-        sudo chmod +x $PROTON_WRAPPER_SCRIPT || { echo "Failed to make ProtonVPN wrapper script executable"; add_to_error_log "Failed to make ProtonVPN wrapper script executable"; return 1; }
-
-        # Modify the desktop launcher to use the wrapper script
-        sudo sed -i "s|Exec=protonvpn-app|Exec=$PROTON_WRAPPER_SCRIPT|" $PROTON_DESKTOP_FILE || { echo "Failed to modify ProtonVPN desktop launcher"; add_to_error_log "Failed to modify ProtonVPN desktop launcher"; return 1; }
-    else
-        echo "ProtonVPN wrapper script already exists and is executable."
-    fi
-}
-
-
-# Function to install AtlasVPN
-install_atlasvpn() {
-    # Define the wrapper script path
-    ATLASVPN_REPO_DEB="https://downloads.atlasvpn.com/apps/linux/atlasvpn-repo.deb"
-    ATLAS_WRAPPER_SCRIPT="/usr/local/bin/atlasvpn-wrapper.sh"
-
-    # Check if AtlasVPN is already installed
-    if ! command -v atlasvpn &> /dev/null; then
-        # Download and install AtlasVPN repository
-        wget $ATLASVPN_REPO_DEB || { echo "Failed to download AtlasVPN repo"; add_to_error_log "Failed to download AtlasVPN repo"; return 1; }
-        sudo dpkg -i atlasvpn-repo.deb || { echo "Failed to install AtlasVPN repo package"; add_to_error_log "Failed to install AtlasVPN repo package"; return 1; }
-        sudo rm -f atlasvpn-repo.deb || { echo "Failed to remove AtlasVPN .deb file"; add_to_error_log "Failed to remove AtlasVPN .deb file"; }
-        sudo apt update || { echo "Failed to update package lists for AtlasVPN"; add_to_error_log "Failed to update package lists for AtlasVPN"; return 1; }
-        sudo apt install -y atlasvpn || { echo "Failed to install AtlasVPN"; add_to_error_log "Failed to install AtlasVPN"; return 1; }
-    else
-        echo "AtlasVPN is already installed. Skipping installation."
-    fi
-
-    # Check and create AtlasVPN wrapper script if necessary
-    if [ ! -f "$ATLAS_WRAPPER_SCRIPT" ] || [ ! -x "$ATLAS_WRAPPER_SCRIPT" ]; then
-        # Create a wrapper script for AtlasVPN with a warning message
-        sudo bash -c "cat > $ATLAS_WRAPPER_SCRIPT" << 'EOF'
-#!/bin/bash
-FLAG_FILE="$HOME/.atlasvpn_warning_shown"
-if [ ! -f "$FLAG_FILE" ]; then
-    cat << 'WARNING'
-    +----------------------------------------------------------------------------+
-    |                                                                            |
-    |                        *** VPN Service Warning ***                         |
-    |                                                                            |
-    |   Free VPNs may have limitations and risks. They can have slower speeds,   |
-    |   data caps, and may lack robust security features. Some free VPNs might   |
-    |   track and sell your data, display ads, or contain malware. Always        |
-    |   research and choose reputable VPNs.                                      |
-    |                                                                            |
-    +----------------------------------------------------------------------------+
-WARNING
-    touch "$FLAG_FILE"
-    sleep 3
-fi
-/usr/bin/atlasvpn-original "$@"
-EOF
-        if [ $? -ne 0 ]; then
-            echo "Failed to create AtlasVPN wrapper script"; add_to_error_log "Failed to create AtlasVPN wrapper script"; return 1;
-        fi
-
-        sudo chmod +x $ATLAS_WRAPPER_SCRIPT || { echo "Failed to make AtlasVPN wrapper script executable"; add_to_error_log "Failed to make AtlasVPN wrapper script executable"; return 1; }
-
-        # Replace the original AtlasVPN command with the wrapper script
-        sudo mv /usr/bin/atlasvpn /usr/bin/atlasvpn-original || { echo "Failed to rename original AtlasVPN"; add_to_error_log "Failed to rename original AtlasVPN"; return 1; }
-        sudo ln -s $ATLAS_WRAPPER_SCRIPT /usr/bin/atlasvpn || { echo "Failed to create symlink for AtlasVPN wrapper"; add_to_error_log "Failed to create symlink for AtlasVPN wrapper"; return 1; }
-    else
-        echo "AtlasVPN wrapper script already exists and is executable."
-    fi
-}
-
 
 # Function to update TJ Null Joplin Notebook
 update_tj_null_joplin_notebook() {
@@ -303,8 +188,6 @@ install_phoneinfoga
 install_python_packages
 install_sn0int
 install_tiktok_scraper
-install_protonvpn
-install_atlasvpn
 update_tj_null_joplin_notebook
 
 display_log_contents
