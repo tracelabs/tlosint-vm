@@ -88,7 +88,7 @@ install_tor_browser() {
     gpg --output "$keyring_path" --export 0xEF6E286DDA85EA2A4BA7DE684E2C6E8793298290 || { echo "Failed to export Tor Browser Developers signing key"; add_to_error_log "Failed to export Tor Browser Developers signing key"; return 1; }
 
     # Fetch the latest Tor Browser download link (assuming the link is on the download page)
-    local tor_browser_link="https://www.torproject.org/dist/torbrowser/13.0.8/tor-browser-linux-x86_64-13.0.8.tar.xz"
+    local tor_browser_link="https://www.torproject.org/dist/torbrowser/13.0.14/tor-browser-linux-x86_64-13.0.14.tar.xz"
     local tor_browser_dir="$download_dir/tor-browser"
 
     if [ -z "$tor_browser_link" ]; then
