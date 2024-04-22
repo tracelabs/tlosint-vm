@@ -25,19 +25,20 @@ https://github.com/tracelabs/tlosint-vm/releases
 Note taking app Obsidian comes bundled with the VM. There is an icon on the desktop to launch Obisidian or you can run the appimage located in the home directory. We've already set up a vault for you called "TL Vault" that lives on the Desktop. The first time you run Obsidian open that vault folder. The default theme is the Trace Labs theme. 
  
 ## Build
-If you'd rather build your own from source or modify the version we've released then building your own is as straight forward as: (Note: You don't need to do this if you've already downloaded a release and imported to hypervisor)
+If you'd rather build your own from source or modify the version we've released then building your own is fairly straight forward. (Note: You don't need to do this if you've already downloaded a release and imported to hypervisor)
 
-From a Kali Linux machine run the following commands:
+We highly reccommend that you do your build in Docker. This assumes that you already have Docker installed on your system and that you are running the build on an Intel based chip. 
+
+With that in mind you can:
 ```
 git clone https://github.com/tracelabs/tlosint-vm
-sudo apt -y install debos p7zip qemu-utils zerofree
 cd tlosint-vm
-chmod +x scripts/tl/*.sh
-chmod +x scripts/*.sh
-chmod +x *.sh
-sudo ./build.sh
-Locate the OVA in the images/ directory
+chmod +x build-in-container.sh
+./build-in-container.sh
 ```
+
+You can explore the different build options with `-h` flag. 
+
 ## Applications
 
 The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a script on the desktop though. This keeps the size of the release small enough to build and host on Github. If you want to install the tools in the script then: 
