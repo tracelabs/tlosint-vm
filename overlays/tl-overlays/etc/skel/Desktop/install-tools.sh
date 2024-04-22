@@ -61,7 +61,7 @@ setup_path() {
 
 
 install_tools() {
-    local tools=(spiderfoot sherlock maltego python3-shodan theharvester webhttrack outguess stegosuite wireshark metagoofil eyewitness exifprobe ruby-bundler recon-ng cherrytree instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pkg-config npm curl python3-pip pipx python3-exifread python3-fake-useragent yt-dlp keepassxc)
+    local tools=(spiderfoot sherlock maltego python3-shodan theharvester webhttrack outguess stegosuite wireshark metagoofil eyewitness exifprobe ruby-bundler recon-ng cherrytree instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pkg-config curl python3-pip pipx python3-exifread python3-fake-useragent yt-dlp keepassxc)
     for tool in "${tools[@]}"; do
         if ! dpkg -l | grep -qw $tool; then
             sudo apt install $tool -y 2>>"$LOG_FILE" || {
@@ -158,10 +158,7 @@ install_sn0int() {
 }
 
 
-# Function to install tiktok-scraper
-install_tiktok_scraper() {
-    sudo npm i -g tiktok-scraper || { echo "Failed to install tiktok-scraper"; add_to_error_log "Failed to install tiktok-scraper"; return 1; }
-}
+
 
 
 
@@ -187,7 +184,6 @@ install_tor_browser
 install_phoneinfoga
 install_python_packages
 install_sn0int
-install_tiktok_scraper
 update_tj_null_joplin_notebook
 
 display_log_contents
