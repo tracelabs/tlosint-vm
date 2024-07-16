@@ -4,6 +4,7 @@
 # username set when launchine the build
 username=$1
 
-wget -O /home/$username/Obsidian.AppImage https://github.com/obsidianmd/obsidian-releases/releases/download/v1.5.12/Obsidian-1.5.12.AppImage
+download_link=$(curl -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest | sed 's/[()",{}]/ /g; s/ /\n/g' | grep "https.*releases/download/.*AppImage" | grep -v arm64)
+wget -O /home/$username/Obsidian.AppImage $download_link
 chmod +x /home/$username/Obsidian.AppImage
 chmod +x /home/$username/Desktop/obsidian.desktop
