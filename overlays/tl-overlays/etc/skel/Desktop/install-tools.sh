@@ -61,7 +61,7 @@ setup_path() {
 
 
 install_tools() {
-    local tools=(sherlock maltego webhttrack outguess stegosuite metagoofil eyewitness exifprobe instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pipx python3-fake-useragent yt-dlp keepassxc sn0int h8mail)
+    local tools=(sherlock maltego webhttrack outguess stegosuite metagoofil eyewitness exifprobe instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pipx python3-fake-useragent yt-dlp keepassxc sn0int h8mail torbrowser-launcher)
     for tool in "${tools[@]}"; do
         if ! dpkg -l | grep -qw $tool; then
             sudo apt install $tool -y 2>>"$LOG_FILE" || {
@@ -75,48 +75,7 @@ install_tools() {
 }
 
 
-install_tor_browser() {
-    # Define download directory
-    local download_dir="$HOME/Downloads"
-    mkdir -p "$download_dir"
 
-    # Import the Tor Browser Developers signing key
-    gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org || { echo "Failed to import Tor Browser Developers signing key"; add_to_error_log "Failed to import Tor Browser Developers signing key"; return 1; }
-
-    # Export the key to a file
-    local keyring_path="$download_dir/tor.keyring"
-    gpg --output "$keyring_path" --export 0xEF6E286DDA85EA2A4BA7DE684E2C6E8793298290 || { echo "Failed to export Tor Browser Developers signing key"; add_to_error_log "Failed to export Tor Browser Developers signing key"; return 1; }
-
-    # Fetch the latest Tor Browser download link (assuming the link is on the download page)
-    local tor_browser_link="https://www.torproject.org/dist/torbrowser/13.0.14/tor-browser-linux-x86_64-13.0.14.tar.xz"
-    local tor_browser_dir="$download_dir/tor-browser"
-
-    if [ -z "$tor_browser_link" ]; then
-        echo "Failed to find Tor Browser download link"
-        add_to_error_log "Failed to find Tor Browser download link"
-        return 1
-    fi
-
-    # Download the latest Tor Browser tarball and its signature file
-    local tor_browser_tarball="$download_dir/$(basename "$tor_browser_link")"
-    curl -L "$tor_browser_link" -o "$tor_browser_tarball" || { echo "Failed to download Tor Browser"; add_to_error_log "Failed to download Tor Browser"; return 1; }
-    curl -L "${tor_browser_link}.asc" -o "${tor_browser_tarball}.asc" || { echo "Failed to download Tor Browser signature"; add_to_error_log "Failed to download Tor Browser signature"; return 1; }
-
-    # Verify the signature with gpgv
-    gpgv --keyring "$keyring_path" "${tor_browser_tarball}.asc" "$tor_browser_tarball" || { echo "Failed to verify Tor Browser signature"; add_to_error_log "Failed to verify Tor Browser signature"; return 1; }
-
-    # Extract the Tor Browser
-    tar -xf "$tor_browser_tarball" -C "$download_dir" || { echo "Failed to extract Tor Browser"; add_to_error_log "Failed to extract Tor Browser"; return 1; }
-
-if [ -f "$tor_browser_dir/start-tor-browser.desktop" ]; then
-        cd "$tor_browser_dir" || { echo "Failed to navigate to Tor Browser directory"; add_to_error_log "Failed to navigate to Tor Browser directory"; return 1; }
-        ./start-tor-browser.desktop --register-app || { echo "Failed to register Tor Browser as a desktop application"; add_to_error_log "Failed to register Tor Browser as a desktop application"; return 1; }
-    else
-        echo "start-tor-browser.desktop not found in $tor_browser_dir"
-        add_to_error_log "start-tor-browser.desktop not found in $tor_browser_dir"
-        return 1
-    fi
-}
 
 
 
@@ -171,7 +130,6 @@ init_error_log
 update_system
 setup_path
 install_tools
-install_tor_browser
 install_phoneinfoga
 install_python_packages
 update_tj_null_joplin_notebook
