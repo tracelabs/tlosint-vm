@@ -61,7 +61,7 @@ setup_path() {
 
 
 install_tools() {
-    local tools=(sherlock maltego webhttrack outguess stegosuite metagoofil eyewitness exifprobe instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pipx python3-fake-useragent yt-dlp keepassxc sn0int)
+    local tools=(sherlock maltego webhttrack outguess stegosuite metagoofil eyewitness exifprobe instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pipx python3-fake-useragent yt-dlp keepassxc sn0int h8mail)
     for tool in "${tools[@]}"; do
         if ! dpkg -l | grep -qw $tool; then
             sudo apt install $tool -y 2>>"$LOG_FILE" || {
@@ -140,7 +140,6 @@ install_phoneinfoga() {
 install_python_packages() {
     pipx install youtube-dl || { echo "Failed to install youtube-dl"; add_to_error_log "Failed to install youtube-dl"; }
     pip3 install dnsdumpster || { echo "Failed to install dnsdumpster"; add_to_error_log "Failed to install dnsdumpster"; }
-    pipx install h8mail || { echo "Failed to install h8mail"; add_to_error_log "Failed to install h8mail"; }
     pipx install toutatis || { echo "Failed to install toutatis"; add_to_error_log "Failed to install toutatis"; }
     pip3 install tweepy || { echo "Failed to install tweepy"; add_to_error_log "Failed to install tweepy"; }
     pipx install onionsearch || { echo "Failed to install onionsearch"; add_to_error_log "Failed to install onionsearch"; }
