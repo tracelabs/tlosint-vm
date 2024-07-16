@@ -175,7 +175,6 @@ install_tools
 install_tor_browser
 install_phoneinfoga
 install_python_packages
-install_sn0int
 update_tj_null_joplin_notebook
 
 display_log_contents
