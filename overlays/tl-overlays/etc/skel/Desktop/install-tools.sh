@@ -114,7 +114,7 @@ install_python_packages() {
 
 # Function to update TJ Null Joplin Notebook
 update_tj_null_joplin_notebook() {
-    if [ -d "~/Desktop/TJ-OSINT-Notebook" ]; then
+    if [ -d ~/Desktop/TJ-OSINT-Notebook ]; then
         cd ~/Desktop/TJ-OSINT-Notebook && git pull || { echo "Failed to update TJ-OSINT-Notebook"; add_to_error_log "Failed to update TJ-OSINT-Notebook"; return 1; }
     else
         cd ~/Desktop && git clone https://github.com/tjnull/TJ-OSINT-Notebook.git || { echo "Failed to clone TJ-OSINT-Notebook"; add_to_error_log "Failed to clone TJ-OSINT-Notebook"; return 1; }
