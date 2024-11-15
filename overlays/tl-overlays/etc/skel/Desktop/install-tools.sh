@@ -61,7 +61,7 @@ setup_path() {
 
 
 install_tools() {
-    local tools=(spiderfoot sherlock maltego python3-shodan theharvester webhttrack outguess stegosuite wireshark metagoofil eyewitness exifprobe ruby-bundler recon-ng cherrytree instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pkg-config curl python3-pip pipx python3-exifread python3-fake-useragent yt-dlp keepassxc)
+    local tools=(sherlock maltego webhttrack outguess stegosuite metagoofil eyewitness exifprobe instaloader photon sublist3r osrframework joplin drawing finalrecon cargo pipx python3-fake-useragent yt-dlp keepassxc sn0int h8mail torbrowser-launcher obsidian)
     for tool in "${tools[@]}"; do
         if ! dpkg -l | grep -qw $tool; then
             sudo apt install $tool -y 2>>"$LOG_FILE" || {
@@ -75,48 +75,7 @@ install_tools() {
 }
 
 
-install_tor_browser() {
-    # Define download directory
-    local download_dir="$HOME/Downloads"
-    mkdir -p "$download_dir"
 
-    # Import the Tor Browser Developers signing key
-    gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org || { echo "Failed to import Tor Browser Developers signing key"; add_to_error_log "Failed to import Tor Browser Developers signing key"; return 1; }
-
-    # Export the key to a file
-    local keyring_path="$download_dir/tor.keyring"
-    gpg --output "$keyring_path" --export 0xEF6E286DDA85EA2A4BA7DE684E2C6E8793298290 || { echo "Failed to export Tor Browser Developers signing key"; add_to_error_log "Failed to export Tor Browser Developers signing key"; return 1; }
-
-    # Fetch the latest Tor Browser download link (assuming the link is on the download page)
-    local tor_browser_link="https://www.torproject.org/dist/torbrowser/13.0.14/tor-browser-linux-x86_64-13.0.14.tar.xz"
-    local tor_browser_dir="$download_dir/tor-browser"
-
-    if [ -z "$tor_browser_link" ]; then
-        echo "Failed to find Tor Browser download link"
-        add_to_error_log "Failed to find Tor Browser download link"
-        return 1
-    fi
-
-    # Download the latest Tor Browser tarball and its signature file
-    local tor_browser_tarball="$download_dir/$(basename "$tor_browser_link")"
-    curl -L "$tor_browser_link" -o "$tor_browser_tarball" || { echo "Failed to download Tor Browser"; add_to_error_log "Failed to download Tor Browser"; return 1; }
-    curl -L "${tor_browser_link}.asc" -o "${tor_browser_tarball}.asc" || { echo "Failed to download Tor Browser signature"; add_to_error_log "Failed to download Tor Browser signature"; return 1; }
-
-    # Verify the signature with gpgv
-    gpgv --keyring "$keyring_path" "${tor_browser_tarball}.asc" "$tor_browser_tarball" || { echo "Failed to verify Tor Browser signature"; add_to_error_log "Failed to verify Tor Browser signature"; return 1; }
-
-    # Extract the Tor Browser
-    tar -xf "$tor_browser_tarball" -C "$download_dir" || { echo "Failed to extract Tor Browser"; add_to_error_log "Failed to extract Tor Browser"; return 1; }
-
-if [ -f "$tor_browser_dir/start-tor-browser.desktop" ]; then
-        cd "$tor_browser_dir" || { echo "Failed to navigate to Tor Browser directory"; add_to_error_log "Failed to navigate to Tor Browser directory"; return 1; }
-        ./start-tor-browser.desktop --register-app || { echo "Failed to register Tor Browser as a desktop application"; add_to_error_log "Failed to register Tor Browser as a desktop application"; return 1; }
-    else
-        echo "start-tor-browser.desktop not found in $tor_browser_dir"
-        add_to_error_log "start-tor-browser.desktop not found in $tor_browser_dir"
-        return 1
-    fi
-}
 
 
 
@@ -139,23 +98,14 @@ install_phoneinfoga() {
 # Function to install Python packages
 install_python_packages() {
     pipx install youtube-dl || { echo "Failed to install youtube-dl"; add_to_error_log "Failed to install youtube-dl"; }
-    pip3 install dnsdumpster || { echo "Failed to install dnsdumpster"; add_to_error_log "Failed to install dnsdumpster"; }
-    pipx install h8mail || { echo "Failed to install h8mail"; add_to_error_log "Failed to install h8mail"; }
+    #pip3 install dnsdumpster || { echo "Failed to install dnsdumpster"; add_to_error_log "Failed to install dnsdumpster"; }
     pipx install toutatis || { echo "Failed to install toutatis"; add_to_error_log "Failed to install toutatis"; }
-    pip3 install tweepy || { echo "Failed to install tweepy"; add_to_error_log "Failed to install tweepy"; }
-    pip3 install onionsearch || { echo "Failed to install onionsearch"; add_to_error_log "Failed to install onionsearch"; }
+    #pip3 install tweepy || { echo "Failed to install tweepy"; add_to_error_log "Failed to install tweepy"; }
+    pipx install onionsearch || { echo "Failed to install onionsearch"; add_to_error_log "Failed to install onionsearch"; }
 }
 
 
-# Function to install sn0int
-install_sn0int() {
-    mkdir -p ~/github-tools || { echo "Failed to create github-tools directory"; add_to_error_log "Failed to create github-tools directory"; }
-    cd ~/github-tools || { echo "Failed to navigate to github-tools directory"; add_to_error_log "Failed to navigate to github-tools directory"; }
-    curl -s https://apt.vulns.sexy/kpcyrd.pgp | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg || { echo "Failed to add sn0int gpg key"; add_to_error_log "Failed to add sn0int gpg key"; }
-    echo "deb http://apt.vulns.sexy stable main" | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list || { echo "Failed to add sn0int to sources list"; add_to_error_log "Failed to add sn0int to sources list"; }
-    sudo apt update || { echo "Failed to update package lists for sn0int"; add_to_error_log "Failed to update package lists for sn0int"; }
-    sudo apt install sn0int -y || { echo "Failed to install sn0int"; add_to_error_log "Failed to install sn0int"; }
-}
+
 
 
 
@@ -164,7 +114,7 @@ install_sn0int() {
 
 # Function to update TJ Null Joplin Notebook
 update_tj_null_joplin_notebook() {
-    if [ -d "~/Desktop/TJ-OSINT-Notebook" ]; then
+    if [ -d ~/Desktop/TJ-OSINT-Notebook ]; then
         cd ~/Desktop/TJ-OSINT-Notebook && git pull || { echo "Failed to update TJ-OSINT-Notebook"; add_to_error_log "Failed to update TJ-OSINT-Notebook"; return 1; }
     else
         cd ~/Desktop && git clone https://github.com/tjnull/TJ-OSINT-Notebook.git || { echo "Failed to clone TJ-OSINT-Notebook"; add_to_error_log "Failed to clone TJ-OSINT-Notebook"; return 1; }
@@ -180,10 +130,8 @@ init_error_log
 update_system
 setup_path
 install_tools
-install_tor_browser
 install_phoneinfoga
 install_python_packages
-install_sn0int
 update_tj_null_joplin_notebook
 
 display_log_contents
