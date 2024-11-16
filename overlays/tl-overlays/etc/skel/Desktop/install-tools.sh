@@ -22,10 +22,20 @@ done 2>/dev/null &
 LOG_FILE="$HOME/osint_logs/osint_install_error.log"
 
 
+# Function to display text in green
+echo_green() {
+    echo -e "\033[32m$1\033[0m"
+}
+
+# Function to display text in red
+echo_red() {
+    echo -e "\033[31m$1\033[0m"
+}
+
 # Initialize the log file and create the log directory
 init_error_log() {
     mkdir -p "$(dirname "$LOG_FILE")"
-    echo "Starting OSINT Tools Installation: $(date)" > "$LOG_FILE"
+    echo "Starting OSINT Tools Installation: $(date)" | tee "$LOG_FILE"
 }
 
 
@@ -35,11 +45,11 @@ add_to_error_log() {
 }
 
 display_log_contents() {
-    if [ -s "$LOG_FILE" ]; then
-        echo "Installation completed with errors. Review the log below:"
-        cat "$LOG_FILE"
+    if [ "$(wc -l < "$LOG_FILE")" -eq 1 ]; then
+        echo_green "\n\nInstallation completed successfully with no errors."
     else
-        echo "Installation completed successfully with no errors."
+        echo_red "\n\nInstallation completed with errors. Review the log below:"
+        cat "$LOG_FILE"
     fi
 }
 
@@ -88,7 +98,7 @@ install_tor_browser() {
     gpg --output "$keyring_path" --export 0xEF6E286DDA85EA2A4BA7DE684E2C6E8793298290 || { echo "Failed to export Tor Browser Developers signing key"; add_to_error_log "Failed to export Tor Browser Developers signing key"; return 1; }
 
     # Fetch the latest Tor Browser download link (assuming the link is on the download page)
-    local tor_browser_link="https://www.torproject.org/dist/torbrowser/13.0.14/tor-browser-linux-x86_64-13.0.14.tar.xz"
+    local tor_browser_link="https://www.torproject.org/dist/torbrowser/14.0.2/tor-browser-linux-x86_64-14.0.2.tar.xz"
     local tor_browser_dir="$download_dir/tor-browser"
 
     if [ -z "$tor_browser_link" ]; then
@@ -138,12 +148,14 @@ install_phoneinfoga() {
 
 # Function to install Python packages
 install_python_packages() {
+    pip3 install --upgrade setuptools --break-system-packages # Fix for dnsdumpster
     pipx install youtube-dl || { echo "Failed to install youtube-dl"; add_to_error_log "Failed to install youtube-dl"; }
-    pip3 install dnsdumpster || { echo "Failed to install dnsdumpster"; add_to_error_log "Failed to install dnsdumpster"; }
+    pip3 install dnsdumpster --break-system-packages || { echo "Failed to install dnsdumpster"; add_to_error_log "Failed to install dnsdumpster"; }
     pipx install h8mail || { echo "Failed to install h8mail"; add_to_error_log "Failed to install h8mail"; }
     pipx install toutatis || { echo "Failed to install toutatis"; add_to_error_log "Failed to install toutatis"; }
-    pip3 install tweepy || { echo "Failed to install tweepy"; add_to_error_log "Failed to install tweepy"; }
-    pip3 install onionsearch || { echo "Failed to install onionsearch"; add_to_error_log "Failed to install onionsearch"; }
+    pip3 install tweepy --break-system-packages || { echo "Failed to install tweepy"; add_to_error_log "Failed to install tweepy"; }
+    pip3 install onionsearch --break-system-packages || { echo "Failed to install onionsearch"; add_to_error_log "Failed to install onionsearch"; }
+    
 }
 
 
@@ -151,8 +163,8 @@ install_python_packages() {
 install_sn0int() {
     mkdir -p ~/github-tools || { echo "Failed to create github-tools directory"; add_to_error_log "Failed to create github-tools directory"; }
     cd ~/github-tools || { echo "Failed to navigate to github-tools directory"; add_to_error_log "Failed to navigate to github-tools directory"; }
-    curl -s https://apt.vulns.sexy/kpcyrd.pgp | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg || { echo "Failed to add sn0int gpg key"; add_to_error_log "Failed to add sn0int gpg key"; }
-    echo "deb http://apt.vulns.sexy stable main" | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list || { echo "Failed to add sn0int to sources list"; add_to_error_log "Failed to add sn0int to sources list"; }
+    curl -sSf https://apt.vulns.xyz/kpcyrd.pgp | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg || { echo "Failed to add sn0int gpg key"; add_to_error_log "Failed to add sn0int gpg key"; }
+    echo "deb https://apt.vulns.xyz stable main" | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list || { echo "Failed to add sn0int to sources list"; add_to_error_log "Failed to add sn0int to sources list"; }
     sudo apt update || { echo "Failed to update package lists for sn0int"; add_to_error_log "Failed to update package lists for sn0int"; }
     sudo apt install sn0int -y || { echo "Failed to install sn0int"; add_to_error_log "Failed to install sn0int"; }
 }
@@ -164,10 +176,10 @@ install_sn0int() {
 
 # Function to update TJ Null Joplin Notebook
 update_tj_null_joplin_notebook() {
-    if [ -d "~/Desktop/TJ-OSINT-Notebook" ]; then
-        cd ~/Desktop/TJ-OSINT-Notebook && git pull || { echo "Failed to update TJ-OSINT-Notebook"; add_to_error_log "Failed to update TJ-OSINT-Notebook"; return 1; }
+    if [ -d "/home/osint/Desktop/TJ-OSINT-Notebook" ]; then
+        cd /home/osint/Desktop/TJ-OSINT-Notebook && git pull || { echo "Failed to update TJ-OSINT-Notebook"; add_to_error_log "Failed to update TJ-OSINT-Notebook"; return 1; }
     else
-        cd ~/Desktop && git clone https://github.com/tjnull/TJ-OSINT-Notebook.git || { echo "Failed to clone TJ-OSINT-Notebook"; add_to_error_log "Failed to clone TJ-OSINT-Notebook"; return 1; }
+        cd /home/osint/Desktop && git clone https://github.com/tjnull/TJ-OSINT-Notebook.git || { echo "Failed to clone TJ-OSINT-Notebook"; add_to_error_log "Failed to clone TJ-OSINT-Notebook"; return 1; }
     fi
 }
 
