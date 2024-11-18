@@ -108,6 +108,7 @@ install_phoneinfoga() {
 
 # Function to install Python packages
 install_python_packages() {
+    pip3 install --upgrade setuptools --break-system-packages # Fix for dnsdumpster
     pipx install youtube-dl || { echo "Failed to install youtube-dl"; add_to_error_log "Failed to install youtube-dl"; }
     pip3 install dnsdumpster --break-system-packages || { echo "Failed to install dnsdumpster"; add_to_error_log "Failed to install dnsdumpster"; }
     pipx install toutatis || { echo "Failed to install toutatis"; add_to_error_log "Failed to install toutatis"; }
