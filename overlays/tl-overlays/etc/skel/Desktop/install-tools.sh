@@ -155,18 +155,8 @@ install_sn0int() {
     sudo apt install sn0int -y || { echo "Failed to install sn0int"; add_to_error_log "Failed to install sn0int"; }
 }
 
-# Function to update TJ Null Joplin Notebook
-update_tj_null_joplin_notebook() {
-    if [ -d "~/Desktop/TJ-OSINT-Notebook" ]; then
-        cd ~/Desktop/TJ-OSINT-Notebook && git pull || { echo "Failed to update TJ-OSINT-Notebook"; add_to_error_log "Failed to update TJ-OSINT-Notebook"; return 1; }
-    else
-        cd ~/Desktop && git clone https://github.com/tjnull/TJ-OSINT-Notebook.git || { echo "Failed to clone TJ-OSINT-Notebook"; add_to_error_log "Failed to clone TJ-OSINT-Notebook"; return 1; }
-    fi
-}
-
 # Function to install pdlist
 install_pdlist() {
-
     sudo apt update -y || { echo "Failed to update package for pdlist"; add_to_error_log "Failed to update package lists for pdlist"; }
     sudo apt install -y python3-venv || { echo "Failed to install python3-venv"; add_to_error_log "Failed to install python3-venv"; }
     mkdir -p ~/packages/pdlist && cd ~/packages/pdlist || { echo "Failed to navigate to pdlist directory"; add_to_error_log "Failed to navigate to pdlist directory"; }
@@ -180,8 +170,16 @@ install_pdlist() {
     deactivate || { echo "Failed to deactivate vitual enviornment"; add_to_error_log "Failed to deactivate vitual enviornment"; }
     echo '#!/bin/bash\nsource ~/packages/pdlist/pdlist-env/bin/activate' > ~/packages/pdlist/activate-pdlist-env.sh || { echo "Failed to create activate-pdlist-env.sh"; add_to_error_log "Failed to create activate-pdlist-env.sh"; }
     chmod +x ~/packages/pdlist/activate-pdlist-env.sh || { echo "Failed to set execute permission for activate-pdlist-env.sh"; add_to_error_log "Failed to set execute permission for activate-pdlist-env.sh"; }
-    sudo ln -s ~/packages/pdlist/activate-pdlist-env.sh /usr/local/bin/pdlist-tool || { echo "Failed to create symlink for activate-pdlist-env.sh"; add_to_error_log "Failed to create symlink for activate-pdlist-env.sh";
+    sudo ln -s ~/packages/pdlist/activate-pdlist-env.sh /usr/local/bin/pdlist-tool || { echo "Failed to create symlink for activate-pdlist-env.sh"; add_to_error_log "Failed to create symlink for activate-pdlist-env.sh"; }
+}
 
+# Function to update TJ Null Joplin Notebook
+update_tj_null_joplin_notebook() {
+    if [ -d "~/Desktop/TJ-OSINT-Notebook" ]; then
+        cd ~/Desktop/TJ-OSINT-Notebook && git pull || { echo "Failed to update TJ-OSINT-Notebook"; add_to_error_log "Failed to update TJ-OSINT-Notebook"; return 1; }
+    else
+        cd ~/Desktop && git clone https://github.com/tjnull/TJ-OSINT-Notebook.git || { echo "Failed to clone TJ-OSINT-Notebook"; add_to_error_log "Failed to clone TJ-OSINT-Notebook"; return 1; }
+    fi
 }
 
 # Invalidate the sudo timestamp before exiting
