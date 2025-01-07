@@ -157,7 +157,7 @@ install_sn0int() {
 
 # Function to install pdlist
 install_pdlist() {
-    sudo apt update -y || { echo "Failed to update package for pdlist"; add_to_error_log "Failed to update package lists for pdlist"; }
+    sudo apt update -y || { echo "Failed to update package for pdlist"; add_to_error_log "Failed to update package for pdlist"; }
     sudo apt install -y python3-venv || { echo "Failed to install python3-venv"; add_to_error_log "Failed to install python3-venv"; }
     mkdir -p ~/packages/pdlist && cd ~/packages/pdlist || { echo "Failed to navigate to pdlist directory"; add_to_error_log "Failed to navigate to pdlist directory"; }
     python3 -m venv pdlist-env || { echo "Failed to create vitual enviornment"; add_to_error_log "Failed to create vitual enviornment"; }
@@ -171,6 +171,19 @@ install_pdlist() {
     echo '#!/bin/bash\nsource ~/packages/pdlist/pdlist-env/bin/activate' > ~/packages/pdlist/activate-pdlist-env.sh || { echo "Failed to create activate-pdlist-env.sh"; add_to_error_log "Failed to create activate-pdlist-env.sh"; }
     chmod +x ~/packages/pdlist/activate-pdlist-env.sh || { echo "Failed to set execute permission for activate-pdlist-env.sh"; add_to_error_log "Failed to set execute permission for activate-pdlist-env.sh"; }
     sudo ln -s ~/packages/pdlist/activate-pdlist-env.sh /usr/local/bin/pdlist-tool || { echo "Failed to create symlink for activate-pdlist-env.sh"; add_to_error_log "Failed to create symlink for activate-pdlist-env.sh"; }
+}
+
+# Function to install vscode
+install_vscode(){
+    sudo apt update -y || { echo "Failed to update package for vscode"; add_to_error_log "Failed to update package for vscode"; }
+    sudo apt install -y libglib2.0-bin || { echo "Failed to install libglib2.0-bin"; add_to_error_log "Failed to install libglib2.0-bin"; }
+    sudo apt install -y software-properties-common apt-transport-https || { echo "Failed to install packages"; add_to_error_log "Failed to install packages"; }
+    mkdir -p ~/packages/vsocde/ && cd ~/packages/vsocde/ || { echo "Failed to navigate to vscode directory"; add_to_error_log "Failed to navigate to vscode directory"; }
+    wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg || { echo "Failed to dearmor vscode PGP"; add_to_error_log "Failed to dearmor vscode PGP"; }
+    sudo install -o osint -g osint -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/ || { echo "Failed to install vscode PGP to trusted.pgp.d"; add_to_error_log "Failed to install vscode PGP to trusted.pgp.d"; }
+    sudo sh -c "echo 'deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main' > /etc/apt/sources.list.d/vscode.list"  || { echo "Failed to add apt vscode repository"; add_to_error_log "Failed to add apt vscode repository"; }
+    sudo apt update -y || { echo "Failed to update package for vscode"; add_to_error_log "Failed to update package for vscode"; }
+    sudo apt install -y code || { echo "Failed to install vscode"; add_to_error_log "Failed to install vscode"; }
 }
 
 # Function to update TJ Null Joplin Notebook
@@ -196,7 +209,7 @@ install_phoneinfoga
 install_python_packages
 install_sn0int
 install_pdlist
+install_vscode
 update_tj_null_joplin_notebook
 
 display_log_contents
-
