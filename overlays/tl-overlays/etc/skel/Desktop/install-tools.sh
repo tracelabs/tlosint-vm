@@ -118,8 +118,6 @@ if [ -f "$tor_browser_dir/start-tor-browser.desktop" ]; then
     fi
 }
 
-
-
 install_phoneinfoga() {
     # Download and execute the PhoneInfoga installation script
     bash <(curl -sSL https://raw.githubusercontent.com/sundowndev/phoneinfoga/master/support/scripts/install) || { echo "Failed to download and execute PhoneInfoga install script"; add_to_error_log "Failed to download and execute PhoneInfoga install script"; return 1; }
@@ -157,11 +155,6 @@ install_sn0int() {
     sudo apt install sn0int -y || { echo "Failed to install sn0int"; add_to_error_log "Failed to install sn0int"; }
 }
 
-
-
-
-
-
 # Function to update TJ Null Joplin Notebook
 update_tj_null_joplin_notebook() {
     if [ -d "~/Desktop/TJ-OSINT-Notebook" ]; then
@@ -169,6 +162,26 @@ update_tj_null_joplin_notebook() {
     else
         cd ~/Desktop && git clone https://github.com/tjnull/TJ-OSINT-Notebook.git || { echo "Failed to clone TJ-OSINT-Notebook"; add_to_error_log "Failed to clone TJ-OSINT-Notebook"; return 1; }
     fi
+}
+
+# Function to install pdlist
+install_pdlist() {
+
+    sudo apt update -y || { echo "Failed to update package for pdlist"; add_to_error_log "Failed to update package lists for pdlist"; }
+    sudo apt install -y python3-venv || { echo "Failed to install python3-venv"; add_to_error_log "Failed to install python3-venv"; }
+    mkdir -p ~/packages/pdlist && cd ~/packages/pdlist || { echo "Failed to navigate to pdlist directory"; add_to_error_log "Failed to navigate to pdlist directory"; }
+    python3 -m venv pdlist-env || { echo "Failed to create vitual enviornment"; add_to_error_log "Failed to create vitual enviornment"; }
+    source pdlist-env/bin/activate || { echo "Failed to activate vitual enviornment"; add_to_error_log "Failed to activate vitual enviornment"; }
+    git clone https://github.com/gnebbia/pdlist ||  { echo "Failed to add pdlist to sources list"; add_to_error_log "Failed to add pdlist to sources list"; }
+    cd pdlist || { echo "Failed to navigate to pdlist directory"; add_to_error_log "Failed to navigate to pdlist directory"; }
+    pip install setuptools || { echo "Failed to install setuptools"; add_to_error_log "Failed to install setuptools"; }
+    pip install -r requirements.txt || { echo "Failed to install dependencies"; add_to_error_log "Failed to install dependencies"; }
+    python setup.py install || { echo "Failed to install pdlist"; add_to_error_log "Failed to install pdlist"; }
+    deactivate || { echo "Failed to deactivate vitual enviornment"; add_to_error_log "Failed to deactivate vitual enviornment"; }
+    echo '#!/bin/bash\nsource ~/packages/pdlist/pdlist-env/bin/activate' > ~/packages/pdlist/activate-pdlist-env.sh || { echo "Failed to create activate-pdlist-env.sh"; add_to_error_log "Failed to create activate-pdlist-env.sh"; }
+    chmod +x ~/packages/pdlist/activate-pdlist-env.sh || { echo "Failed to set execute permission for activate-pdlist-env.sh"; add_to_error_log "Failed to set execute permission for activate-pdlist-env.sh"; }
+    sudo ln -s ~/packages/pdlist/activate-pdlist-env.sh /usr/local/bin/pdlist-tool || { echo "Failed to create symlink for activate-pdlist-env.sh"; add_to_error_log "Failed to create symlink for activate-pdlist-env.sh";
+
 }
 
 # Invalidate the sudo timestamp before exiting
@@ -184,6 +197,7 @@ install_tor_browser
 install_phoneinfoga
 install_python_packages
 install_sn0int
+install_pdlist
 update_tj_null_joplin_notebook
 
 display_log_contents
