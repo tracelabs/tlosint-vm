@@ -64,6 +64,7 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 
 **Domains**
 * [Domainfy (OSRFramework)](https://github.com/i3visio/osrframework)
+* [Pdlist](https://github.com/gnebbia/pdlist)
 * [Sublist3r](https://github.com/aboul3la/Sublist3r)
 
 **Downloaders**
@@ -108,6 +109,7 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 * [Sherlock](https://github.com/sherlock-project/sherlock)
 * [Shodan](https://cli.shodan.io/)
 * [Joplin](https://joplinapp.org/help/)
+* [VS Code](https://code.visualstudio.com/docs)
 
 ## Configuration Settings
 **Firefox**
@@ -118,6 +120,6 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 * Preload OSINT Bookmarks
 
 ## Contributing
-Are you interested in the VM development? Join us on [Discord](https://discord.com/invite/tracelabs) in #osint-vm channel.
+Are you interested in the VM development? Join us on [Discord](https://discord.com/invite/Rn8z2QNAD9) in #osint-vm channel.
 
 PRs are welcome. We ask that you PR in to the Dev branch.
