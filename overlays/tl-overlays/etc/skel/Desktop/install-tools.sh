@@ -11,6 +11,16 @@ cleanup() {
 trap cleanup EXIT
 
 
+# Function to display text in green
+echo_green() {
+    echo -e "\033[32m$1\033[0m"
+}
+
+# Function to display text in red
+echo_red() {
+    echo -e "\033[31m$1\033[0m"
+}
+
 # More frequent keep-alive: every 30 seconds
 while true; do
   sudo -n true
@@ -25,7 +35,7 @@ LOG_FILE="$HOME/osint_logs/osint_install_error.log"
 # Initialize the log file and create the log directory
 init_error_log() {
     mkdir -p "$(dirname "$LOG_FILE")"
-    echo "Starting OSINT Tools Installation: $(date)" > "$LOG_FILE"
+    echo "Starting OSINT Tools Installation: $(date)"  | tee "$LOG_FILE"
 }
 
 
@@ -35,13 +45,14 @@ add_to_error_log() {
 }
 
 display_log_contents() {
-    if [ -s "$LOG_FILE" ]; then
-        echo "Installation completed with errors. Review the log below:"
-        cat "$LOG_FILE"
+    if [ "$(wc -l < "$LOG_FILE")" -eq 1 ]; then
+        echo_green "\n\nInstallation completed successfully with no errors."
     else
-        echo "Installation completed successfully with no errors."
+        echo_red "\n\nInstallation completed with errors. Review the log below:"
+        cat "$LOG_FILE"
     fi
 }
+
 
 
 # Function to update and upgrade the system
@@ -53,10 +64,10 @@ update_system() {
 
 # Function to set up the PATH
 setup_path() {
-    if ! grep -q 'export PATH=$PATH:$HOME/.local/bin' ~/.zshrc; then
-        echo '\nexport PATH=$PATH:$HOME/.local/bin' >> ~/.zshrc
+    if ! grep -q 'export PATH=$PATH:$HOME/.local/bin' /home/osint/.zshrc; then
+        echo '\nexport PATH=$PATH:$HOME/.local/bin' >> /home/osint/.zshrc
     fi
-    . ~/.zshrc || { echo "Failed to source .zshrc"; add_to_error_log "Failed to source .zshrc"; }
+    . /home/osint/.zshrc || { echo "Failed to source .zshrc"; add_to_error_log "Failed to source .zshrc"; }
 }
 
 
@@ -97,10 +108,11 @@ install_phoneinfoga() {
 
 # Function to install Python packages
 install_python_packages() {
+    pip3 install --upgrade setuptools --break-system-packages # Fix for dnsdumpster
     pipx install youtube-dl || { echo "Failed to install youtube-dl"; add_to_error_log "Failed to install youtube-dl"; }
-    #pip3 install dnsdumpster || { echo "Failed to install dnsdumpster"; add_to_error_log "Failed to install dnsdumpster"; }
+    pip3 install dnsdumpster --break-system-packages || { echo "Failed to install dnsdumpster"; add_to_error_log "Failed to install dnsdumpster"; }
     pipx install toutatis || { echo "Failed to install toutatis"; add_to_error_log "Failed to install toutatis"; }
-    #pip3 install tweepy || { echo "Failed to install tweepy"; add_to_error_log "Failed to install tweepy"; }
+    pip3 install tweepy --break-system-packages || { echo "Failed to install tweepy"; add_to_error_log "Failed to install tweepy"; }
     pipx install onionsearch || { echo "Failed to install onionsearch"; add_to_error_log "Failed to install onionsearch"; }
 }
 
@@ -114,10 +126,10 @@ install_python_packages() {
 
 # Function to update TJ Null Joplin Notebook
 update_tj_null_joplin_notebook() {
-    if [ -d ~/Desktop/TJ-OSINT-Notebook ]; then
-        cd ~/Desktop/TJ-OSINT-Notebook && git pull || { echo "Failed to update TJ-OSINT-Notebook"; add_to_error_log "Failed to update TJ-OSINT-Notebook"; return 1; }
+    if [ -d /home/osint/Desktop/TJ-OSINT-Notebook ]; then
+        cd /home/osint/Desktop/TJ-OSINT-Notebook && git pull || { echo "Failed to update TJ-OSINT-Notebook"; add_to_error_log "Failed to update TJ-OSINT-Notebook"; return 1; }
     else
-        cd ~/Desktop && git clone https://github.com/tjnull/TJ-OSINT-Notebook.git || { echo "Failed to clone TJ-OSINT-Notebook"; add_to_error_log "Failed to clone TJ-OSINT-Notebook"; return 1; }
+        cd /home/osint/Desktop && git clone https://github.com/tjnull/TJ-OSINT-Notebook.git || { echo "Failed to clone TJ-OSINT-Notebook"; add_to_error_log "Failed to clone TJ-OSINT-Notebook"; return 1; }
     fi
 }
 
