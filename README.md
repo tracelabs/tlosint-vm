@@ -4,6 +4,14 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Github All Releases](https://img.shields.io/github/downloads/tracelabs/tlosint-vm/total.svg)]()
 
+# Maintainer Notes
+
+TraceLabs currently needs a maintainer and staff will not be adding anything to this repository unilaterally.  
+
+If you are interested in the VM development then join us on [Discord](https://discord.com/invite/tracelabs) in #osint-vm channel.
+
+PRs are welcome. We ask that you PR in to the Dev branch.
+
 # Introduction
 The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - https://gitlab.com/kalilinux/build-scripts/kali-vm
 
