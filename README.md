@@ -8,7 +8,7 @@
 
 TraceLabs currently needs a maintainer and staff will not be adding anything to this repository unilaterally.  
 
-If you are interested in the VM development then join us on [Discord](https://discord.com/invite/tracelabs) in #osint-vm channel.
+If you are interested in the VM development then join us on [Discord](https://tracelabs.org/discord) in #osint-vm channel.
 
 PRs are welcome. We ask that you PR in to the Dev branch.
 
@@ -126,6 +126,6 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 * Preload OSINT Bookmarks
 
 ## Contributing
-Are you interested in the VM development? Join us on [Discord](https://discord.com/invite/tracelabs) in #osint-vm channel.
+Are you interested in the VM development? Join us on [Discord](https://tracelabs.org/discord) in #osint-vm channel.
 
 PRs are welcome. We ask that you PR in to the Dev branch.
