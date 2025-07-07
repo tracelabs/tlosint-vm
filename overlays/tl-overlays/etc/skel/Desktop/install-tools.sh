@@ -46,8 +46,23 @@ display_log_contents() {
 
 # Function to update and upgrade the system
 update_system() {
-    sudo apt-get update || { echo "Failed to update package lists"; add_to_error_log "Failed to update package lists"; }
-    sudo apt-get dist-upgrade -y || { echo "Failed to upgrade the system"; add_to_error_log "Failed to upgrade the system"; }
+    echo "[*] Checking for updated Kali GPG key..."
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://archive.kali.org/archive-key.asc | sudo gpg --dearmor -o /etc/apt/keyrings/kali-archive-keyring.gpg || {
+        echo "Failed to import Kali GPG key"
+        add_to_error_log "Failed to import Kali GPG key"
+    }
+
+    echo "[*] Running apt update..."
+    sudo apt-get update || {
+        echo "Failed to update package lists"
+        add_to_error_log "Failed to update package lists"
+    }
+
+    sudo apt-get dist-upgrade -y || {
+        echo "Failed to upgrade the system"
+        add_to_error_log "Failed to upgrade the system"
+    }
 }
 
 
