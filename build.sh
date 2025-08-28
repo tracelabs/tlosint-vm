@@ -318,6 +318,8 @@ echo "$@" | grep -q -e "--scratchsize[= ]" \
 
 mkdir -p $OUTDIR
 
+echo "Downloading and installing the Kali GPG key..."
+curl -fsSL https://archive.kali.org/archive-key.asc | gpg --dearmor > kali-archive-keyring.gpg
 
 echo "Building image from recipe $(b tlosint.yaml) ..."
 OUTPUT=$OUTDIR/tl-osint-$VERSION-$VARIANT-$ARCH
