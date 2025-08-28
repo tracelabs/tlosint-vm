@@ -318,6 +318,8 @@ echo "$@" | grep -q -e "--scratchsize[= ]" \
 
 mkdir -p $OUTDIR
 
+echo "Moving Kali GPG key into expected directory"
+cp /opt/kali-archive-keyring.gpg /recipes/kali-archive-keyring.gpg
 
 echo "Building image from recipe $(b tlosint.yaml) ..."
 OUTPUT=$OUTDIR/tl-osint-$VERSION-$VARIANT-$ARCH
