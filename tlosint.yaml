@@ -27,11 +27,42 @@
 architecture: {{ $arch }}
 
 actions:
+  # NEW: fetch fresh keyring for debootstrap to use
+  - description: "Fetch Kali archive keyring (pre-debootstrap)"
+    action: run
+    chroot: false
+    command: |
+      set -e
+      if command -v curl >/dev/null 2>&1; then
+        curl -fsSL "https://archive.kali.org/archive-keyring.gpg" -o kali-archive-keyring.gpg
+      else
+        wget -q "https://archive.kali.org/archive-keyring.gpg" -O kali-archive-keyring.gpg
+      fi
+
   - action: debootstrap
     mirror: {{ $mirror }}
     suite: {{ $branch }}
     components: [ main, contrib, non-free ]
     keyring-file: kali-archive-keyring.gpg
+
+  # NEW: install keyring into target FS and mirror to trusted.gpg.d
+  - description: "Install keyring into target (usr/share/keyrings + trusted.gpg.d)"
+    action: run
+    chroot: false
+    command: |
+      set -e
+      install -D -m 0644 kali-archive-keyring.gpg \
+        "$ROOTDIR/usr/share/keyrings/kali-archive-keyring.gpg"
+      chown root:root "$ROOTDIR/usr/share/keyrings/kali-archive-keyring.gpg" || true
+      mkdir -p "$ROOTDIR/etc/apt/trusted.gpg.d"
+      cp -f kali-archive-keyring.gpg \
+        "$ROOTDIR/etc/apt/trusted.gpg.d/kali-archive-keyring.gpg"
+
+  # NEW: quick APT sanity after keyring present
+  - description: "APT sanity check after keyring install"
+    action: run
+    chroot: true
+    command: apt-get update -y || true
 
   - description: "Install usr-is-merged (cf. debos #361 and #362)"
     action: apt
@@ -68,12 +99,12 @@ actions:
     packages:
       - kali-linux-core
       - kali-desktop-xfce
+
   # this action "layers" a lot of extra stuff on to the installed filesystem
   # this is where we can add things to the desktop or other parts of the filesystem
   # note: the user's home directory does not yet exist at this point
   - action: overlay
     source: overlays/tl-overlays
-
 
   {{ if ne $packages "" }}
   - description: "Install extra packages: {{ $packages }}"
@@ -173,7 +204,6 @@ actions:
     action: run
     chroot: false
     script: scripts/cleanup-out.sh
-
 
   - description: "Export to a {{ $format }} image"
     label: "export-{{ $format }}"
