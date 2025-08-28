@@ -30,6 +30,7 @@ jobs:
       run:  |
           sudo apt update
           sudo apt -y install debos p7zip qemu-utils zerofree
+          sudo apt -y install debos p7zip qemu-utils zerofree e2fsprogs
           cd $GITHUB_WORKSPACE
           chmod +x scripts/tl/*.sh
           chmod +x scripts/*.sh
