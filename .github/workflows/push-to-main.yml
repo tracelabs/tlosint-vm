@@ -4,9 +4,7 @@ name: push-to-main
 # triggers on PRs or direct commits to main or dev branches
 on:
   push:
-    branches:
-      - main
-      - dev  # Added the dev branch here
+    branches: ['*']
   pull_request:
     branches:
       - main
