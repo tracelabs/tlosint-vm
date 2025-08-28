@@ -4,7 +4,9 @@ name: push-to-main
 # triggers on PRs or direct commits to main or dev branches
 on:
   push:
-    branches: ['*']
+    branches:
+      - main
+      - dev  # Added the dev branch here
   pull_request:
     branches:
       - main
@@ -17,10 +19,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
-
-    - name: Debug workflow version
-      run: |
-        echo "DEBUG: This is the latest workflow on branch n/add-e2fsprogs"
 
     # Sets up Docker environment
     - name: Set up Docker Buildx
