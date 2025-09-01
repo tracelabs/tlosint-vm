@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Tracelabs OSINT Setup for Kali + Updater + Validator (system-wide wrappers)
+# Ultimate OSINT Setup for Kali + Updater + Validator (translate-shell + robust Shodan/cargo)
 set -uo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
@@ -91,7 +91,7 @@ install_base_packages() {
   run "${SUDO} apt-get update -y"
   local pkgs=(
     ca-certificates apt-transport-https software-properties-common gnupg
-    curl wget git jq unzip zip xz-utils coreutils moreutils ripgrep fzf
+    curl wget git jq unzip zip xz-utils coreutils moreutils ripgrep fzf gawk
     build-essential pkg-config make gcc g++ libc6-dev
     python3 python3-venv python3-pip python3-setuptools python3-dev pipx
     golang-go
@@ -129,22 +129,6 @@ setup_rust_env() {
   run "${SUDO} -u \"$TARGET_USER\" bash -lc '[ -f \"\\\$HOME/.cargo/env\" ] && (grep -qxF \"source \\\"\\\$HOME/.cargo/env\\\"\" \"\\\$HOME/.zprofile\" || echo \"source \\\"\\\$HOME/.cargo/env\\\"\" >> \"\\\$HOME/.zprofile\")'"
 }
 
-# Yarn + DeepL CLI + system-wide wrapper
-install_yarn_and_deepl() {
-  log "[*] Installing Yarn & DeepL for target user"
-  if ! command -v yarn >/dev/null 2>&1; then
-    run "${SUDO} npm install -g yarn"
-  fi
-  run "${SUDO} -u \"$TARGET_USER\" yarn global add deepl-translator-cli"
-  run "${SUDO} -u \"$TARGET_USER\" bash -lc 'grep -qxF \"export PATH=\\\"\\\$(yarn global bin 2>/dev/null):\\\$PATH\\\"\" \"\\\$HOME/.zprofile\" 2>/dev/null || echo \"export PATH=\\\"\\\$(yarn global bin 2>/dev/null):\\\$PATH\\\"\" >> \"\\\$HOME/.zprofile\"'"
-  run "${SUDO} -u \"$TARGET_USER\" bash -lc 'grep -qxF \"export PATH=\\\"\\\$(yarn global bin 2>/dev/null):\\\$PATH\\\"\" \"\\\$HOME/.profile\"  2>/dev/null || echo \"export PATH=\\\"\\\$(yarn global bin 2>/dev/null):\\\$PATH\\\"\" >> \"\\\$HOME/.profile\"'"
-
-  local YB; YB="$(${SUDO} -u "$TARGET_USER" bash -lc 'yarn global bin 2>/dev/null' 2>/dev/null | tail -n1)"
-  if [[ -n "$YB" && -x "$YB/deepl" ]]; then
-    write_wrapper "/usr/local/bin/deepl" "$YB/deepl"
-  fi
-}
-
 # sn0int APT repository
 setup_sn0int_repo() {
   log "[*] Setting up apt.vulns.sexy for sn0int"
@@ -157,7 +141,7 @@ setup_sn0int_repo() {
   if [[ ! -f /etc/apt/sources.list.d/apt-vulns-sexy.list ]]; then
     run "echo deb http://apt.vulns.sexy stable main | ${SUDO} tee /etc/apt/sources.list.d/apt-vulns-sexy.list"
   else
-    log "[*] apt-vulns-sexy.list already exists"
+    log "[*] apt-vulns.sexy.list already exists"
   fi
   run "${SUDO} apt-get update -y"
 }
@@ -244,6 +228,25 @@ EOF
   log "[*] Desktop entry created: $desktop"
 }
 
+# ---------- translate-shell (trans) ----------
+install_translate_shell() {
+  log "[*] Installing translate-shell (trans) from source…"
+  local tmp; tmp="$(mktemp -d)"
+  (
+    cd "$tmp"
+    run "git clone https://github.com/soimort/translate-shell"
+    cd translate-shell
+    run "make"
+    run "${SUDO} make install"
+  )
+  rm -rf "$tmp" || true
+  if command -v trans >/dev/null 2>&1; then
+    log "[*] translate-shell installed: $(command -v trans)"
+  else
+    logerr "translate-shell build/install did not place 'trans' on PATH"
+  fi
+}
+
 # ---------- install tools ----------
 install_tools_from_list() {
   log "[*] Installing OSINT tools"
@@ -290,6 +293,9 @@ install_tools_from_list() {
 
   # ExifTool
   apt_try_install exiftool || apt_try_install libimage-exiftool-perl || true
+
+  # translate-shell
+  install_translate_shell
 
   # Ensure global cargo/sn0int visibility & pipx wrappers
   ensure_global_symlinks
@@ -358,6 +364,8 @@ upgrade_pipx_tools() {
   if command -v pipx >/dev/null 2>&1; then
     log "[*] Upgrading pipx apps"
     run "pipx upgrade-all || true"
+    # Ensure Shodan venv has setuptools for pkg_resources
+    run "pipx runpip shodan install -U setuptools pip wheel || true"
   fi
 }
 upgrade_go_tools() {
@@ -401,7 +409,7 @@ EOF
 post_install_checks() {
   log "[*] Post-install sanity checks"
   local missing=()
-  for b in shodan sherlock phoneinfoga sn0int metagoofil sublist3r exiftool tor deepl; do
+  for b in shodan sherlock phoneinfoga sn0int metagoofil sublist3r exiftool tor trans; do
     command -v "$b" >/dev/null 2>&1 || missing+=("$b")
   done
   command -v spiderfoot >/dev/null 2>&1 || command -v sf.py >/dev/null 2>&1 || missing+=("spiderfoot/sf.py")
@@ -420,7 +428,8 @@ usage_hints() {
 ----------------------------------------------------------------
 Usage:
 - Shodan:          shodan init <API_KEY>   (first time)
-- DeepL CLI:       deepl translate "Hello, how are you?" -t DE
+- Translate:       trans -b :de "Hello, how are you?"
+                   trans :es "This is a test"
 - StegOSuite:      stegosuite   (APT)   or   java -jar /opt/stegosuite/stegosuite.jar
 - SpiderFoot UI:   spiderfoot -l 127.0.0.1:5001  (then open http://127.0.0.1:5001)
 - Updater (GUI):   Double-click "OSINT Updater" on Desktop (runs via pkexec)
@@ -503,20 +512,6 @@ validator() {
     fi
   }
 
-  check_user_yarn_bin(){
-    if command -v sudo >/dev/null 2>&1; then
-      local yb; yb="$(sudo -u "$REAL_USER" bash -lc 'yarn global bin 2>/dev/null' 2>/dev/null || true)"
-      if [[ -n "$yb" && -d "$yb" ]]; then
-        if [[ ":$PATH:" == *":${yb}:"* ]]; then ok "PATH contains Yarn bin: ${yb}"
-        elif sudo -u "$REAL_USER" bash -lc "grep -q \"\$(yarn global bin 2>/dev/null)\" ~/.zprofile ~/.profile 2>/dev/null"; then
-          ok "PATH will include Yarn bin for ${REAL_USER} on next login"
-        else
-          warn "PATH missing Yarn bin (${yb})"
-        fi
-      fi
-    fi
-  }
-
   check_file(){ local f="$1" ; local desc="$2"; [[ -e "$f" ]] && ok "$desc exists: $f" || fail "$desc missing: $f"; }
   check_exec(){ local f="$1" ; local desc="$2"; [[ -x "$f" ]] && ok "$desc is executable: $f" || fail "$desc not executable: $f"; }
 
@@ -529,12 +524,10 @@ validator() {
   show_ver cargo --version || true
   show_ver node --version || true
   show_ver npm --version || true
-  show_ver yarn --version || true
   show_ver java -version || true
   show_ver mvn -v || true
 
   check_path_contains "${REAL_HOME}/.local/bin"
-  check_user_yarn_bin
   [[ -n "${GOBIN-}" ]] && check_path_contains "${GOBIN}"
 
   # Shodan (robust)
@@ -560,16 +553,7 @@ validator() {
   show_ver exiftool -ver || true
   show_ver tor --version || true
   show_ver torbrowser-launcher --help || true
-
-  if has deepl; then
-    if deepl --help >/dev/null 2>&1 || deepl translate -h >/dev/null 2>&1; then
-      ok "deepl help OK"
-    else
-      warn "deepl is present, but no help/version worked."
-    fi
-  else
-    fail "deepl not found on PATH"
-  fi
+  show_ver trans -V || true
 
   check_exec "/usr/local/bin/osint-updater" "osint-updater"
   check_file "${REAL_HOME}/Desktop/OSINT-Updater.desktop" "OSINT-Updater.desktop"
@@ -602,7 +586,6 @@ validator() {
     echo "Hints:"
     echo " - PATH: open a new terminal or 'source ~/.profile' and '~/.zprofile'"
     echo " - Shodan: 'shodan init <API_KEY>'"
-    echo " - DeepL: wrapper points to user's Yarn bin; re-run installer if missing"
     echo " - SpiderFoot may be 'spiderfoot' (APT) or 'sf.py' (pipx)"
     echo " - StegOSuite: install via APT or ensure /opt/stegosuite/stegosuite.jar exists"
     return 1
@@ -618,13 +601,12 @@ main() {
     exit $?
   fi
 
-  log "==== Tracelabs OSINT Setup starting ===="
+  log "==== Ultimate OSINT Setup starting ===="
   apt_self_heal
   install_base_packages
   setup_python_envs
   setup_go_env
   setup_rust_env
-  install_yarn_and_deepl
   setup_sn0int_repo
   install_tools_from_list
   fetch_tracelabs_pdf
