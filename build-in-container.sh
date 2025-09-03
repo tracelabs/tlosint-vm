@@ -23,14 +23,14 @@ else
 fi
 
 if [ -x /usr/bin/podman ]; then
-    PODMAN=podman
+    CONTAINER_ENGINE=podman
     # Add --user only if KVM is available (and we can safely map host user)
     if [[ -e /dev/kvm ]] && [ $(id -u) -eq 0 ]; then
         OPTS+=(--user "$(stat -c "%u:%g" .)")
     fi
     OPTS+=(--log-driver none) # suppress stdout in the journal
 elif [ -x /usr/bin/docker ]; then
-    PODMAN=docker
+    CONTAINER_ENGINE=docker
     if [[ -e /dev/kvm ]]; then
         OPTS+=(--user "$(stat -c "%u:%g" .)")
     fi
@@ -43,9 +43,9 @@ bold() { tput bold; echo "$@"; tput sgr0; }
 vrun() { bold "$" "$@"; "$@"; }
 vexec() { bold "$" "$@"; exec "$@"; }
 # build docker image if it doesn't exist
-if ! $PODMAN inspect --type image $IMAGE >/dev/null 2>&1; then
-    vrun $PODMAN build -t $IMAGE .
+if ! $CONTAINER_ENGINE inspect --type image $IMAGE >/dev/null 2>&1; then
+    vrun $CONTAINER_ENGINE build -t $IMAGE .
     echo
 fi
 # run the build script inside a container
-vexec $PODMAN run "${OPTS[@]}" $IMAGE ./build.sh "$@"
+vexec $CONTAINER_ENGINE run "${OPTS[@]}" $IMAGE ./build.sh "$@"
