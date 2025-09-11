@@ -14,6 +14,67 @@ If you want to recommend a tool to add to the VM, report a bug, or have any issu
 
 The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - <https://gitlab.com/kalilinux/build-scripts/kali-vm>
 
+# Quick Start — Choose an option
+
+## Option 1) Download the prebuilt VM (fastest)
+Use this if you just want to import and go.
+
+- **GitHub Releases (canonical):**  
+  https://github.com/tracelabs/tlosint-vm/releases (2024 VM release)
+
+- **Mirror (Cloudflare R2) — replace placeholders when ready:**  
+  - [**Click here to download the VirtualBox OVA**](https://pub-1fe6b319cd3046288d65dd1d68c76f90.r2.dev/tracelabs-vm/tl-osint-2025.1-virtualbox-amd64.ova) (2025 VM Release)
+  - [**Click here to download the VMware OVA**](https://pub-1fe6b319cd3046288d65dd1d68c76f90.r2.dev/tracelabs-vm/tl-osint-2025.1-vmware-amd64.ova) (2025 VM Release)
+ 
+  - **Checksums:**  
+  - VMware: `JJNumCQSOfhz4kUt0pU0fA==`  
+  - VirtualBox: `J8GG4HwCNF9p2VJE1w/bvQ==`
+
+**Verify integrity**
+```bash
+# Linux/macOS
+sha256sum <downloaded-file>.ova
+
+# Windows (PowerShell)
+Get-FileHash .\<downloaded-file>.ova -Algorithm SHA256
+```
+
+**Import**
+- **VirtualBox:** File → Import Appliance… → select `.ova`
+- **VMware (Workstation/Player/Fusion):** File → Open… → select `.ova`
+
+**Default login**  
+`osint` / `osint`
+
+---
+
+## Option 2) Customize your own VM with our tools script
+Use this if you want a lean Kali image and then install/update OSINT tools + Firefox hardening on demand.
+
+> **Download the raw file, not the GitHub “blob” page.**
+
+```bash
+# Inside Kali (or your Debian-based VM)
+cd ~/Desktop  # or any folder you prefer
+
+# Fetch the script (RAW URL)
+wget https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh
+
+#Give the script executable permission
+chmod +x tlosint-tools.sh
+
+#Execute the script
+./tlosint-tools.sh
+```
+
+**What the script does**
+- Refreshes the **Kali archive keyring** and applies updates
+- Installs a curated **OSINT toolset** (Shodan CLI, Sherlock, PhoneInfoga, SpiderFoot, sn0int, Metagoofil, Sublist3r, steghide/stegseek, StegOSuite, exiftool, tor, torbrowser-launcher, translate-shell, etc.)
+- Adds **TraceLabs CTF Contestant Guide (PDF)** and a **Self-Heal & Update** shortcut to the Desktop
+- Applies **Firefox hardening** (delete cookies/history on shutdown, block geolocation/mic/camera prompts by default, stronger tracking protection, preload OSINT bookmarks)
+
+---
+
 ## Releases
 
 These are pre-generated bundles that can either import in to Virtualbox or VMWare. They are generated with the code in the Main branch of this repo with no interference from us. The goal here is to produce a finished product but give the users insight in to the "recipe" used to build it.
