@@ -22,13 +22,13 @@ Use this if you just want to import and go.
 - **GitHub Releases (canonical):**  
   https://github.com/tracelabs/tlosint-vm/releases (2024 VM release)
 
-- **Mirror (Cloudflare R2) — replace placeholders when ready:**  
-  - [**Click here to download the VirtualBox OVA**](https://pub-1fe6b319cd3046288d65dd1d68c76f90.r2.dev/tracelabs-vm/tl-osint-2025.1-virtualbox-amd64.ova) (2025 VM Release)
-  - [**Click here to download the VMware OVA**](https://pub-1fe6b319cd3046288d65dd1d68c76f90.r2.dev/tracelabs-vm/tl-osint-2025.1-vmware-amd64.ova) (2025 VM Release)
+- **Mirror (Google)**  
+  - [**Click here to download the VirtualBox OVA**](https://drive.google.com/file/d/1Ylid1Yf3JVRR7hn9sa5vWUnfNXZkJMpr/view?usp=drive_link) (2025 VM Release)
+  - [**Click here to download the VMware OVA**](https://drive.google.com/file/d/1VnuFDg6TFhcU3crk0nfWdgOg3SY3jhUH/view?usp=drive_link) (2025 VM Release)
  
   - **Checksums:**  
-  - VMware: `JJNumCQSOfhz4kUt0pU0fA==`  
-  - VirtualBox: `J8GG4HwCNF9p2VJE1w/bvQ==`
+  - VMware: `6f3323b01afff853a35bcfb7e98be751fd17922006f453da2627963975949289`  
+  - VirtualBox: `a6d841c19ed55e5d4338280724238ea5b80e57a33d9462efda24bce965d1666d`
 
 **Verify integrity**
 ```bash
