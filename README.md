@@ -111,11 +111,17 @@ You can explore the different build options with `-h` flag.
 
 ## Applications
 
-The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a script on the desktop though. This keeps the size of the release small enough to build and host on Github. If you want to install the tools in the script then:
+The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a helper script. This keeps the size of the release small enough to build and host on GitHub.
+
+If you want to install the tools using our helper script, run the `tlosint-tools.sh` script found in the `scripts/` folder. Example:
 
 - Open a terminal
-- Navigate to the `Desktop` folder
-- Execute the install script with `./install-tools.sh`
+- From the repository root (or wherever you saved the script), make it executable and run it:
+
+```bash
+chmod +x scripts/tlosint-tools.sh
+./scripts/tlosint-tools.sh
+```
 
 **Resources**
 
@@ -128,6 +134,7 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 
 **Browsers**
 
+- [Brave Browser](https://brave.com/download/)
 - [Firefox ESR](https://www.mozilla.org/en-US/firefox/enterprise/)
 - [Tor Browser](https://www.torproject.org/download/)
 

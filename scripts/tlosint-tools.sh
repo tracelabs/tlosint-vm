@@ -245,6 +245,24 @@ install_translate_shell() {
   command -v trans >/dev/null 2>&1 && log "[*] translate-shell installed: $(command -v trans)" || logerr "translate-shell build failed"
 }
 
+# ---------- Brave Browser ----------
+install_brave_browser() {
+  if command -v brave-browser >/dev/null 2>&1; then
+    log "[*] Brave Browser already installed"
+    return 0
+  fi
+  log "[*] Installing Brave Browser (privacy-focused Chromium-based browser)"
+  # Add Brave's GPG key
+  run "${SUDO} curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
+  # Add Brave's repository
+  run "${SUDO} curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources"
+  # Update package lists
+  run "${SUDO} apt-get update -y"
+  # Install Brave Browser
+  run "${SUDO} apt-get install -y brave-browser"
+  command -v brave-browser >/dev/null 2>&1 && log "[*] Brave Browser installed successfully" || logerr "Brave Browser installation failed"
+}
+
 # ---------- Shodan helper ----------
 maybe_init_shodan() {
   if [[ -n "${SHODAN_API_KEY-}" ]]; then
@@ -299,6 +317,9 @@ install_tools_from_list() {
 
   # translate-shell
   install_translate_shell
+
+  # Brave Browser
+  install_brave_browser
 
   # Ensure visibility & wrappers
   ensure_global_symlinks
