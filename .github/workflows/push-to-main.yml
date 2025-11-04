@@ -4,10 +4,20 @@ name: push-to-main
 # triggers on PRs or direct commits to main or dev branches
 on:
   push:
+    paths-ignore:
+      - '.github/CODEOWNERS'
+      - '.github/ISSUE_TEMPLATE/**'
+      - LICENSE
+      - README.md
     branches:
       - main
       - dev  # Added the dev branch here
   pull_request:
+    paths-ignore:
+      - '.github/CODEOWNERS'
+      - '.github/ISSUE_TEMPLATE/**'
+      - LICENSE
+      - README.md
     branches:
       - main
       - dev  # And here as well
