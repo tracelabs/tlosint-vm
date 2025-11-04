@@ -13,6 +13,11 @@ on:
       - main
       - dev  # Added the dev branch here
   pull_request:
+    paths-ignore:
+      - '.github/CODEOWNERS'
+      - '.github/ISSUE_TEMPLATE/**'
+      - LICENSE
+      - README.md
     branches:
       - main
       - dev  # And here as well
