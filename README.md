@@ -6,7 +6,9 @@
 
 # Maintainer Notes
 
-TraceLabs currently needs a maintainer and staff will not be adding anything to this repository unilaterally. PRs are always welcome. We ask that you PR in to the Dev branch.
+This repository is maintained by Trace Labs staff.
+
+PRs are always welcome. We do, however, ask that you PR in to the Dev branch.
 
 If you want to recommend a tool to add to the VM, report a bug, or have any issues, feedback, or questions about the VM, please [open an issue](https://github.com/tracelabs/tlosint-vm/issues/new/choose).
 
