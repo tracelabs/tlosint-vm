@@ -146,20 +146,49 @@ setup_rust_env() {
 
 # sn0int APT repository
 setup_sn0int_repo() {
-  log "[*] Setting up apt.vulns.sexy for sn0int"
-  run "${SUDO} apt-get install -y curl sq"
-  if [[ ! -f /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg ]]; then
-    run "curl -sSf https://apt.vulns.sexy/kpcyrd.pgp | sq dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg > /dev/null"
+  log "[*] Setting up apt.vulns.xyz for sn0int (scoped keyring + HTTPS)"
+  run "${SUDO} apt-get install -y curl gnupg || true"
+  run "${SUDO} apt-get install -y sq || true"   # optional; used only if present
+
+  # Clean any legacy 'sexy' entries so they won't keep breaking apt
+  run "${SUDO} rm -f /etc/apt/sources.list.d/apt-vulns-sexy.list /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg || true"
+
+  local KEYRING="/usr/share/keyrings/apt-vulns-kpcyrd.gpg"
+  local LIST="/etc/apt/sources.list.d/apt-vulns-xyz.list"
+  local FPR="33EBB8A8E1C5653645B1232A45A650E2638C536D"   # required fingerprint on your box
+
+  ${SUDO} mkdir -p /usr/share/keyrings
+
+  # Install key into a dedicated keyring (prefer gpg --dearmor; fallback to sq toolbox dearmor)
+  if [[ ! -f "${KEYRING}" ]]; then
+    if curl -fsSL https://apt.vulns.xyz/kpcyrd.pgp | ${SUDO} gpg --dearmor -o "${KEYRING}"; then
+      :
+    else
+      run "curl -fsSL https://apt.vulns.xyz/kpcyrd.pgp | sq toolbox dearmor | ${SUDO} tee ${KEYRING} >/dev/null"
+    fi
+    ${SUDO} chmod 0644 "${KEYRING}" || true
+
+    # Best-effort fingerprint sanity check (isolated keyring)
+    if command -v gpg >/dev/null 2>&1; then
+      if gpg --no-default-keyring --keyring "${KEYRING}" --list-keys --with-colons 2>/dev/null | grep -q "${FPR}"; then
+        log "[*] Keyring fingerprint check OK (${FPR:0:8}…)"
+      else
+        log "[*] Warning: expected fingerprint ${FPR} not found in ${KEYRING} (continuing)"
+      fi
+    fi
   else
-    log "[*] apt-vulns.sexy key already present"
+    log "[*] apt.vulns.xyz keyring already present"
   fi
-  if [[ ! -f /etc/apt/sources.list.d/apt-vulns-sexy.list ]]; then
-    run "echo deb http://apt.vulns.sexy stable main | ${SUDO} tee /etc/apt/sources.list.d/apt-vulns-sexy.list"
-  else
-    log "[*] apt-vulns.sexy.list already exists"
-  fi
-  run "${SUDO} apt-get update -y"
+
+  # Repo entry (HTTPS + signed-by). Overwrite to ensure exact contents.
+  echo "deb [signed-by=${KEYRING}] https://apt.vulns.xyz stable main" | ${SUDO} tee "${LIST}" >/dev/null
+
+  # Refresh APT cleanly
+  run "${SUDO} apt-get clean"
+  run "${SUDO} rm -rf /var/lib/apt/lists/*"
+  run "${SUDO} apt-get -o Acquire::Retries=5 -o Acquire::ForceIPv4=true update"
 }
+
 
 # ---------- helpers ----------
 apt_try_install() {
