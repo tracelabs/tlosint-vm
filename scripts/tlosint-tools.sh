@@ -1,3 +1,4 @@
+
 #!/bin/zsh
 # Ultimate OSINT Setup for Kali + Updater + Validator
 # 2025-09-09: fix SpiderFoot venv installer (zsh + set -u), keep Firefox hardening, PATH fix, Shodan deferred OK, StegOSuite optional.
@@ -146,49 +147,57 @@ setup_rust_env() {
 
 # sn0int APT repository
 setup_sn0int_repo() {
-  log "[*] Setting up apt.vulns.xyz for sn0int (scoped keyring + HTTPS)"
-  run "${SUDO} apt-get install -y curl gnupg || true"
-  run "${SUDO} apt-get install -y sq || true"   # optional; used only if present
-
-  # Clean any legacy 'sexy' entries so they won't keep breaking apt
-  run "${SUDO} rm -f /etc/apt/sources.list.d/apt-vulns-sexy.list /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg || true"
-
-  local KEYRING="/usr/share/keyrings/apt-vulns-kpcyrd.gpg"
-  local LIST="/etc/apt/sources.list.d/apt-vulns-xyz.list"
-  local FPR="33EBB8A8E1C5653645B1232A45A650E2638C536D"   # required fingerprint on your box
-
-  ${SUDO} mkdir -p /usr/share/keyrings
-
-  # Install key into a dedicated keyring (prefer gpg --dearmor; fallback to sq toolbox dearmor)
-  if [[ ! -f "${KEYRING}" ]]; then
-    if curl -fsSL https://apt.vulns.xyz/kpcyrd.pgp | ${SUDO} gpg --dearmor -o "${KEYRING}"; then
-      :
-    else
-      run "curl -fsSL https://apt.vulns.xyz/kpcyrd.pgp | sq toolbox dearmor | ${SUDO} tee ${KEYRING} >/dev/null"
-    fi
-    ${SUDO} chmod 0644 "${KEYRING}" || true
-
-    # Best-effort fingerprint sanity check (isolated keyring)
-    if command -v gpg >/dev/null 2>&1; then
-      if gpg --no-default-keyring --keyring "${KEYRING}" --list-keys --with-colons 2>/dev/null | grep -q "${FPR}"; then
-        log "[*] Keyring fingerprint check OK (${FPR:0:8}…)"
-      else
-        log "[*] Warning: expected fingerprint ${FPR} not found in ${KEYRING} (continuing)"
-      fi
-    fi
+  log "[*] Setting up apt.vulns.sexy for sn0int"
+  run "${SUDO} apt-get install -y curl sq"
+  if [[ ! -f /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg ]]; then
+    run "curl -sSf https://apt.vulns.sexy/kpcyrd.pgp | sq dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg > /dev/null"
   else
-    log "[*] apt.vulns.xyz keyring already present"
+    log "[*] apt-vulns.sexy key already present"
   fi
-
-  # Repo entry (HTTPS + signed-by). Overwrite to ensure exact contents.
-  echo "deb [signed-by=${KEYRING}] https://apt.vulns.xyz stable main" | ${SUDO} tee "${LIST}" >/dev/null
-
-  # Refresh APT cleanly
-  run "${SUDO} apt-get clean"
-  run "${SUDO} rm -rf /var/lib/apt/lists/*"
-  run "${SUDO} apt-get -o Acquire::Retries=5 -o Acquire::ForceIPv4=true update"
+  if [[ ! -f /etc/apt/sources.list.d/apt-vulns-sexy.list ]]; then
+    run "echo deb http://apt.vulns.sexy stable main | ${SUDO} tee /etc/apt/sources.list.d/apt-vulns-sexy.list"
+  else
+    log "[*] apt-vulns.sexy.list already exists"
+  fi
+  run "${SUDO} apt-get update -y"
 }
 
+# ---------- Brave + extension installer (ADDED) ----------
+install_brave_and_extension() {
+  log "[*] Installing Brave browser and forcing OSINT extension"
+
+  # ensure curl exists
+  apt_try_install curl || run "${SUDO} apt-get install -y curl" || logerr "curl install failed (continuing)"
+
+  # add Brave signing keyring and sources
+  run "${SUDO} curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg" || logerr "Brave keyring download failed"
+  ${SUDO} tee /etc/apt/sources.list.d/brave-browser-release.list >/dev/null <<'EOF'
+deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
+EOF
+
+  run "${SUDO} apt-get update -y"
+  log "[*] Installing brave-browser package"
+  run "${SUDO} apt-get install -y brave-browser" || logerr "brave-browser install failed (continuing)"
+
+  # Extension we want to force-install
+  local EXT_ID="jojaomahhndmeienhjihojidkddkahcn"
+  local UPDATE_URL="https://clients2.google.com/service/update2/crx"
+
+  # Create Brave managed policy folder and write ExtensionInstallForcelist policy
+  local POLICY_DIR="/etc/brave/policies/managed"
+  ${SUDO} mkdir -p "${POLICY_DIR}"
+  ${SUDO} tee "${POLICY_DIR}/99-osint-extensions.json" >/dev/null <<EOF
+{
+  "ExtensionInstallForcelist": [
+    "${EXT_ID};${UPDATE_URL}"
+  ]
+}
+EOF
+  ${SUDO} chmod 0644 "${POLICY_DIR}/99-osint-extensions.json" || true
+
+  log "[*] Brave installed (or already present). Policy dropped to force-install extension ${EXT_ID}."
+  log "[*] Restart Brave (or open it) to let the policy take effect. To undo, remove ${POLICY_DIR}/99-osint-extensions.json and restart Brave."
+}
 
 # ---------- helpers ----------
 apt_try_install() {
@@ -632,6 +641,9 @@ validator() {
   show_ver mvn -v || true
   show_ver firefox-esr --version || show_ver firefox --version || true
 
+  # Brave (added)
+  show_ver brave-browser --version || warn "brave-browser not found (optional)"
+
   check_path_contains "${REAL_HOME}/.local/bin"
   [[ -n "${GOBIN-}" ]] && check_path_contains "${GOBIN}"
 
@@ -681,14 +693,23 @@ validator() {
   [[ -z "$ff_pol_sys" && -f /usr/lib/firefox/distribution/policies.json ]] && ff_pol_sys="/usr/lib/firefox/distribution/policies.json"
   if [[ -f "$ff_pol_etc" || -n "$ff_pol_sys" ]]; then ok "Firefox policies present"; else warn "Firefox policies not found"; fi
 
+  # Brave policy presence (added)
+  if [[ -f /etc/brave/policies/managed/99-osint-extensions.json ]]; then
+    ok "Brave extension policy present"
+  else
+    warn "Brave extension policy not found (optional)"
+  fi
+
   [[ -f /usr/share/keyrings/kali-archive-keyring.gpg ]] && ok "Kali archive keyring present" || warn "Kali archive keyring missing"
   [[ -f /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg ]] && ok "apt-vulns.sexy key installed" || warn "apt-vulns.sexy key not found"
   [[ -f /etc/apt/sources.list.d/apt-vulns-sexy.list ]] && ok "apt-vulns.sexy repo listed" || warn "apt-vulns.sexy repo list missing"
 
   local WS="${REAL_HOME}/osint-workspaces"
   if [[ -d "$WS" ]]; then ok "Workspace base exists: $WS"
-  else if command -v sudo >/dev/null 2>&1; then sudo -u "$REAL_USER" mkdir -p "$WS" 2>/dev/null || true; fi
-       [[ -d "$WS" ]] && ok "Workspace base created: $WS" || warn "Workspace base missing (created on first run): $WS"; fi
+  else
+    if command -v sudo >/dev/null 2>&1; then sudo -u "$REAL_USER" mkdir -p "$WS" 2>/dev/null || true; fi
+    [[ -d "$WS" ]] && ok "Workspace base created: $WS" || warn "Workspace base missing (created on first run): $WS"
+  fi
 
   echo
   if (( FAILS == 0 )); then
@@ -723,6 +744,10 @@ main() {
   log "==== Ultimate OSINT Setup starting ===="
   apt_self_heal
   install_base_packages
+
+  # ADDED: install Brave and force-install forensic full page extension
+  install_brave_and_extension
+
   setup_python_envs
   setup_go_env
   setup_rust_env
