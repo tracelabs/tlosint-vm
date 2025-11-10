@@ -2,8 +2,8 @@
 name: "\U0001F41B Bug report"
 about: Report a problem with the VM image
 title: "[BUG] Issue Title"
-labels: bug
-assignees: LinaYorda, 4nndorphin, 404Yeti
+labels: kind/bug
+assignees: ''
 
 ---
 
