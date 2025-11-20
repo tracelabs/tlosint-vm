@@ -1,3 +1,4 @@
+
 #!/bin/zsh
 # Ultimate OSINT Setup for Kali + Updater + Validator
 # 2025-09-09: fix SpiderFoot venv installer (zsh + set -u), keep Firefox hardening, PATH fix, Shodan deferred OK, StegOSuite optional.
@@ -159,6 +160,43 @@ setup_sn0int_repo() {
     log "[*] apt-vulns.sexy.list already exists"
   fi
   run "${SUDO} apt-get update -y"
+}
+
+# ---------- Brave + extension installer (ADDED) ----------
+install_brave_and_extension() {
+  log "[*] Installing Brave browser and forcing OSINT extension"
+
+  # ensure curl exists
+  apt_try_install curl || run "${SUDO} apt-get install -y curl" || logerr "curl install failed (continuing)"
+
+  # add Brave signing keyring and sources
+  run "${SUDO} curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg" || logerr "Brave keyring download failed"
+  ${SUDO} tee /etc/apt/sources.list.d/brave-browser-release.list >/dev/null <<'EOF'
+deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
+EOF
+
+  run "${SUDO} apt-get update -y"
+  log "[*] Installing brave-browser package"
+  run "${SUDO} apt-get install -y brave-browser" || logerr "brave-browser install failed (continuing)"
+
+  # Extension we want to force-install
+  local EXT_ID="jojaomahhndmeienhjihojidkddkahcn"
+  local UPDATE_URL="https://clients2.google.com/service/update2/crx"
+
+  # Create Brave managed policy folder and write ExtensionInstallForcelist policy
+  local POLICY_DIR="/etc/brave/policies/managed"
+  ${SUDO} mkdir -p "${POLICY_DIR}"
+  ${SUDO} tee "${POLICY_DIR}/99-osint-extensions.json" >/dev/null <<EOF
+{
+  "ExtensionInstallForcelist": [
+    "${EXT_ID};${UPDATE_URL}"
+  ]
+}
+EOF
+  ${SUDO} chmod 0644 "${POLICY_DIR}/99-osint-extensions.json" || true
+
+  log "[*] Brave installed (or already present). Policy dropped to force-install extension ${EXT_ID}."
+  log "[*] Restart Brave (or open it) to let the policy take effect. To undo, remove ${POLICY_DIR}/99-osint-extensions.json and restart Brave."
 }
 
 # ---------- helpers ----------
@@ -624,6 +662,9 @@ validator() {
   show_ver mvn -v || true
   show_ver firefox-esr --version || show_ver firefox --version || true
 
+  # Brave (added)
+  show_ver brave-browser --version || warn "brave-browser not found (optional)"
+
   check_path_contains "${REAL_HOME}/.local/bin"
   [[ -n "${GOBIN-}" ]] && check_path_contains "${GOBIN}"
 
@@ -673,14 +714,23 @@ validator() {
   [[ -z "$ff_pol_sys" && -f /usr/lib/firefox/distribution/policies.json ]] && ff_pol_sys="/usr/lib/firefox/distribution/policies.json"
   if [[ -f "$ff_pol_etc" || -n "$ff_pol_sys" ]]; then ok "Firefox policies present"; else warn "Firefox policies not found"; fi
 
+  # Brave policy presence (added)
+  if [[ -f /etc/brave/policies/managed/99-osint-extensions.json ]]; then
+    ok "Brave extension policy present"
+  else
+    warn "Brave extension policy not found (optional)"
+  fi
+
   [[ -f /usr/share/keyrings/kali-archive-keyring.gpg ]] && ok "Kali archive keyring present" || warn "Kali archive keyring missing"
   [[ -f /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg ]] && ok "apt-vulns.sexy key installed" || warn "apt-vulns.sexy key not found"
   [[ -f /etc/apt/sources.list.d/apt-vulns-sexy.list ]] && ok "apt-vulns.sexy repo listed" || warn "apt-vulns.sexy repo list missing"
 
   local WS="${REAL_HOME}/osint-workspaces"
   if [[ -d "$WS" ]]; then ok "Workspace base exists: $WS"
-  else if command -v sudo >/dev/null 2>&1; then sudo -u "$REAL_USER" mkdir -p "$WS" 2>/dev/null || true; fi
-       [[ -d "$WS" ]] && ok "Workspace base created: $WS" || warn "Workspace base missing (created on first run): $WS"; fi
+  else
+    if command -v sudo >/dev/null 2>&1; then sudo -u "$REAL_USER" mkdir -p "$WS" 2>/dev/null || true; fi
+    [[ -d "$WS" ]] && ok "Workspace base created: $WS" || warn "Workspace base missing (created on first run): $WS"
+  fi
 
   echo
   if (( FAILS == 0 )); then
@@ -715,6 +765,10 @@ main() {
   log "==== Ultimate OSINT Setup starting ===="
   apt_self_heal
   install_base_packages
+
+  # ADDED: install Brave and force-install forensic full page extension
+  install_brave_and_extension
+
   setup_python_envs
   setup_go_env
   setup_rust_env
