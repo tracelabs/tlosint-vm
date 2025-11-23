@@ -161,6 +161,43 @@ setup_sn0int_repo() {
   run "${SUDO} apt-get update -y"
 }
 
+# ---------- Brave + extension installer (ADDED) ----------
+install_brave_and_extension() {
+  log "[*] Installing Brave browser and forcing OSINT extension"
+
+  # ensure curl exists
+  apt_try_install curl || run "${SUDO} apt-get install -y curl" || logerr "curl install failed (continuing)"
+
+  # add Brave signing keyring and sources
+  run "${SUDO} curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg" || logerr "Brave keyring download failed"
+  ${SUDO} tee /etc/apt/sources.list.d/brave-browser-release.list >/dev/null <<'EOF'
+deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
+EOF
+
+  run "${SUDO} apt-get update -y"
+  log "[*] Installing brave-browser package"
+  run "${SUDO} apt-get install -y brave-browser" || logerr "brave-browser install failed (continuing)"
+
+  # Extension we want to force-install
+  local EXT_ID="jojaomahhndmeienhjihojidkddkahcn"
+  local UPDATE_URL="https://clients2.google.com/service/update2/crx"
+
+  # Create Brave managed policy folder and write ExtensionInstallForcelist policy
+  local POLICY_DIR="/etc/brave/policies/managed"
+  ${SUDO} mkdir -p "${POLICY_DIR}"
+  ${SUDO} tee "${POLICY_DIR}/99-osint-extensions.json" >/dev/null <<EOF
+{
+  "ExtensionInstallForcelist": [
+    "${EXT_ID};${UPDATE_URL}"
+  ]
+}
+EOF
+  ${SUDO} chmod 0644 "${POLICY_DIR}/99-osint-extensions.json" || true
+
+  log "[*] Brave installed (or already present). Policy dropped to force-install extension ${EXT_ID}."
+  log "[*] Restart Brave (or open it) to let the policy take effect. To undo, remove ${POLICY_DIR}/99-osint-extensions.json and restart Brave."
+}
+
 # ---------- helpers ----------
 apt_try_install() {
   local pkg="$1"
@@ -179,6 +216,95 @@ go_install_if_missing() {
   if ! command -v "$name" >/dev/null 2>&1; then run "env GOBIN=/usr/local/bin go install \"$module\""; fi
 }
 cargo_install_if_missing() { local crate="$1"; if ! command -v "$crate" >/dev/null 2>&1; then run "${SUDO} -u \"$TARGET_USER\" bash -lc 'cargo install --locked ${crate}'"; fi; }
+
+install_owlculus_launcher() {
+  log "[*] Installing Owlculus desktop launcher"
+  local DESK="${TARGET_HOME}/Desktop/Owlculus.desktop"
+
+  ${SUDO} mkdir -p "${TARGET_HOME}/Desktop"
+
+  ${SUDO} tee "$DESK" >/dev/null <<'EOF'
+[Desktop Entry]
+Type=Application
+Name=Owlculus
+Comment=Start the Owlculus OSINT case management platform
+Exec=sh -c "cd /opt/owlculus && ./setup.sh"
+Icon=utilities-terminal
+Terminal=true
+Categories=System;Utility;Security;
+StartupNotify=true
+EOF
+
+  ${SUDO} chmod +x "$DESK"
+  if [[ $EUID -eq 0 ]]; then
+    ${SUDO} chown "${TARGET_USER}:${TARGET_USER}" "$DESK"
+  fi
+}
+
+# ===== DOCKER / OWLCULUS (ADDED) =====
+install_docker_and_compose() {
+  log "[*] Installing Docker CE and Docker Compose (plugin)"
+
+  if command -v docker >/dev/null 2>&1; then
+    log "[*] Docker already installed: $(command -v docker)"
+  else
+    # Dependencies (most are already installed in base, this is just belt-and-suspenders)
+    apt_try_install ca-certificates || true
+    apt_try_install curl || true
+    apt_try_install gnupg || apt_try_install gnupg2 || true
+    apt_try_install apt-transport-https || true
+    apt_try_install software-properties-common || true
+
+    # Docker GPG key + repo (Debian/Kali bullseye-based)
+    run "curl -fsSL https://download.docker.com/linux/debian/gpg | ${SUDO} gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-archive-keyring.gpg"
+    ${SUDO} tee /etc/apt/sources.list.d/docker.list >/dev/null <<'EOF_DOCKER'
+deb [arch=amd64] https://download.docker.com/linux/debian bullseye stable
+EOF_DOCKER
+
+    run "${SUDO} apt-get update -y"
+    run "${SUDO} apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin"
+  fi
+
+  # Ensure docker group + membership
+  if getent group docker >/dev/null 2>&1; then
+    if id -nG "$TARGET_USER" | grep -qw docker; then
+      log "[*] ${TARGET_USER} already in docker group"
+    else
+      run "${SUDO} usermod -aG docker \"$TARGET_USER\""
+      log "[*] Added ${TARGET_USER} to docker group (log out/in for this to apply)"
+    fi
+  else
+    logerr "docker group not found; Docker package install may have failed or changed."
+  fi
+
+  # Reboot hint if needed (no automatic reboot in script)
+  if [[ -f /var/run/reboot-required ]]; then
+    log "[*] System indicates a reboot is required (/var/run/reboot-required exists)."
+  fi
+}
+
+install_owlculus() {
+  log "[*] Installing Owlculus (Git + setup.sh)"
+
+  local DEST="/opt/owlculus"
+
+  if [[ -d "$DEST/.git" ]]; then
+    log "[*] Owlculus repo already exists, pulling latest…"
+    run "${SUDO} git -C \"${DEST}\" pull --ff-only || true"
+  elif [[ -d "$DEST" ]]; then
+    log "[*] ${DEST} exists but is not a git repo; skipping auto-clone."
+  else
+    run "${SUDO} git clone https://github.com/be0vlk/owlculus.git \"${DEST}\""
+  fi
+
+  if [[ -f "${DEST}/setup.sh" ]]; then
+    run "${SUDO} chmod +x \"${DEST}/setup.sh\" || true"
+    run "cd \"${DEST}\" && ${SUDO} ./setup.sh"
+  else
+    logerr "Owlculus setup.sh not found in ${DEST}; clone may have failed."
+  fi
+}
+# ===== END DOCKER / OWLCULUS (ADDED) =====
 
 # PhoneInfoga upstream fallback
 phoneinfoga_upstream_fallback() {
@@ -245,24 +371,6 @@ install_translate_shell() {
   command -v trans >/dev/null 2>&1 && log "[*] translate-shell installed: $(command -v trans)" || logerr "translate-shell build failed"
 }
 
-# ---------- Brave Browser ----------
-install_brave_browser() {
-  if command -v brave-browser >/dev/null 2>&1; then
-    log "[*] Brave Browser already installed"
-    return 0
-  fi
-  log "[*] Installing Brave Browser (privacy-focused Chromium-based browser)"
-  # Add Brave's GPG key
-  run "${SUDO} curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
-  # Add Brave's repository
-  run "${SUDO} curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources"
-  # Update package lists
-  run "${SUDO} apt-get update -y"
-  # Install Brave Browser
-  run "${SUDO} apt-get install -y brave-browser"
-  command -v brave-browser >/dev/null 2>&1 && log "[*] Brave Browser installed successfully" || logerr "Brave Browser installation failed"
-}
-
 # ---------- Shodan helper ----------
 maybe_init_shodan() {
   if [[ -n "${SHODAN_API_KEY-}" ]]; then
@@ -317,9 +425,6 @@ install_tools_from_list() {
 
   # translate-shell
   install_translate_shell
-
-  # Brave Browser
-  install_brave_browser
 
   # Ensure visibility & wrappers
   ensure_global_symlinks
@@ -624,6 +729,26 @@ validator() {
   show_ver mvn -v || true
   show_ver firefox-esr --version || show_ver firefox --version || true
 
+  # Brave (added)
+  show_ver brave-browser --version || warn "brave-browser not found (optional)"
+
+  # ===== Docker / docker compose (ADDED) =====
+  if has docker; then
+    show_ver docker --version || warn "docker present but version check failed"
+    if docker compose version >/dev/null 2>&1; then
+      local dcver
+      dcver="$(docker compose version 2>/dev/null | head -n1)"
+      ok "docker compose available -> ${dcver:-OK}"
+    elif has docker-compose; then
+      show_ver docker-compose --version || ok "docker-compose present (legacy binary)"
+    else
+      warn "docker compose plugin/binary not found (docker installed but compose missing)"
+    fi
+  else
+    fail "docker not found on PATH (Docker CE not detected)"
+  fi
+  # ===== END Docker / docker compose (ADDED) =====
+
   check_path_contains "${REAL_HOME}/.local/bin"
   [[ -n "${GOBIN-}" ]] && check_path_contains "${GOBIN}"
 
@@ -662,6 +787,12 @@ validator() {
   check_file "${REAL_HOME}/Desktop/OSINT-Updater.desktop" "OSINT-Updater.desktop"
   check_file "${REAL_HOME}/Desktop/Trace-Labs-OSINT-Search-Party-CTF-Contestant-Guide_v1.pdf" "Trace Labs PDF"
 
+  # ===== Owlculus checks (ADDED) =====
+  check_file "/opt/owlculus" "Owlculus directory"
+  check_file "/opt/owlculus/setup.sh" "Owlculus setup.sh"
+  check_exec "/opt/owlculus/setup.sh" "Owlculus setup.sh executable"
+  # ===== END Owlculus checks (ADDED) =====
+
   # StegOSuite optional
   if command -v stegosuite >/dev/null 2>&1; then ok "StegOSuite available via APT"
   else ok "StegOSuite optional: not installed"; fi
@@ -673,14 +804,23 @@ validator() {
   [[ -z "$ff_pol_sys" && -f /usr/lib/firefox/distribution/policies.json ]] && ff_pol_sys="/usr/lib/firefox/distribution/policies.json"
   if [[ -f "$ff_pol_etc" || -n "$ff_pol_sys" ]]; then ok "Firefox policies present"; else warn "Firefox policies not found"; fi
 
+  # Brave policy presence (added)
+  if [[ -f /etc/brave/policies/managed/99-osint-extensions.json ]]; then
+    ok "Brave extension policy present"
+  else
+    warn "Brave extension policy not found (optional)"
+  fi
+
   [[ -f /usr/share/keyrings/kali-archive-keyring.gpg ]] && ok "Kali archive keyring present" || warn "Kali archive keyring missing"
-  [[ -f /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg ]] && ok "apt-vulns.sexy key installed" || warn "apt-vulns.sexy key not found"
-  [[ -f /etc/apt/sources.list.d/apt-vulns-sexy.list ]] && ok "apt-vulns.sexy repo listed" || warn "apt-vulns.sexy repo list missing"
+  [[ -f /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg ]] && ok "apt-vulns.sexy key installed" || warn "apt-vulns-sexy key not found"
+  [[ -f /etc/apt/sources.list.d/apt-vulns-sexy.list ]] && ok "apt-vulns.sexy repo listed" || warn "apt-vulns-sexy repo list missing"
 
   local WS="${REAL_HOME}/osint-workspaces"
   if [[ -d "$WS" ]]; then ok "Workspace base exists: $WS"
-  else if command -v sudo >/dev/null 2>&1; then sudo -u "$REAL_USER" mkdir -p "$WS" 2>/dev/null || true; fi
-       [[ -d "$WS" ]] && ok "Workspace base created: $WS" || warn "Workspace base missing (created on first run): $WS"; fi
+  else
+    if command -v sudo >/dev/null 2>&1; then sudo -u "$REAL_USER" mkdir -p "$WS" 2>/dev/null || true; fi
+    [[ -d "$WS" ]] && ok "Workspace base created: $WS" || warn "Workspace base missing (created on first run): $WS"
+  fi
 
   echo
   if (( FAILS == 0 )); then
@@ -691,7 +831,7 @@ validator() {
     echo "Hints:"
     echo " - PATH: open a new terminal or 'source ~/.profile' and '~/.zprofile'"
     echo " - Shodan: 'shodan init <API_KEY>' (or rerun with SHODAN_API_KEY set)"
-    echo " - SpiderFoot may be 'spiderfoot' (APT) or 'sf.py' (source/venv)"
+    echo " - SpiderFoot may be 'spiderfoot' (APT) or 'sf.py'"
     return 1
   fi
 }
@@ -715,6 +855,14 @@ main() {
   log "==== Ultimate OSINT Setup starting ===="
   apt_self_heal
   install_base_packages
+
+  # Docker + docker-compose + Owlculus (ADDED)
+  install_docker_and_compose
+  install_owlculus
+
+  # ADDED: install Brave and force-install forensic full page extension
+  install_brave_and_extension
+
   setup_python_envs
   setup_go_env
   setup_rust_env
@@ -724,6 +872,7 @@ main() {
   install_tools_from_list
   fetch_tracelabs_pdf
   install_osint_updater
+  install_owlculus_launcher
   harden_firefox
 
   run "${SUDO} -u \"$TARGET_USER\" mkdir -p \"$TARGET_HOME/osint-workspaces\""
