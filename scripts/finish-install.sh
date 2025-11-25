@@ -52,7 +52,7 @@ configure_zsh() {
     fi
     for user in $(get_user_list); do
         echo "INFO: changing default shell of user '$user' to zsh"
-        chsh --shell /usr/bin/zsh $user
+        chsh --shell /usr/bin/zsh "$user"
     done
 }
 
@@ -72,8 +72,8 @@ configure_usergroups() {
     for user in $(get_user_list | grep -xv root); do
         echo "INFO: adding user '$user' to groups '$kali_groups'"
 	for grp in $kali_groups; do
-	    getent group $grp >/dev/null || continue
-	    usermod -a -G $grp $user
+	    getent group "$grp" >/dev/null || continue
+	    usermod -a -G "$grp" "$user"
 	done
     done
 }
