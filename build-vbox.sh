@@ -222,6 +222,7 @@ fi
 # When building an image from an existing rootfs, ARCH and VERSION are picked
 # from the rootfs name. Moreover, many options don't apply, as they've been
 # set already at the time the rootfs was built.
+
 if [ "$ROOTFS" ]; then
     [ $VARIANT != rootfs ] || fail "Option -r can only be used to build images"
     [ -z "$ARCH"    ] || fail "Option -a can't be used together with option -r"
