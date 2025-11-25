@@ -13,6 +13,7 @@ This template helps keep PRs focused and easy to review.
 <!-- Pick one. If more than one applies, it might need to be split. -->
 
 - [ ] Enhancement / improvement
+- [ ] New OSINT Tool <!-- If checked, the README must be updated with the new tool. -->
 - [ ] Bug fix
 - [ ] Documentation
 - [ ] CI / tooling / refactor
