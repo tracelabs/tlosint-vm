@@ -1,4 +1,4 @@
-name: push-to-main
+name: ensure-vm-builds
 # This action will trigger whenever main gets updated
 # success on this action would imply success when we push a release and files are generated
 # triggers on PRs or direct commits to main or dev branches
@@ -38,8 +38,8 @@ jobs:
       # this test only checks the default build but others should work
       - name: Run Docker command
         run: |
+          set -euo pipefail
           sudo apt update
           sudo apt -y install debos p7zip qemu-utils zerofree e2fsprogs
-          cd $GITHUB_WORKSPACE
           docker build -t tlvm-builder .
           docker run --rm --interactive --net host --privileged --group-add $(stat -c '%g' /dev/kvm) --volume $(pwd):/recipes -v $(pwd)/images/:/images --workdir /recipes tlvm-builder ./build.sh
