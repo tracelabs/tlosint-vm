@@ -1,4 +1,6 @@
 name: ensure-vm-builds
+permissions:
+  contents: read
 # This action will trigger whenever main gets updated
 # success on this action would imply success when we push a release and files are generated
 # triggers on PRs or direct commits to main or dev branches
