@@ -1,4 +1,4 @@
-# TraceLabs OSINT VM Tool Suggestion Policy
+# TraceLabs OSINT VM Tool Evaluation Policy
 
 This Trace Labs OSINT VM is built for OSINT work, not as a “install everything” showcase. To keep it usable and maintainable, we triage tools before adding them.
 
@@ -31,7 +31,7 @@ Some of the following critera are intentionally imprecise so as to allow for the
 - Active community.
 - Recent (within 12 months) maintenance.
 
-### Immediate Disqualifiers 
+### Immediate Disqualifiers
 
 - Any illegal techinical methodologies (hacking).
 - Violation of copyright.
