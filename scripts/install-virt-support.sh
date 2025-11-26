@@ -14,7 +14,7 @@ else
     vmware="open-vm-tools"
 fi
 
-generic=$(echo $qemu $virtualbox $vmware \
+generic=$(echo "$qemu" $virtualbox $vmware \
     | sed "s/ \+/\n/g" | LC_ALL=C sort -u \
     | awk 'ORS=" "' | sed "s/ *$//")
 
@@ -32,5 +32,5 @@ esac
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
-apt-get install -y $pkgs
+apt-get install -y "$pkgs"
 apt-get clean
