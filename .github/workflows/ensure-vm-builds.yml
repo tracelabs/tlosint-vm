@@ -34,12 +34,35 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      # uses the build in container option to build the vm files
-      # this test only checks the default build but others should work
-      - name: Run Docker command
+      # Host dependencies needed before we build/run the container
+      - name: Install host dependencies
         run: |
           set -euo pipefail
           sudo apt update
           sudo apt -y install debos p7zip qemu-utils zerofree e2fsprogs
-          docker build -t tlvm-builder .
-          docker run --rm --interactive --net host --privileged --group-add $(stat -c '%g' /dev/kvm) --volume $(pwd):/recipes -v $(pwd)/images/:/images --workdir /recipes tlvm-builder ./build.sh
+
+      # Build tlvm-builder image using Buildx + cache
+      - name: Build tlvm-builder image (Buildx + cache)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          tags: tlvm-builder:latest
+          load: true # make image available to `docker run`
+          cache-from: type=gha # pull cache from GitHub Actions cache
+          cache-to: type=gha,mode=max # push updated cache
+
+      # Run the VM build inside the container
+      # this test only checks the default build but others should work
+      - name: Run VM build in container
+        run: |
+          set -euo pipefail
+          docker run --rm \
+          --interactive \
+          --net host \
+          --privileged \
+          --group-add $(stat -c '%g' /dev/kvm || echo 0) \
+          --volume $(pwd):/recipes \
+          --volume $(pwd)/images/:/images \
+          --workdir /recipes \
+          tlvm-builder:latest \
+          ./build.sh
