@@ -6,13 +6,76 @@
 
 # Maintainer Notes
 
-TraceLabs currently needs a maintainer and staff will not be adding anything to this repository unilaterally. PRs are always welcome. We ask that you PR in to the Dev branch.
+This repository is maintained by Trace Labs staff.
+
+PRs are always welcome. We do, however, ask that you PR in to the Dev branch.
 
 If you want to recommend a tool to add to the VM, report a bug, or have any issues, feedback, or questions about the VM, please [open an issue](https://github.com/tracelabs/tlosint-vm/issues/new/choose).
 
 # Introduction
 
 The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - <https://gitlab.com/kalilinux/build-scripts/kali-vm>
+
+# Quick Start — Choose an option
+
+## Option 1) Download the prebuilt VM (fastest)
+Use this if you just want to import and go.
+
+- **GitHub Releases (canonical):**  
+  https://github.com/tracelabs/tlosint-vm/releases (2024 VM release)
+
+- **Mirror (Google)**  
+  - [**Click here to download the VirtualBox OVA**](https://drive.google.com/file/d/1Ylid1Yf3JVRR7hn9sa5vWUnfNXZkJMpr/view?usp=drive_link) (2025 VM Release)
+  - [**Click here to download the VMware OVA**](https://drive.google.com/file/d/1VnuFDg6TFhcU3crk0nfWdgOg3SY3jhUH/view?usp=drive_link) (2025 VM Release)
+ 
+  - **Checksums:**  
+  - VMware: `6f3323b01afff853a35bcfb7e98be751fd17922006f453da2627963975949289`  
+  - VirtualBox: `a6d841c19ed55e5d4338280724238ea5b80e57a33d9462efda24bce965d1666d`
+
+**Verify integrity**
+```bash
+# Linux/macOS
+sha256sum <downloaded-file>.ova
+
+# Windows (PowerShell)
+Get-FileHash .\<downloaded-file>.ova -Algorithm SHA256
+```
+
+**Import**
+- **VirtualBox:** File → Import Appliance… → select `.ova`
+- **VMware (Workstation/Player/Fusion):** File → Open… → select `.ova`
+
+**Default login**  
+`osint` / `osint`
+
+---
+
+## Option 2) Customize your own VM with our tools script
+Use this if you want a lean Kali image and then install/update OSINT tools + Firefox hardening on demand.
+
+> **Download the raw file, not the GitHub “blob” page.**
+
+```bash
+# Inside Kali (or your Debian-based VM)
+cd ~/Desktop  # or any folder you prefer
+
+# Fetch the script (RAW URL)
+wget https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh
+
+#Give the script executable permission
+chmod +x tlosint-tools.sh
+
+#Execute the script
+./tlosint-tools.sh
+```
+
+**What the script does**
+- Refreshes the **Kali archive keyring** and applies updates
+- Installs a curated **OSINT toolset** (Shodan CLI, Sherlock, PhoneInfoga, SpiderFoot, sn0int, Metagoofil, Sublist3r, steghide/stegseek, StegOSuite, exiftool, tor, torbrowser-launcher, translate-shell, etc.)
+- Adds **TraceLabs CTF Contestant Guide (PDF)** and a **Self-Heal & Update** shortcut to the Desktop
+- Applies **Firefox hardening** (delete cookies/history on shutdown, block geolocation/mic/camera prompts by default, stronger tracking protection, preload OSINT bookmarks)
+
+---
 
 ## Releases
 
@@ -50,11 +113,17 @@ You can explore the different build options with `-h` flag.
 
 ## Applications
 
-The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a script on the desktop though. This keeps the size of the release small enough to build and host on Github. If you want to install the tools in the script then:
+The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a helper script. This keeps the size of the release small enough to build and host on GitHub.
+
+If you want to install the tools using our helper script, run the `tlosint-tools.sh` script found in the `scripts/` folder. Example:
 
 - Open a terminal
-- Navigate to the `Desktop` folder
-- Execute the install script with `./install-tools.sh`
+- From the repository root (or wherever you saved the script), make it executable and run it:
+
+```bash
+chmod +x scripts/tlosint-tools.sh
+./scripts/tlosint-tools.sh
+```
 
 **Resources**
 
@@ -67,6 +136,7 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 
 **Browsers**
 
+- [Brave Browser](https://brave.com/download/)
 - [Firefox ESR](https://www.mozilla.org/en-US/firefox/enterprise/)
 - [Tor Browser](https://www.torproject.org/download/)
 

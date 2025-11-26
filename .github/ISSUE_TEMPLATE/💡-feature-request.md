@@ -2,7 +2,7 @@
 name: "\U0001F4A1 Feature request"
 about: Suggest a new capability for the VM
 title: "[FEATURE] Feature Title Here"
-labels: feature-request
+labels: kind/feature
 assignees: ''
 
 ---
