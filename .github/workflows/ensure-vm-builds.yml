@@ -1,0 +1,70 @@
+name: ensure-vm-builds
+permissions:
+  contents: read
+# This action will trigger whenever main gets updated
+# success on this action would imply success when we push a release and files are generated
+# triggers on PRs or direct commits to main or dev branches
+on:
+  push:
+    paths-ignore:
+      - ".github/CODEOWNERS"
+      - ".github/ISSUE_TEMPLATE/**"
+      - LICENSE
+      - README.md
+    branches:
+      - main
+      - dev # Added the dev branch here
+  pull_request:
+    paths-ignore:
+      - ".github/CODEOWNERS"
+      - ".github/ISSUE_TEMPLATE/**"
+      - LICENSE
+      - README.md
+    branches:
+      - main
+      - dev # And here as well
+
+jobs:
+  run-docker:
+    # Specifies that the job runs on an Ubuntu environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Sets up Docker environment
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      # Host dependencies needed before we build/run the container
+      - name: Install host dependencies
+        run: |
+          set -euo pipefail
+          sudo apt update
+          sudo apt -y install debos p7zip qemu-utils zerofree e2fsprogs
+
+      # Build tlvm-builder image using Buildx + cache
+      - name: Build tlvm-builder image (Buildx + cache)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          tags: tlvm-builder:latest
+          load: true # make image available to `docker run`
+          cache-from: type=gha # pull cache from GitHub Actions cache
+          cache-to: type=gha,mode=max # push updated cache
+
+      # Run the VM build inside the container
+      # this test only checks the default build but others should work
+      - name: Run VM build in container
+        run: |
+          set -euo pipefail
+          docker run --rm \
+          --interactive \
+          --net host \
+          --privileged \
+          --group-add $(stat -c '%g' /dev/kvm || echo 0) \
+          --volume $(pwd):/recipes \
+          --volume $(pwd)/images/:/images \
+          --workdir /recipes \
+          tlvm-builder:latest \
+          ./build.sh
