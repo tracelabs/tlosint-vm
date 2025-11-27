@@ -22,46 +22,6 @@ We follow a predictable release cadence, with additional hotfix releases when ne
 - **Hotfix releases** occur outside this schedule for urgent breakages.  
 - All releases must complete the pre-release checklist before tagging.
 
----
-
-## Release Owner Checklist
-
-### Planning
-
-- Confirm release dates during our quarterly planning meetings.
-- Assign ownership to Trace Labs staff.
-- Review open issues/PRs to see what is landing in this release.
-- Open a release tracking issue to track the release and assign it to the release owner.
-
-(This issue will include a checklist of items to complete before the release.)
-
-### Pre-Release
-
-- Ensure CI is passing on the `dev` branch
-- Merge `dev` into `main`
-- Build full VM images (VirtualBox + VMware)
-- Generate SHA256 checksums for both images
-
-### Release Tagging & Publishing
-
-- Select a version tag matching the format (`YYYY.MM`)
-- Tag the `main` branch (`git checkout main && git tag <version> && git push origin <version>`)
-- The [automated release workflow](../.github/workflows/releases.yml) will build and package the images.
-- Build the full VM images locally
-- Upload VM images + checksums to [Google Drive](https://drive.google.com/drive/u/1/folders/19YF5F5b8AdcFprnW-1GSea97AqyhSPdz)
-- Create the GitHub Release and include:
-  - Google Drive download links  
-  - Checksums  
-  - Review generated release notes
-
-### Post-Release
-
-- Monitor early user feedback.
-- Log any discovered issues for the next cycle.
-- Confirm next release timeline and owners.
-
----
-
 ## Release Artifacts
 
 Each official release includes three types of assets:
@@ -88,20 +48,20 @@ Each official release includes three types of assets:
 
 ---
 
-## Release Procedure
+## Release Owner Checklist
 
-### Creating a Release Using GitHub
+### Planning
 
-1. **Determine the release tag** in `YYYY.MM` format.  
-2. **Tag the `main` branch** with the chosen version.  
-3. Let the automated release workflow build and package images.  
-4. **Upload the OVA files and checksums** to the Google Drive release folder.  
-5. **Create or update the GitHub Release** with:
-   - Google Drive download links  
-   - SHA256 checksums  
-   - Relevant release notes  
+- Confirm release dates during our quarterly planning meetings.
+- Assign ownership to Trace Labs staff.
+- Review open issues/PRs to see what is landing in this release.
+- Open a release tracking issue to track the release and assign it to the release owner.
 
-Once published, the release is considered official.
+(This issue will include a checklist of items to complete before the release.)
+
+## Release Checklist
+
+Follow the release checklist in the [🚀 Release Checklist](../.github/ISSUE_TEMPLATE/🚀-release-checklist.md) issue.
 
 ---
 

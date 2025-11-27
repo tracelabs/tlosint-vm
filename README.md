@@ -90,6 +90,10 @@ Releases follow a **scheduled cadence**.
 Releases are owned by assigned maintainers—usually Trace Labs staff.
 Release owners and timelines are proposed and confirmed during our quarterly planning meetings.
 
+See [RELEASES.md](./docs/RELEASES.md) for more details.
+
+## TODO - Review this section
+
 These are pre-generated bundles that can either import in to Virtualbox or VMWare. They are generated with the code in the `main` branch of this repo with no interference from us. The goal here is to produce a finished product but give the users insight in to the "recipe" used to build it.
 
 After you've downloaded the release that applies to you, it should be as simple as importing it in to your hypervisor.
