@@ -6,9 +6,9 @@
 
 # Maintainer Notes
 
-This repository is maintained by Trace Labs staff.
+This repository is actively maintained by Trace Labs staff.
 
-PRs are always welcome. We do, however, ask that you PR in to the Dev branch.
+PRs are always welcome. We do, however, ask that you read the [CONTRIBUTING.md](./docs/CONTRIBUTING.md) guide before opening a PR.
 
 If you want to recommend a tool to add to the VM, report a bug, or have any issues, feedback, or questions about the VM, please [open an issue](https://github.com/tracelabs/tlosint-vm/issues/new/choose).
 
@@ -16,9 +16,10 @@ If you want to recommend a tool to add to the VM, report a bug, or have any issu
 
 The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - <https://gitlab.com/kalilinux/build-scripts/kali-vm>
 
-# Quick Start — Choose an option
+# Using the VM
 
-## Option 1) Download the prebuilt VM (fastest)
+## Option 1: Download the prebuilt Full Trace Labs OSINT VM
+
 Use this if you just want to import and go.
 
 - **GitHub Releases (canonical):**  
@@ -32,25 +33,30 @@ Use this if you just want to import and go.
   - VMware: `6f3323b01afff853a35bcfb7e98be751fd17922006f453da2627963975949289`  
   - VirtualBox: `a6d841c19ed55e5d4338280724238ea5b80e57a33d9462efda24bce965d1666d`
 
-**Verify integrity**
-```bash
-# Linux/macOS
-sha256sum <downloaded-file>.ova
+### Verify integrity
 
-# Windows (PowerShell)
-Get-FileHash .\<downloaded-file>.ova -Algorithm SHA256
-```
+  ```bash
+  # Linux/macOS
+  sha256sum <downloaded-file>.ova
 
-**Import**
+  # Windows (PowerShell)
+  Get-FileHash .\<downloaded-file>.ova -Algorithm SHA256
+  ```
+
+### Import the VM
+
 - **VirtualBox:** File → Import Appliance… → select `.ova`
 - **VMware (Workstation/Player/Fusion):** File → Open… → select `.ova`
 
 **Default login**  
-`osint` / `osint`
+
+username: `osint`
+password: `osint`
 
 ---
 
-## Option 2) Customize your own VM with our tools script
+## Option 2: Customize your own VM with our tools script
+
 Use this if you want a lean Kali image and then install/update OSINT tools + Firefox hardening on demand.
 
 > **Download the raw file, not the GitHub “blob” page.**
@@ -69,7 +75,8 @@ chmod +x tlosint-tools.sh
 ./tlosint-tools.sh
 ```
 
-**What the script does**
+### What the script does
+
 - Refreshes the **Kali archive keyring** and applies updates
 - Installs a curated **OSINT toolset** (Shodan CLI, Sherlock, PhoneInfoga, SpiderFoot, sn0int, Metagoofil, Sublist3r, steghide/stegseek, StegOSuite, exiftool, tor, torbrowser-launcher, translate-shell, etc.)
 - Adds **TraceLabs CTF Contestant Guide (PDF)** and a **Self-Heal & Update** shortcut to the Desktop
@@ -79,7 +86,15 @@ chmod +x tlosint-tools.sh
 
 ## Releases
 
-These are pre-generated bundles that can either import in to Virtualbox or VMWare. They are generated with the code in the Main branch of this repo with no interference from us. The goal here is to produce a finished product but give the users insight in to the "recipe" used to build it.
+Releases follow a **scheduled cadence**.
+Releases are owned by assigned maintainers—usually Trace Labs staff.
+Release owners and timelines are proposed and confirmed during our quarterly planning meetings.
+
+See [RELEASES.md](./docs/RELEASES.md) for more details.
+
+## TODO - Review this section
+
+These are pre-generated bundles that can either import in to Virtualbox or VMWare. They are generated with the code in the `main` branch of this repo with no interference from us. The goal here is to produce a finished product but give the users insight in to the "recipe" used to build it.
 
 After you've downloaded the release that applies to you, it should be as simple as importing it in to your hypervisor.
 
@@ -214,3 +229,5 @@ chmod +x scripts/tlosint-tools.sh
 ## Contributing
 
 PRs are welcome. We ask that you PR in to the Dev branch.
+
+See [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for more details.
