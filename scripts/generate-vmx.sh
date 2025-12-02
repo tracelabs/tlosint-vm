@@ -5,7 +5,7 @@ set -eu
 # Helpers
 
 fail() { echo "$@" >&2; exit 1; }
-usage() { fail "Usage: $(basename $0) VMDK"; }
+usage() { fail "Usage: $(basename "$0") VMDK"; }
 
 gen_uuid() {
 
@@ -14,12 +14,12 @@ gen_uuid() {
     # the .vmx file, so we don't need this function.
     # Cf. https://kb.vmware.com/s/article/1541
 
-    local p1= p2=
+    p1="" p2=""
 
     p1=$(od -An -tx1 -N8 /dev/urandom | sed "s/^ *//")
     p2=$(od -An -tx1 -N8 /dev/urandom | sed "s/^ *//")
 
-    echo $p1-$p2
+    echo "$p1"-"$p2"
 }
 
 gen_vmci_id() {
@@ -38,20 +38,20 @@ gen_vmci_id() {
 
 disk_path=$1
 
-[ ${disk_path##*.} = vmdk ] || fail "Invalid input file '$disk_path'"
+[ "${disk_path##*.}" = vmdk ] || fail "Invalid input file '$disk_path'"
 
 description_template=scripts/templates/vm-description.txt
 machine_template=scripts/templates/vm-definition.vmx
 
 # Prepare all the values
 
-disk_file=$(basename $disk_path)
+disk_file=$(basename "$disk_path")
 name=${disk_file%.*}
 nvram=${name}.nvram
 
 arch=${name##*-}
 [ "$arch" ] || fail "Failed to get arch from image name '$name'"
-version=$(echo $name | sed -E 's/^kali-linux-(.+)-.+-.+$/\1/')
+version=$(echo "$name" | sed -E 's/^kali-linux-(.+)-.+-.+$/\1/')
 [ "$version" ] || fail "Failed to get version from image name '$name'"
 
 case $arch in
@@ -89,17 +89,17 @@ sed \
     -e "s|%fileName%|$disk_file|g" \
     -e "s|%guestOS%|$guest_os|g" \
     -e "s|%nvram%|$nvram|g" \
-    $machine_template > $output
+    $machine_template > "$output"
 
 # Tweaks for i386, not sure it's really needed.
-if [ $arch = i386 ]; then
+if [ "$arch" = i386 ]; then
     sed -i \
         -e "/^ethernet0\.virtualDev/d" \
         -e "/^vcpu\.hotadd/d" \
-        $output
+        "$output"
 fi
 
-unmatched_patterns=$(grep -E -n "%[A-Za-z_]+%" $output || :)
+unmatched_patterns=$(grep -E -n "%[A-Za-z_]+%" "$output" || :)
 if [ "$unmatched_patterns" ]; then
     echo "Some patterns were not replaced in '$output':" >&2
     echo "$unmatched_patterns" >&2

@@ -1,4 +1,5 @@
 #!/bin/zsh
+# shellcheck disable=SC1071
 # Ultimate OSINT Setup for Kali + Updater + Validator
 # 2025-09-09: fix SpiderFoot venv installer (zsh + set -u), keep Firefox hardening, PATH fix, Shodan deferred OK, StegOSuite optional.
 set -uo pipefail

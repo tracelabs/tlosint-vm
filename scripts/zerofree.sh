@@ -8,9 +8,9 @@ blockdev=$1
 # "zerofree" it. Furthermore, the partition must be mounted when this script
 # exits, as debos will want to unmount it and it will complain if it can't.
 
-mntpoint=$(findmnt --noheadings -o target $blockdev)
+mntpoint=$(findmnt --noheadings -o target "$blockdev")
 if [ "$mntpoint" ]; then
-    mount -v -o remount,ro $blockdev
+    mount -v -o remount,ro "$blockdev"
 fi
 
-zerofree -v $blockdev
+zerofree -v "$blockdev"

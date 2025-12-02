@@ -6,10 +6,10 @@ username=$1
 password=$2
 
 echo "INFO: create user '$username'"
-adduser --disabled-password --gecos "" $username
+adduser --disabled-password --gecos "" "$username"
 
 echo "INFO: set user password"
-echo $username:"$password" | chpasswd
+echo "$username":"$password" | chpasswd
 
 # Default groups for users are defined in different places:
 #
@@ -31,5 +31,5 @@ echo $username:"$password" | chpasswd
 default_groups="audio cdrom dip floppy video plugdev netdev scanner bluetooth debian-tor lpadmin"
 echo "INFO: add user to default groups '$default_groups'"
 for group in $default_groups; do
-    adduser "$username" $group >/dev/null 2>&1 || :
+    adduser "$username" "$group" >/dev/null 2>&1 || :
 done
