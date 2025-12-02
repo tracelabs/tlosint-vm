@@ -1,7 +1,7 @@
 ---
 name: "\U0001F41B Bug report"
 about: Report a problem with the VM image
-title: "[BUG] Issue Title"
+title: "[kind/bug-report] Issue Title"
 labels: kind/bug
 assignees: ''
 
