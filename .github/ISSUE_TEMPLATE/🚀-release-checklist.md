@@ -20,7 +20,7 @@ Release Date: yyyy-mm-dd
 - [ ] Select a version tag matching the format (`YYYY.MM`)
 - [ ] Tag the `main` branch (`git checkout main && git tag <version> && git push origin <version>`)
 - [ ] The [automated release workflow](../.github/workflows/releases.yml) will build and package the images.
-- Build the full VM images locally
+- [ ] Build the full VM images locally (For Vbox, export with stripped MAC addresses. For VMware, compact the hard drive and then export as an OVA (if .ova isn't specified, it breaks the ova into several files))
 - [ ] Upload VM images + checksums to [Google Drive](https://drive.google.com/drive/u/1/folders/19YF5F5b8AdcFprnW-1GSea97AqyhSPdz)
 - [ ] Create the GitHub Release and include:
   - [ ] Google Drive download links  
