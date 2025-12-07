@@ -5,7 +5,7 @@ set -eu
 for i in $(seq 1 5); do
     fallocate -v -l 1G /swapfile && break
     rm -f /swapfile    # probably useless, doesn't hurt either
-    if [ $i -lt 5 ]; then
+    if [ "$i" -lt 5 ]; then
         echo "Retrying in 5 seconds..."
         sleep 5
     else

@@ -3,7 +3,7 @@
 set -eu
 
 fail() { echo "$@" >&2; exit 1; }
-usage() { fail "Usage: $(basename $0) VMDK"; }
+usage() { fail "Usage: $(basename "$0") VMDK"; }
 
 get_vmdk_disk_uuid() {
 
@@ -13,12 +13,12 @@ get_vmdk_disk_uuid() {
     local disk=$1
     local magic=
 
-    magic=$(head -c4 $disk)
+    magic=$(head -c4 "$disk")
     if [ "$magic" != KDMV ]; then
         return
     fi
 
-    dd skip=1 count=2 if=$disk 2>/dev/null \
+    dd skip=1 count=2 if="$disk" 2>/dev/null \
         | sed -n "s/^ddb\.uuid\.image=//p" | tr -d '"'
 }
 
@@ -29,7 +29,7 @@ get_virtual_disk_capacity() {
 
     local disk=$1
 
-    qemu-img info $disk \
+    qemu-img info "$disk" \
         | grep "^virtual size: " \
         | sed -E "s/.* \(([0-9]+) bytes\)$/\1/"
 }
@@ -44,7 +44,7 @@ get_virtual_disk_format() {
     local subformat=
     local url=
 
-    buf=$(qemu-img info $disk)
+    buf=$(qemu-img info "$disk")
 
     format=$(echo "$buf" | sed -n "s/^file format: *//p")
     if [ "$format" != vmdk ]; then
@@ -68,26 +68,26 @@ get_virtual_disk_format() {
 
 disk_path=$1
 
-[ ${disk_path##*.} = vmdk ] || fail "Invalid input file '$disk_path'"
+[ "${disk_path##*.}" = vmdk ] || fail "Invalid input file '$disk_path'"
 
 description_template=scripts/templates/vm-description.txt
 machine_templace=scripts/templates/vm-definition.ovf
 
 # Prepare all the values
 
-disk_file=$(basename $disk_path)
+disk_file=$(basename "$disk_path")
 name=${disk_file%.*}
 
 arch=${name##*-}
 [ "$arch" ] || fail "Failed to get arch from image name '$name'"
-version=$(echo $name | sed -E 's/^kali-linux-(.+)-.+-.+$/\1/')
+version=$(echo "$name" | sed -E 's/^kali-linux-(.+)-.+-.+$/\1/')
 [ "$version" ] || fail "Failed to get version from image name '$name'"
 
-disk_capacity=$(get_virtual_disk_capacity $disk_path)
-disk_format=$(get_virtual_disk_format $disk_path)
-disk_size=$(stat -c %s $disk_path)
+disk_capacity=$(get_virtual_disk_capacity "$disk_path")
+disk_format=$(get_virtual_disk_format "$disk_path")
+disk_size=$(stat -c %s "$disk_path")
 # AFAIK the disk uuid is not set by qemu-img, in such case we generate something random
-disk_uuid=$(get_vmdk_disk_uuid $disk_path)
+disk_uuid=$(get_vmdk_disk_uuid "$disk_path")
 [ "$disk_uuid" ] || disk_uuid=$(cat /proc/sys/kernel/random/uuid)
 machine_uuid=$(cat /proc/sys/kernel/random/uuid)
 
@@ -159,12 +159,12 @@ sed \
     -e "s|%VendorUrl%|$vendor_url|g" \
     -e "s|%VirtualSystemId%|$name|g" \
     -e "s|%VirtualSystemIdentifier%|$name|g" \
-    $machine_templace > $output
+    $machine_templace > "$output"
 
-awk -v r="$description" '{ gsub(/%Description%/,r); print }' $output > $output.1
-mv $output.1 $output
+awk -v r="$description" '{ gsub(/%Description%/,r); print }' "$output" > "$output".1
+mv "$output".1 "$output"
 
-unmatched_patterns=$(grep -E -n "%[A-Za-z_]+%" $output || :)
+unmatched_patterns=$(grep -E -n "%[A-Za-z_]+%" "$output" || :)
 if [ "$unmatched_patterns" ]; then
     echo "Some patterns were not replaced in '$output':" >&2
     echo "$unmatched_patterns" >&2
