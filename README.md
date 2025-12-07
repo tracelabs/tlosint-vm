@@ -23,7 +23,7 @@ The repository includes a [recipe file](./tlosint.yaml) to build a Linux OSINT D
 Use this if you just want to import and go.
 
 - **GitHub Releases (canonical):**  
-  https://github.com/tracelabs/tlosint-vm/releases (2024 VM release)
+  https://github.com/tracelabs/tlosint-vm/releases (2025 VM release)
 
 - **Mirror (Google)**  
   - [**Click here to download the VirtualBox OVA**](https://drive.google.com/file/d/1Ylid1Yf3JVRR7hn9sa5vWUnfNXZkJMpr/view?usp=drive_link) (2025 VM Release)
