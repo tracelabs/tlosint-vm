@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2034,SC2046,SC2086,SC2166,SC2015,SC2162,SC2188,SC2001
 
 set -eu
 

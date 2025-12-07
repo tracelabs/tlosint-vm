@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2086
 # Install Obsidian app image to desktop of user
 
 # username set when launchine the build
