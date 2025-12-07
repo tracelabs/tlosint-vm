@@ -35,4 +35,4 @@ if ! $PODMAN inspect --type image $IMAGE >/dev/null 2>&1; then
     echo
 fi
 # run the build script inside a container
-vexec $PODMAN run "${OPTS[@]}" $IMAGE ./build.sh "$@"
+vexec $PODMAN run "${OPTS[@]}" "$IMAGE" ./build.sh "$@"

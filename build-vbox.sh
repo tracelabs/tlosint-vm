@@ -59,7 +59,7 @@ fail() { echo "ERROR:" "$@" >&2; exit 1; }
 
 kali_message() {
     local line=
-    echo "┏━━($(b $@))"
+    echo "┏━━($(b "$@"))"
     while IFS= read -r line; do echo "┃ $line"; done
     echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }
