@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2034,SC2046,SC2086,SC2166,SC2015,SC2162,SC2188,SC2001
 # script that will set up the build environment and run debos
 set -eu
 
@@ -60,7 +61,7 @@ fail() { echo "ERROR:" "$@" >&2; exit 1; }
 
 kali_message() {
     local line=
-    echo "┏━━($(b $@))"
+    echo "┏━━($(b "$@"))"
     while IFS= read -r line; do echo "┃ $line"; done
     echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }

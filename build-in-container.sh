@@ -1,4 +1,6 @@
 #!/bin/bash
+# shellcheck disable=SC2207,SC2046,SC2086
+# shellcheck disable=SC2207,SC2046,SC2086
 # checks for either Podman or Docker, then builds the container image and runs it
 # normal args can be passed to the build.sh script, e.g. --no-cache
 set -eu
@@ -35,4 +37,4 @@ if ! $PODMAN inspect --type image $IMAGE >/dev/null 2>&1; then
     echo
 fi
 # run the build script inside a container
-vexec $PODMAN run "${OPTS[@]}" $IMAGE ./build.sh "$@"
+vexec $PODMAN run "${OPTS[@]}" "$IMAGE" ./build.sh "$@"
