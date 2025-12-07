@@ -55,23 +55,23 @@ password: `osint`
 
 ---
 
-## Option 2: Customize your own VM with our tools script
+## Option 2: Customize your own system with our tools script
 
-Use this if you want a lean Kali image and then install/update OSINT tools + Firefox hardening on demand.
+Use this option if you want to start with your own base OS and then install OSINT tools and apply Firefox hardening on demand.
 
-> **Download the raw file, not the GitHub “blob” page.**
+> **Make sure to download the raw [tlosint-tools.sh](https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh) file, not the GitHub “blob” page.**
 
 ```bash
-# Inside Kali (or your Debian-based VM)
+# Inside Kali (or other Debian-based OS)
 cd ~/Desktop  # or any folder you prefer
 
 # Fetch the script (RAW URL)
 wget https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh
 
-#Give the script executable permission
+# Give the script executable permission
 chmod +x tlosint-tools.sh
 
-#Execute the script
+# Execute the script
 ./tlosint-tools.sh
 ```
 
