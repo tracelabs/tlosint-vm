@@ -107,6 +107,7 @@ install_base_packages() {
     ca-certificates apt-transport-https software-properties-common gnupg
     curl wget git jq unzip zip xz-utils coreutils moreutils ripgrep fzf gawk
     build-essential pkg-config make gcc g++ libc6-dev
+    libsqlite3-dev libsodium-dev libseccomp-dev
     python3 python3-venv python3-pip python3-setuptools python3-dev pipx
     golang-go libssl-dev
     openjdk-11-jdk maven
