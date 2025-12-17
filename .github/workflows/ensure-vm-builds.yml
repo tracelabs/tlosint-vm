@@ -25,8 +25,22 @@ on:
       - dev # And here as well
 
 jobs:
+  validate-tlosint-tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zsh
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y zsh
+
+      - name: Test tlosint-tools.sh
+        run: |
+          chmod +x .github/scripts/test-tlosint-tools.sh
+          .github/scripts/test-tlosint-tools.sh
+
   run-docker:
-    # Specifies that the job runs on an Ubuntu environment
     runs-on: ubuntu-latest
 
     steps:
