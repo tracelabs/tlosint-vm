@@ -1,0 +1,30 @@
+name: validate-tlosint-tools
+permissions:
+    contents: read
+
+on:
+    pull_request:
+        paths:
+            - "scripts/tlosint-tools.sh"
+        branches:
+            - main
+            - dev
+
+jobs:
+    validate:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install zsh
+              run: |
+                  sudo apt-get update -qq
+                  sudo apt-get install -y zsh
+
+            - name: Syntax check
+              run: zsh -n scripts/tlosint-tools.sh
+
+            - name: Test in Kali container
+              run: |
+                  chmod +x .github/scripts/test-tlosint-tools.sh
+                  .github/scripts/test-tlosint-tools.sh

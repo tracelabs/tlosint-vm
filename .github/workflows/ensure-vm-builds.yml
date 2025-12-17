@@ -1,9 +1,6 @@
 name: ensure-vm-builds
 permissions:
   contents: read
-# This action will trigger whenever main gets updated
-# success on this action would imply success when we push a release and files are generated
-# triggers on PRs or direct commits to main or dev branches
 on:
   push:
     paths-ignore:
@@ -25,25 +22,7 @@ on:
       - dev # And here as well
 
 jobs:
-  validate-tlosint-tools:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install zsh
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y zsh
-
-      - name: Syntax check
-        run: zsh -n scripts/tlosint-tools.sh
-
-      - name: Test tlosint-tools.sh
-        run: |
-          chmod +x .github/scripts/test-tlosint-tools.sh
-          .github/scripts/test-tlosint-tools.sh
-
-  run-docker:
+  build-vm:
     runs-on: ubuntu-latest
 
     steps:
