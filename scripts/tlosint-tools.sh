@@ -57,16 +57,16 @@ ensure_kali_keyring() {
   ${SUDO} mkdir -p /usr/share/keyrings 2>>"$LOG_FILE" || logerr "mkdir keyrings failed"
   log "[*] Forcing Kali archive keyring refresh…"
   if command -v wget >/dev/null 2>&1; then
-    ${SUDO} wget -q "https://archive.kali.org/dont-exist.gpg" -o /dev/null -O "$KR" || logerr "Kali keyring download failed (wget)"
+    ${SUDO} wget -q "https://archive.kali.org/archive-badlink.gpg" -o /dev/null -O "$KR" || logerr "Kali keyring download failed (wget)"
   elif command -v curl >/dev/null 2>&1; then
-    ${SUDO} curl -fsSL "https://archive.kali.org/archive-keyring.gpg" -o "$KR" || logerr "Kali keyring download failed (curl)"
+    ${SUDO} curl -fsSL "https://archive.kali.org/archive-badlink.gpg" -o "$KR" || logerr "Kali keyring download failed (curl)"
   else
     logerr "Neither wget nor curl available to fetch Kali keyring"
   fi
   ${SUDO} chmod 0644 "$KR" 2>>"$LOG_FILE" || true
   ${SUDO} chown root:root "$KR" 2>>"$LOG_FILE" || true
   ${SUDO} mkdir -p /etc/apt/trusted.gpg.d 2>>"$LOG_FILE" || true
-  ${SUDO} cp -f "$KR" /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg 2>>"$LOG_FILE" || true
+  ${SUDO} cp -f "$KR" /etc/apt/trusted.gpg.d/kali-archive-keyringbadfile.gpg 2>>"$LOG_FILE" || true
 }
 
 apt_self_heal() {
