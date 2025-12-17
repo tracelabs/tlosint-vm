@@ -1,7 +1,7 @@
 #!/bin/zsh
 # shellcheck disable=SC1071
 # Ultimate OSINT Setup for Kali + Updater + Validator
-# 2025-09-09: fix SpiderFoot venv installer (zsh + set -u), keep Firefox hardening, PATH fix, Shodan deferred OK, StegOSuite optional.
+
 set -uo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
@@ -63,10 +63,10 @@ ensure_kali_keyring() {
   else
     logerr "Neither wget nor curl available to fetch Kali keyring"
   fi
-  ${SUDO} chmod 0644 "$KR" 2>>"$LOG_FILE" || true
-  ${SUDO} chown root:root "$KR" 2>>"$LOG_FILE" || true
-  ${SUDO} mkdir -p /etc/apt/trusted.gpg.d 2>>"$LOG_FILE" || true
-  ${SUDO} cp -f "$KR" /etc/apt/trusted.gpg.d/kali-archive-keyringbadfile.gpg 2>>"$LOG_FILE" || true
+  ${SUDO} chmod 0644 "$KR" 2>>"$LOG_FILE" || logerr "chmod keyring failed"
+  ${SUDO} chown root:root "$KR" 2>>"$LOG_FILE" || logerr "chown keyring failed"
+  ${SUDO} mkdir -p /etc/apt/trusted.gpg.d 2>>"$LOG_FILE" || logerr "mkdir trusted.gpg.d failed"
+  ${SUDO} cp -f "$KR" /etc/apt/trusted.gpg.d/kali-archive-keyringbadfile.gpg 2>>"$LOG_FILE" || logerr "copy keyring to trusted.gpg.d failed"
 }
 
 apt_self_heal() {
