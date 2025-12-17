@@ -38,7 +38,6 @@ EOS
 }
 symlink_if_exists() { local SRC="$1" DEST_NAME="$2"; [[ -x "$SRC" ]] || return 0; ${SUDO} ln -sf "$SRC" "/usr/local/bin/${DEST_NAME}"; }
 
-imabadcommand Iwillfailci
 ensure_global_symlinks() {
   local CARGODIR="${TARGET_HOME}/.cargo/bin"
   for b in cargo rustc rustup sn0int; do
@@ -58,7 +57,7 @@ ensure_kali_keyring() {
   ${SUDO} mkdir -p /usr/share/keyrings 2>>"$LOG_FILE" || logerr "mkdir keyrings failed"
   log "[*] Forcing Kali archive keyring refresh…"
   if command -v wget >/dev/null 2>&1; then
-    ${SUDO} wget -q "https://archive.kali.org/archive-keyring.gpg" -o /dev/null -O "$KR" || logerr "Kali keyring download failed (wget)"
+    ${SUDO} wget -q "https://archive.kali.org/dont-exist.gpg" -o /dev/null -O "$KR" || logerr "Kali keyring download failed (wget)"
   elif command -v curl >/dev/null 2>&1; then
     ${SUDO} curl -fsSL "https://archive.kali.org/archive-keyring.gpg" -o "$KR" || logerr "Kali keyring download failed (curl)"
   else
