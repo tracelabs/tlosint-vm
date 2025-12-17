@@ -38,6 +38,7 @@ EOS
 }
 symlink_if_exists() { local SRC="$1" DEST_NAME="$2"; [[ -x "$SRC" ]] || return 0; ${SUDO} ln -sf "$SRC" "/usr/local/bin/${DEST_NAME}"; }
 
+imabadcommand Iwillfailci
 ensure_global_symlinks() {
   local CARGODIR="${TARGET_HOME}/.cargo/bin"
   for b in cargo rustc rustup sn0int; do
