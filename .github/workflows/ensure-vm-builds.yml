@@ -35,6 +35,9 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y zsh
 
+      - name: Syntax check
+        run: zsh -n scripts/tlosint-tools.sh
+
       - name: Test tlosint-tools.sh
         run: |
           chmod +x .github/scripts/test-tlosint-tools.sh
