@@ -4,19 +4,21 @@ permissions:
 on:
   push:
     paths-ignore:
-      - ".github/CODEOWNERS"
-      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/**"
       - LICENSE
       - README.md
+      - docs/**
+      - scripts/tlosint-tools.sh
     branches:
       - main
       - dev # Added the dev branch here
   pull_request:
     paths-ignore:
-      - ".github/CODEOWNERS"
-      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/**"
       - LICENSE
       - README.md
+      - docs/**
+      - scripts/tlosint-tools.sh
     branches:
       - main
       - dev # And here as well
