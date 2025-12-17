@@ -4,7 +4,9 @@ permissions:
 on:
   push:
     paths-ignore:
-      - ".github/**"
+      - ".github/**/*.md"
+      - ".github/scripts/**"
+      - ".github/CODEOWNERS"
       - LICENSE
       - README.md
       - docs/**
@@ -14,7 +16,9 @@ on:
       - dev # Added the dev branch here
   pull_request:
     paths-ignore:
-      - ".github/**"
+      - ".github/**/*.md"
+      - ".github/scripts/**"
+      - ".github/CODEOWNERS"
       - LICENSE
       - README.md
       - docs/**
