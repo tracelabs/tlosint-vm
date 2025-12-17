@@ -147,17 +147,17 @@ setup_rust_env() {
 
 # sn0int APT repository
 setup_sn0int_repo() {
-  log "[*] Setting up apt.vulns.sexy for sn0int"
+  log "[*] Setting up apt.vulns.xyz for sn0int"
   run "${SUDO} apt-get install -y curl sq"
-  if [[ ! -f /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg ]]; then
-    run "curl -sSf https://apt.vulns.sexy/kpcyrd.pgp | sq dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg > /dev/null"
+  if [[ ! -f /etc/apt/trusted.gpg.d/apt-vulns-xyz.gpg ]]; then
+    run "curl -sSf https://apt.vulns.xyz/kpcyrd.pgp | sq dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/apt-vulns-xyz.gpg > /dev/null"
   else
-    log "[*] apt-vulns.sexy key already present"
+    log "[*] apt.vulns.xyz key already present"
   fi
-  if [[ ! -f /etc/apt/sources.list.d/apt-vulns-sexy.list ]]; then
-    run "echo deb http://apt.vulns.sexy stable main | ${SUDO} tee /etc/apt/sources.list.d/apt-vulns-sexy.list"
+  if [[ ! -f /etc/apt/sources.list.d/apt-vulns-xyz.list ]]; then
+    run "echo deb http://apt.vulns.xyz stable main | ${SUDO} tee /etc/apt/sources.list.d/apt-vulns-xyz.list"
   else
-    log "[*] apt-vulns.sexy.list already exists"
+    log "[*] apt.vulns.xyz.list already exists"
   fi
   run "${SUDO} apt-get update -y"
 }
@@ -675,8 +675,8 @@ validator() {
   if [[ -f "$ff_pol_etc" || -n "$ff_pol_sys" ]]; then ok "Firefox policies present"; else warn "Firefox policies not found"; fi
 
   [[ -f /usr/share/keyrings/kali-archive-keyring.gpg ]] && ok "Kali archive keyring present" || warn "Kali archive keyring missing"
-  [[ -f /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg ]] && ok "apt-vulns.sexy key installed" || warn "apt-vulns.sexy key not found"
-  [[ -f /etc/apt/sources.list.d/apt-vulns-sexy.list ]] && ok "apt-vulns.sexy repo listed" || warn "apt-vulns.sexy repo list missing"
+  [[ -f /etc/apt/trusted.gpg.d/apt-vulns-xyz.gpg ]] && ok "apt.vulns.xyz key installed" || warn "apt.vulns.xyz key not found"
+  [[ -f /etc/apt/sources.list.d/apt-vulns-xyz.list ]] && ok "apt.vulns.xyz repo listed" || warn "apt.vulns.xyz repo list missing"
 
   local WS="${REAL_HOME}/osint-workspaces"
   if [[ -d "$WS" ]]; then ok "Workspace base exists: $WS"
