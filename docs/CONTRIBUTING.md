@@ -38,6 +38,22 @@ Read more about the release process in [RELEASES.md](./RELEASES.md).
 
 ---
 
+## Build Process Overview
+
+The VM is built using **debos** (Debian OS builder), which reads `tlosint.yaml` as a playbook. The build process follows these high-level steps:
+
+1. **Debootstrap** - Creates a minimal Debian/Kali base system
+2. **Package Installation** - Installs core packages, desktop environment, and standard tools
+3. **Configuration** - Sets locale, timezone, hostname, and user accounts
+4. **Overlays** - Applies custom files (desktop shortcuts, bookmarks, backgrounds, etc.)
+5. **System Setup** - Creates swap file, installs kernel/bootloader, configures virtualization support
+6. **Cleanup** - Removes temporary files, logs, and unnecessary packages
+7. **Export** - Converts the raw image to the final format (OVA, OVF, VMware, VirtualBox, etc.)
+
+Scripts in the `scripts/` directory are executed by debos at various stages of the build. Most scripts run inside a chroot environment (`chroot: true`), while cleanup and export scripts run outside (`chroot: false`).
+
+**Note:** The `tlosint-tools.sh` script is **not** part of the build process. It's a standalone utility script that users can download and run manually after importing the VM to install OSINT tools on-demand.
+
 ## Adding or Updating Tools
 
 We follow a tooling policy to avoid VM bloat and maintain stability.  
