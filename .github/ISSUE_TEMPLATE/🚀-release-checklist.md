@@ -18,6 +18,7 @@ Release Date: yyyy-mm-dd
 ### Release Tagging & Publishing
 
 - [ ] Select a version tag matching the format (`YYYY.MM`)
+- [ ] Update the `VERSION` variable in the `build.sh` script to the new version.
 - [ ] Tag the `main` branch (`git checkout main && git tag <version> && git push origin <version>`)
 - [ ] The [automated release workflow](../.github/workflows/releases.yml) will build and package the images.
 - [ ] Build the full VM images locally (For Vbox, export with stripped MAC addresses. For VMware, compact the hard drive and then export as an OVA (if .ova isn't specified, it breaks the ova into several files))
