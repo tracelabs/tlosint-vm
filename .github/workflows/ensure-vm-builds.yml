@@ -1,32 +1,34 @@
 name: ensure-vm-builds
 permissions:
   contents: read
-# This action will trigger whenever main gets updated
-# success on this action would imply success when we push a release and files are generated
-# triggers on PRs or direct commits to main or dev branches
 on:
   push:
     paths-ignore:
+      - ".github/**/*.md"
+      - ".github/scripts/**"
       - ".github/CODEOWNERS"
-      - ".github/ISSUE_TEMPLATE/**"
       - LICENSE
       - README.md
+      - docs/**
+      - scripts/tlosint-tools.sh
     branches:
       - main
       - dev # Added the dev branch here
   pull_request:
     paths-ignore:
+      - ".github/**/*.md"
+      - ".github/scripts/**"
       - ".github/CODEOWNERS"
-      - ".github/ISSUE_TEMPLATE/**"
       - LICENSE
       - README.md
+      - docs/**
+      - scripts/tlosint-tools.sh
     branches:
       - main
       - dev # And here as well
 
 jobs:
-  run-docker:
-    # Specifies that the job runs on an Ubuntu environment
+  build-vm:
     runs-on: ubuntu-latest
 
     steps:
