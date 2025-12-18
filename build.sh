@@ -46,6 +46,7 @@ VERSION=2024.2
 # output will be compressed by default
 ZIP=true
 OUTDIR=images
+WITHTOOLS=false
 
 default_toolset() { [ ${DESKTOP:-$DEFAULT_DESKTOP} = headless ] && echo none || echo default; }
 default_version() { echo ${BRANCH:-$DEFAULT_BRANCH} | sed "s/^kali-//"; }
@@ -141,6 +142,7 @@ Build options:
   -s SIZE     Size of the disk image in GB, default: $(b $SIZE)
   -v VARIANT  Variant of image to build (see below for details), default: $(b $VARIANT)
               Supported values: $SUPPORTED_VARIANTS
+  -W          Build with OSINT tools pre-installed (uses tlosint-buildwithtools.yaml)
   -z          Do not zip images and metadata files after the build
 
 Customization options:
@@ -174,7 +176,7 @@ Supported environment variables:
 Refer to the README for examples.
 "
 
-while getopts ":a:b:D:o:f:hkL:m:P:r:s:S:T:U:v:x:z" opt; do
+while getopts ":a:b:D:o:f:hkL:m:P:r:s:S:T:U:v:Wx:z" opt; do
     case $opt in
         (a) ARCH=$OPTARG ;;
         (b) BRANCH=$OPTARG ;;
@@ -192,6 +194,7 @@ while getopts ":a:b:D:o:f:hkL:m:P:r:s:S:T:U:v:x:z" opt; do
         (T) TIMEZONE=$OPTARG ;;
         (U) USERPASS=$OPTARG ;;
         (v) VARIANT=$OPTARG ;;
+        (W) WITHTOOLS=true ;;
         (x) VERSION=$OPTARG ;;
         (z) ZIP=false ;;
         (*) echo "$USAGE" >&2; exit 1 ;;
@@ -305,7 +308,15 @@ fi
 [ "$USERNAME" ] && echo "* username & password: $(b $USERNAME $PASSWORD)"
 [ "$LOCALE"   ] && echo "* locale: $(b $LOCALE)"
 [ "$TIMEZONE" ] && echo "* timezone: $(b $TIMEZONE)"
+[ "$WITHTOOLS" = true ] && echo "* OSINT tools: $(b INCLUDED)"
 } | kali_message "TL OSINT VM Build"
+
+# Select recipe based on WITHTOOLS flag
+if [ "$WITHTOOLS" = true ]; then
+    RECIPE=tlosint-buildwithtools.yaml
+else
+    RECIPE=tlosint.yaml
+fi
 
 # Notes regarding the scratch size needed to build a Kali image from scratch
 # (ie. in one step, no intermediary rootfs), using the kali-rolling branch and
@@ -322,7 +333,7 @@ mkdir -p $OUTDIR
 echo "Moving Kali GPG key into expected directory"
 cp /opt/kali-archive-keyring.gpg /recipes/kali-archive-keyring.gpg
 
-echo "Building image from recipe $(b tlosint.yaml) ..."
+echo "Building image from recipe $(b $RECIPE) ..."
 OUTPUT=$OUTDIR/tl-osint-$VERSION-$VARIANT-$ARCH
 debos "$@" \
         -t arch:$ARCH \
@@ -341,7 +352,7 @@ debos "$@" \
         -t username:$USERNAME \
         -t variant:$VARIANT \
         -t zip:$ZIP \
-        tlosint.yaml
+        $RECIPE
 
 cat << EOF
 	   Finished
