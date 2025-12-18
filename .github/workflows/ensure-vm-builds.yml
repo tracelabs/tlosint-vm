@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - ".github/CODEOWNERS"
       - ".github/ISSUE_TEMPLATE/**"
+      - "docs/**"
       - LICENSE
       - README.md
     branches:
@@ -18,6 +19,7 @@ on:
     paths-ignore:
       - ".github/CODEOWNERS"
       - ".github/ISSUE_TEMPLATE/**"
+      - "docs/**"
       - LICENSE
       - README.md
     branches:
