@@ -65,6 +65,7 @@ jobs:
           --net host \
           --privileged \
           --group-add $(stat -c '%g' /dev/kvm || echo 0) \
+          --volume /lib/modules:/lib/modules:ro \
           --volume $(pwd):/recipes \
           --volume $(pwd)/images/:/images \
           --workdir /recipes \

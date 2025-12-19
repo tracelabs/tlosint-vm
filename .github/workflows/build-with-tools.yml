@@ -32,6 +32,7 @@ jobs:
               run: |
                   docker run --rm --interactive --net host --privileged \
                     --group-add $(stat -c '%g' /dev/kvm) \
+                    --volume /lib/modules:/lib/modules:ro \
                     --volume $(pwd):/recipes \
                     -v $(pwd)/images/:/images \
                     --workdir /recipes \
@@ -41,6 +42,7 @@ jobs:
               run: |
                   docker run --rm --interactive --net host --privileged \
                     --group-add $(stat -c '%g' /dev/kvm) \
+                    --volume /lib/modules:/lib/modules:ro \
                     --volume $(pwd):/recipes \
                     -v $(pwd)/images/:/images \
                     --workdir /recipes \
