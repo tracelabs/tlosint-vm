@@ -1,0 +1,54 @@
+name: Build VM with Tools
+
+on:
+    workflow_dispatch: # Manual trigger from GitHub UI
+    pull_request:
+        branches:
+            - main
+            - dev
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Install host dependencies
+              run: |
+                  sudo apt update
+                  sudo apt -y install debos p7zip qemu-utils zerofree
+
+            - name: Make scripts executable
+              run: |
+                  chmod +x scripts/tl/*.sh
+                  chmod +x scripts/*.sh
+                  chmod +x *.sh
+
+            - name: Build Docker image
+              run: docker build -t tlvm-builder .
+
+            - name: Build VirtualBox OVA with tools
+              run: |
+                  docker run --rm --interactive --net host --privileged \
+                    --group-add $(stat -c '%g' /dev/kvm) \
+                    --volume $(pwd):/recipes \
+                    -v $(pwd)/images/:/images \
+                    --workdir /recipes \
+                    tlvm-builder ./build.sh -W -v virtualbox -f ova
+
+            - name: Build VMware image with tools
+              run: |
+                  docker run --rm --interactive --net host --privileged \
+                    --group-add $(stat -c '%g' /dev/kvm) \
+                    --volume $(pwd):/recipes \
+                    -v $(pwd)/images/:/images \
+                    --workdir /recipes \
+                    tlvm-builder ./build.sh -W -v vmware -f vmware
+
+            - name: Upload VM artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: vm-with-tools-${{ github.sha }}
+                  path: images/*
+                  retention-days: 14
