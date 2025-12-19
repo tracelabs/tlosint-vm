@@ -8,6 +8,7 @@ RUN mkdir -p /recipes \
 
 RUN apt update \
     && apt --quiet --yes install --no-install-recommends \
-    bmap-tools debos dosfstools p7zip parted qemu-utils systemd-resolved xz-utils zerofree e2fsprogs
+    bmap-tools debos dosfstools p7zip parted qemu-utils systemd-resolved xz-utils zerofree e2fsprogs \
+    linux-image-$(dpkg --print-architecture)
 
 
