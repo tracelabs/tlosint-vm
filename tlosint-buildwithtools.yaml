@@ -4,6 +4,8 @@
 # this playbook will create a bare bones kali linux installation
 # most of our additions will be happening in the overlay section of the playbook
 # in the overaly section we will add in browser bookmarks, custom scripts, and other customizations
+#
+# NOTE: This is the "build with tools" variant - includes tlosint-tools.sh installation
 {{ $arch := .arch }}
 {{ $branch := .branch }}
 {{ $format := .format }}
@@ -100,6 +102,11 @@ actions:
     chroot: true
     script: scripts/tl/change-mod.sh
 
+  - description: "Install OSINT tools"
+    action: run
+    chroot: true
+    script: scripts/tlosint-tools.sh --user={{ $username }} --no-validate
+
   - description: "Disable tmpfiles.d/systemd-resolve.conf, cf. #1007018"
     action: run
     chroot: false
@@ -174,8 +181,10 @@ actions:
     chroot: false
     script: scripts/cleanup-out.sh
 
+
   - description: "Export to a {{ $format }} image"
     label: "export-{{ $format }}"
     action: run
     postprocess: true
     script: scripts/export-{{ $format }}.sh {{ if eq $keep "true" }}-k{{ end }} {{ if eq $zip "true" }}-z{{ end }} {{ $imagename }}
+
