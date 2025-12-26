@@ -1,7 +1,7 @@
 ---
 name: "\U0001F9F0 Tool Request"
 about: Suggest adding a tool/package to the VM
-title: "[TOOL SUGGESTION] <Tool Name Here>"
+title: "[kind/tool-request] <Tool Name Here>"
 labels: kind/tool-request, tool/triaged
 assignees: ''
 

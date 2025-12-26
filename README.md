@@ -59,7 +59,9 @@ password: `osint`
 
 Use this option if you want to start with your own base OS and then install OSINT tools and apply Firefox hardening on demand.
 
-> **Make sure to download the raw [tlosint-tools.sh](https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh) file, not the GitHub “blob” page.**
+> **Note:** `tlosint-tools.sh` is a **standalone script** that is not part of the VM build process. It's designed to be downloaded and run manually by end-users on any Kali or Debian-based system to install OSINT tools on-demand. This keeps the VM image size small while giving users flexibility to customize their toolset.
+
+> **Download the raw file, not the GitHub "blob" page.**
 
 ```bash
 # Inside Kali (or other Debian-based OS)
@@ -117,7 +119,7 @@ We highly reccommend that you do your build in Docker. This assumes that you alr
 
 With that in mind you can:
 
-```
+```sh
 git clone https://github.com/tracelabs/tlosint-vm
 cd tlosint-vm
 chmod +x build-in-container.sh
@@ -129,6 +131,8 @@ You can explore the different build options with `-h` flag.
 ## Applications
 
 The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a helper script. This keeps the size of the release small enough to build and host on GitHub.
+
+**Note:** The `tlosint-tools.sh` script is a **standalone utility** that is not executed during the VM build process. It's provided as a convenience script for users who want to install OSINT tools on-demand after importing the VM.
 
 If you want to install the tools using our helper script, run the `tlosint-tools.sh` script found in the `scripts/` folder. Example:
 
