@@ -152,12 +152,17 @@ chmod +x scripts/tlosint-tools.sh
 **Reporting**
 
 - [TJ Null's OSINT Joplin template](https://github.com/tjnull/TJ-OSINT-Notebook)
+- [Owlculus](https://github.com/be0vlk/owlculus)
 
 **Browsers**
-
+  
 - [Brave Browser](https://brave.com/download/)
 - [Firefox ESR](https://www.mozilla.org/en-US/firefox/enterprise/)
 - [Tor Browser](https://www.torproject.org/download/)
+
+**Browser Extensions**
+
+- [OSINT Forensics Full Screen Capture](https://chromewebstore.google.com/detail/forensic-osint-full-page/jojaomahhndmeienhjihojidkddkahcn?pli=1)
 
 **Data Analysis**
 
