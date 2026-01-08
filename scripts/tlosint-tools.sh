@@ -1,15 +1,26 @@
 #!/bin/zsh
 # shellcheck disable=SC1071
 # Ultimate OSINT Setup for Kali + Updater + Validator
-# 2025-09-09: fix SpiderFoot venv installer (zsh + set -u), keep Firefox hardening, PATH fix, Shodan deferred OK, StegOSuite optional.
 set -uo pipefail
 export DEBIAN_FRONTEND=noninteractive
+
+# Parse optional username argument (for chroot/debos builds)
+# Usage: tlosint-tools.sh [--user USERNAME] [--no-validate|--validate-only]
+EXPLICIT_USER=""
+for arg in "$@"; do
+  case "$arg" in
+    --user=*) EXPLICIT_USER="${arg#--user=}" ;;
+  esac
+done
 
 LOG_FILE="${HOME}/osint-bootstrap.log"
 touch "$LOG_FILE" || { echo "Cannot write ${LOG_FILE}"; exit 1; }
 
-# Resolve target user
-if [[ $EUID -eq 0 && -n "${SUDO_USER-}" && "${SUDO_USER}" != "root" ]]; then
+# Resolve target user (explicit > SUDO_USER > current user)
+if [[ -n "${EXPLICIT_USER}" ]]; then
+  TARGET_USER="${EXPLICIT_USER}"
+  TARGET_HOME="$(getent passwd "${TARGET_USER}" | cut -d: -f6)"
+elif [[ $EUID -eq 0 && -n "${SUDO_USER-}" && "${SUDO_USER}" != "root" ]]; then
   TARGET_USER="${SUDO_USER}"
   TARGET_HOME="$(getent passwd "${TARGET_USER}" | cut -d: -f6)"
 else
@@ -1010,7 +1021,15 @@ validator() {
 
 # ===================== MAIN =====================
 main() {
-  local MODE="${1:-}"  # --no-validate | --validate-only | (default: install+validate)
+  # Parse arguments: --no-validate | --validate-only | --user=USERNAME
+  local MODE=""
+  for arg in "$@"; do
+    case "$arg" in
+      --no-validate) MODE="--no-validate" ;;
+      --validate-only) MODE="--validate-only" ;;
+      --user=*) ;; # Already parsed above
+    esac
+  done
 
   if [[ "$MODE" == "--validate-only" ]]; then
     ensure_runtime_path_now
@@ -1020,6 +1039,8 @@ main() {
   fi
 
   log "==== Ultimate OSINT Setup starting ===="
+  log "    Target user: ${TARGET_USER}"
+  log "    Target home: ${TARGET_HOME}"
   apt_self_heal
   install_base_packages
 
@@ -1055,4 +1076,4 @@ main() {
     validator || true
   fi
 }
-main "${1:-}"
+main "$@"
