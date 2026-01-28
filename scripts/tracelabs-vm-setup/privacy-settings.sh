@@ -1078,7 +1078,7 @@ echo '--- Remove old Snap packages'
 if ! command -v 'snap' &> /dev/null; then
   echo 'Skipping because "snap" is not found.'
 else
-  snap list --all | while read name version rev tracking publisher notes; do
+  snap list --all | while read -r name version rev tracking publisher notes; do
   if [[ $notes = *disabled* ]]; then
     sudo snap remove "$name" --revision="$rev";
   fi
@@ -3625,4 +3625,4 @@ fi
 
 echo 'Your privacy and security is now hardened 🎉💪\'
 echo 'Press any key to exit.'
-read -n 1 -s
+read -r -n 1 -s

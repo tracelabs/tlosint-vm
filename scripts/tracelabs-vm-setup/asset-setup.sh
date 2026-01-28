@@ -120,12 +120,12 @@ EOF
 echo "Setting user account icon..."
 sudo mkdir -p /var/lib/AccountsService/users/
 
-sudo tee /var/lib/AccountsService/users/$USERNAME > /dev/null << EOF
+sudo tee "/var/lib/AccountsService/users/$USERNAME" > /dev/null << EOF
 [User]
 Icon=/usr/share/pixmaps/tracelabs/tracelabs-logo.jpg
 EOF
 
-sudo chmod 644 /var/lib/AccountsService/users/$USERNAME
+sudo chmod 644 "/var/lib/AccountsService/users/$USERNAME"
 
 # Restart AccountsService to pick up changes
 echo "Restarting AccountsService..."
