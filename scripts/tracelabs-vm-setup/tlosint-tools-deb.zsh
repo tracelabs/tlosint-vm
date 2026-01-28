@@ -222,6 +222,7 @@ install_metagoofil() {
 
   cd metagoofil
   python3 -m venv .venv
+  # shellcheck disable=SC1091
   source ".venv/bin/activate"
   pip install -U pip setuptools wheel
   pip install -r requirements.txt
@@ -231,6 +232,7 @@ install_metagoofil() {
 #!/usr/bin/env bash
 set -euo pipefail
 cd /opt/tlosint-tools/metagoofil
+# shellcheck disable=SC1091
 source .venv/bin/activate
 exec python3 metagoofil.py "$@"
 EOF
