@@ -248,6 +248,7 @@ install_sublist3r() {
 
   cd Sublist3r
   python3 -m venv .venv
+  # shellcheck disable=SC1091
   source ".venv/bin/activate"
   pip install -U pip setuptools wheel
   pip install -r requirements.txt
@@ -256,9 +257,9 @@ install_sublist3r() {
   cat > "${BIN_DIR}/sublist3r" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-cd /opt/tlosint-tools/Sublist3r
+cd /opt/tlosint-tools/Sublist3rclea
+# shellcheck disable=SC1091
 source .venv/bin/activate
-exec python3 sublist3r.py "$@"
 EOF
   chmod +x "${BIN_DIR}/sublist3r"
 }
@@ -405,6 +406,7 @@ install_docker_and_compose() {
 
   # Repo
   local codename
+  # shellcheck disable=SC1091
   codename="$(. /etc/os-release && echo "${VERSION_CODENAME}")"
   echo "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/debian ${codename} stable" \
     > /etc/apt/sources.list.d/docker.list
