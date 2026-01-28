@@ -586,4 +586,4 @@ echo "  - System will auto-update security patches"
 echo "  - Optional strict mode: TL_PARANOID=1 (may break browsers/tools)"
 echo ""
 echo "Press any key to exit."
-read -n 1 -s
+read -r -n 1 -s
