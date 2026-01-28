@@ -124,7 +124,7 @@ run_component_script() {
 prompt_continue() {
   local msg="$1"
   echo ""
-  read -p "$msg [y/N] " -n 1 -r
+  read -r -p "$msg [y/N] " -n 1 -r
   echo
   [[ "$REPLY" =~ ^[Yy]$ ]]
 }
@@ -144,7 +144,7 @@ how_to_use_vm() {
     echo -e "${RED}Usage file not found:${NC} $usage_file"
     echo ""
     echo "Please ensure usage.txt exists in the setup directory."
-    read -p "Press Enter to return to the menu..."
+    read -r -p "Press Enter to return to the menu..."
   fi
 }
 
@@ -169,7 +169,7 @@ install_asset_setup() {
   run_and_log "Asset setup" run_component_script "$ASSET_SCRIPT"
   local rc=$?
   echo ""
-  read -p "Press Enter to continue..."
+  read -r -p "Press Enter to continue..."
   return $rc
 }
 
@@ -192,7 +192,7 @@ install_privacy_settings() {
   run_and_log "Privacy settings" run_component_script "$PRIVACY_SCRIPT"
   local rc=$?
   echo ""
-  read -p "Press Enter to continue..."
+  read -r -p "Press Enter to continue..."
   return $rc
 }
 
@@ -215,7 +215,7 @@ install_security_hardening() {
   run_and_log "Security hardening" run_component_script "$SECURITY_SCRIPT"
   local rc=$?
   echo ""
-  read -p "Press Enter to continue..."
+  read -r -p "Press Enter to continue..."
   return $rc
 }
 
@@ -238,7 +238,7 @@ install_osint_tools() {
   run_and_log "OSINT tools installer" run_component_script "$OSINT_SCRIPT"
   local rc=$?
   echo ""
-  read -p "Press Enter to continue..."
+  read -r -p "Press Enter to continue..."
   return $rc
 }
 
@@ -279,7 +279,7 @@ run_full_setup() {
     echo "Check log: $LOG_FILE"
   fi
   echo ""
-  read -p "Press Enter to return to menu..."
+  read -r -p "Press Enter to return to menu..."
   return 0
 }
 
@@ -315,7 +315,7 @@ show_system_info() {
 
   echo -e "${CYAN}Log:${NC} $LOG_FILE"
   echo ""
-  read -p "Press Enter to continue..."
+  read -r -p "Press Enter to continue..."
 }
 
 view_log() {
@@ -332,7 +332,7 @@ view_log() {
     echo "No log file found yet."
   fi
   echo ""
-  read -p "Press Enter to continue..."
+  read -r -p "Press Enter to continue..."
 }
 
 show_about() {
@@ -352,7 +352,7 @@ show_about() {
   echo ""
   echo "Log: $LOG_FILE"
   echo ""
-  read -p "Press Enter to continue..."
+  read -r -p "Press Enter to continue..."
 }
 
 show_menu() {
@@ -383,7 +383,7 @@ main() {
 
   while true; do
     show_menu
-    read -r choice
+    read -r -r choice
 
     case "$choice" in
       1) how_to_use_vm ;;
