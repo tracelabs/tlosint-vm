@@ -222,7 +222,7 @@ install_metagoofil() {
 
   cd metagoofil
   python3 -m venv .venv
-  . .venv/bin/activate
+  source ".venv/bin/activate"
   pip install -U pip setuptools wheel
   pip install -r requirements.txt
   deactivate
@@ -248,7 +248,7 @@ install_sublist3r() {
 
   cd Sublist3r
   python3 -m venv .venv
-  . .venv/bin/activate
+  source ".venv/bin/activate"
   pip install -U pip setuptools wheel
   pip install -r requirements.txt
   deactivate
