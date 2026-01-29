@@ -3,15 +3,15 @@ permissions:
   contents: read
 
 on:
-    pull_request:
-        paths:
-            - "**/*.sh"
-            - "scripts/**"
+  pull_request:
+    paths:
+      - "**/*.sh"
+      - "scripts/**"
 
 jobs:
-    shellcheck:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - name: Run Shellcheck
-              uses: ludeeus/action-shellcheck@master
+  shellcheck:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run Shellcheck
+        uses: ludeeus/action-shellcheck@2.0.0
