@@ -5,29 +5,67 @@ on:
     tags:
       - "*"
 
+permissions:
+  contents: read
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Build OVA/VMware
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends debos p7zip qemu-utils zerofree
+          sudo rm -rf /var/lib/apt/lists/*
+
+          docker build -t tlvm-builder .
+
+          # Read-only source mount; writable output mount
+          docker run --rm \
+            --device /dev/kvm \
+            --group-add "$(stat -c '%g' /dev/kvm)" \
+            -v "$(pwd):/recipes:ro" \
+            -v "$(pwd)/images:/images:rw" \
+            -w /recipes \
+            tlvm-builder ./build.sh -v virtualbox -f ova
+
+          docker run --rm \
+            --device /dev/kvm \
+            --group-add "$(stat -c '%g' /dev/kvm)" \
+            -v "$(pwd):/recipes:ro" \
+            -v "$(pwd)/images:/images:rw" \
+            -w /recipes \
+            tlvm-builder ./build.sh -v vmware -f vmware
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: images
+          path: images/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment: release
     permissions:
       contents: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: images
+          path: images
 
-      - name: Build OVA
-        run: |
-          sudo apt update
-          sudo apt -y install debos p7zip qemu-utils zerofree
-          cd $GITHUB_WORKSPACE
-          chmod +x scripts/tl/*.sh
-          chmod +x scripts/*.sh
-          chmod +x *.sh
-          docker build -t tlvm-builder .
-          docker run --rm --interactive --net host --privileged --group-add $(stat -c '%g' /dev/kvm) --volume $(pwd):/recipes -v $(pwd)/images/:/images --workdir /recipes tlvm-builder ./build.sh -v virtualbox -f ova
-          docker run --rm --interactive --net host --privileged --group-add $(stat -c '%g' /dev/kvm) --volume $(pwd):/recipes -v $(pwd)/images/:/images --workdir /recipes tlvm-builder ./build.sh -v vmware -f vmware
-
-      - name: Release with Notes
-        uses: softprops/action-gh-release@v1
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             images/*.*
