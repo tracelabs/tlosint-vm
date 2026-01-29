@@ -30,24 +30,18 @@ jobs:
   run-docker:
     # Specifies that the job runs on an Ubuntu environment
     runs-on: ubuntu-24.04
-    runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v5
       - uses: actions/checkout@v5
 
       # Sets up Docker environment
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
         uses: docker/setup-buildx-action@v3
 
       # Host dependencies needed before we build/run the container
       - name: Install host dependencies
         run: |
           set -euo pipefail
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends debos p7zip qemu-utils zerofree e2fsprogs
-          sudo rm -rf /var/lib/apt/lists/*
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends debos p7zip qemu-utils zerofree e2fsprogs
           sudo rm -rf /var/lib/apt/lists/*
@@ -62,7 +56,7 @@ jobs:
           cache-from: type=gha # pull cache from GitHub Actions cache
           cache-to: type=gha,mode=max # push updated cache
           no-cache: false
-          pull: true  # Always pull latest base image
+          pull: true # Always pull latest base image
 
       # Verify the built image has the GPG key
       - name: Verify GPG key exists in image
@@ -82,12 +76,11 @@ jobs:
         run: |
           set -euo pipefail
           docker run --rm \
-          --user "$(id -u):$(id -g)" \
           --net host \
           --privileged \
-          --group-add ""$(stat -c '%g' /dev/kvm || echo 0)"" \
-          --volume ""$(pwd):/recipes"" \
-          --volume ""$(pwd)/images/:/images"" \
+          --group-add "$(stat -c '%g' /dev/kvm || echo 0)" \
+          --volume "$(pwd):/recipes" \
+          --volume "$(pwd)/images/:/images" \
           --workdir /recipes \
           tlvm-builder:latest \
           ./build.sh
