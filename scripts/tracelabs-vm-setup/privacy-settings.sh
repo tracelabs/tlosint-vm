@@ -3623,6 +3623,6 @@ fi
 # ----------------------------------------------------------
 
 
-echo "Your privacy and security is now hardened 🎉💪\"
+echo "Your privacy and security is now hardened"
 echo "Press any key to exit."
 read -r -n 1 -s
