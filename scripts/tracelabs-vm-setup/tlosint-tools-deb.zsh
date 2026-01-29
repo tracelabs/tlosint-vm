@@ -223,7 +223,7 @@ install_metagoofil() {
   cd metagoofil
   python3 -m venv .venv
   # shellcheck disable=SC1091
-  source ".venv/bin/activate"
+  . ".venv/bin/activate"
   pip install -U pip setuptools wheel
   pip install -r requirements.txt
   deactivate
@@ -233,7 +233,7 @@ install_metagoofil() {
 set -euo pipefail
 cd /opt/tlosint-tools/metagoofil
 # shellcheck disable=SC1091
-source .venv/bin/activate
+. ".venv/bin/activate"
 exec python3 metagoofil.py "$@"
 EOF
   chmod +x "${BIN_DIR}/metagoofil"
@@ -251,7 +251,7 @@ install_sublist3r() {
   cd Sublist3r
   python3 -m venv .venv
   # shellcheck disable=SC1091
-  source ".venv/bin/activate"
+  . ".venv/bin/activate"
   pip install -U pip setuptools wheel
   pip install -r requirements.txt
   deactivate
@@ -259,7 +259,7 @@ install_sublist3r() {
   cat > "${BIN_DIR}/sublist3r" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-cd /opt/tlosint-tools/Sublist3rclea
+cd /opt/tlosint-tools/Sublist3r
 # shellcheck disable=SC1091
 source .venv/bin/activate
 EOF
@@ -409,7 +409,7 @@ install_docker_and_compose() {
   # Repo
   local codename
   # shellcheck disable=SC1091
-  codename="$(. /etc/os-release && echo "${VERSION_CODENAME}")"
+  
   echo "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/debian ${codename} stable" \
     > /etc/apt/sources.list.d/docker.list
 

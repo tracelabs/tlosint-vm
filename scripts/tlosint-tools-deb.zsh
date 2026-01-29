@@ -222,6 +222,7 @@ install_metagoofil() {
 
   cd metagoofil
   python3 -m venv .venv
+  # shellcheck disable=SC1091
   . .venv/bin/activate
   pip install -U pip setuptools wheel
   pip install -r requirements.txt
@@ -248,6 +249,7 @@ install_sublist3r() {
 
   cd Sublist3r
   python3 -m venv .venv
+  # shellcheck disable=SC1091
   . .venv/bin/activate
   pip install -U pip setuptools wheel
   pip install -r requirements.txt
@@ -405,6 +407,7 @@ install_docker_and_compose() {
 
   # Repo
   local codename
+  # shellcheck disable=SC1091
   codename="$(. /etc/os-release && echo "${VERSION_CODENAME}")"
   echo "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/debian ${codename} stable" \
     > /etc/apt/sources.list.d/docker.list
