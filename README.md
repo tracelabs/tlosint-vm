@@ -143,6 +143,12 @@ If you want to install the tools using our helper script, run the `tlosint-tools
 chmod +x scripts/tlosint-tools.sh
 ./scripts/tlosint-tools.sh
 ```
+- From the repository root (or wherever you saved the script), make it executable and run it:
+
+```bash
+chmod +x scripts/tlosint-tools.sh
+./scripts/tlosint-tools.sh
+```
 
 **Resources**
 

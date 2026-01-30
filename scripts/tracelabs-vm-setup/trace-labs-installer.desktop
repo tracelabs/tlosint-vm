@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Trace Labs VM Installer
+Comment=Install OSINT Tools + Privacy & Security + Assets
+Exec=xfce4-terminal --hold --command="pkexec /usr/local/bin/trace-labs-vm-installer"
+Icon=utilities-terminal
+Terminal=false
+Categories=System;Utility;
