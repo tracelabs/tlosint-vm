@@ -57,5 +57,5 @@ jobs:
         if: success()
         with:
           name: OVA-Build
-          path: images/tl-osint-*.ova
+          path: images/*.7z
           retention-days: 30
