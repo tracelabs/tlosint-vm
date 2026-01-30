@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- PLACEHOLD
+
 ### Security Enhancements
 
 #### Dockerfile Hardening (CIS Benchmark Compliance)
 - **Image Pinning**: Pinned base image to specific SHA256 digest (`sha256:b1f67719a6d2c62f08ceadaebf2daf64a32cb56b5dbf5c6307ac48cd84cda3d4`) for supply chain security and immutability
+  - This pin should be updated as Kali pushes new releasese
   - Reference: CIS Docker Benchmark v1.6.0 - 4.1
   - Includes update instructions in comments for manual digest updates
   

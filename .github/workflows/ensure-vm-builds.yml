@@ -55,9 +55,23 @@ jobs:
           load: true # make image available to `docker run`
           cache-from: type=gha # pull cache from GitHub Actions cache
           cache-to: type=gha,mode=max # push updated cache
+          no-cache: false
+          pull: true  # Always pull latest base image
+
+      # Verify the built image has the GPG key
+      - name: Verify GPG key exists in image
+        run: |
+          echo "Checking image contents..."
+          docker run --rm tlvm-builder:latest ls -lah /opt/kali-archive-keyring.gpg || {
+            echo "ERROR: GPG key not found in image!"
+            docker run --rm tlvm-builder:latest ls -lah /opt/ || echo "Cannot list /opt"
+            exit 1
+          }
+          echo "✓ GPG key verified in image"
 
       # Run the VM build inside the container
       # this test only checks the default build but others should work
+      # added user group for docker key to allow kvm access, must match Dockerfile USER
       - name: Run VM build in container
         run: |
           set -euo pipefail
