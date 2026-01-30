@@ -37,6 +37,7 @@ RUN mkdir -p /recipes \
     && curl -fsSL https://archive.kali.org/archive-key.asc -o /tmp/kali-key.asc \
     && gpg --list-packets /tmp/kali-key.asc \
     && gpg --dearmor < /tmp/kali-key.asc > /opt/kali-archive-keyring.gpg \
+    && chmod 644 /opt/kali-archive-keyring.gpg \
     && rm /tmp/kali-key.asc
 
 # CIS Benchmark - 2.2.x: Install only required packages (--no-install-recommends)
