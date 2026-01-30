@@ -33,12 +33,21 @@ RUN apt update && apt install -y --fix-missing curl gnupg
 
 # CIS Benchmark - Verify GPG key authenticity before importing
 # Download Kali archive GPG key, verify packet structure, then convert to keyring format
-RUN mkdir -p /recipes \
-    && curl -fsSL https://archive.kali.org/archive-key.asc -o /tmp/kali-key.asc \
-    && gpg --list-packets /tmp/kali-key.asc \
-    && gpg --dearmor < /tmp/kali-key.asc > /opt/kali-archive-keyring.gpg \
-    && chmod 644 /opt/kali-archive-keyring.gpg \
-    && rm /tmp/kali-key.asc
+RUN set -e && \
+    mkdir -p /recipes && \
+    echo "Downloading Kali GPG key..." && \
+    curl -fsSL https://archive.kali.org/archive-key.asc -o /tmp/kali-key.asc && \
+    test -f /tmp/kali-key.asc && echo " Key downloaded" || (echo " Failed to download key"; exit 1) && \
+    echo "Verifying GPG key packets..." && \
+    gpg --list-packets /tmp/kali-key.asc && \
+    echo "Converting to binary keyring format..." && \
+    gpg --dearmor < /tmp/kali-key.asc > /opt/kali-archive-keyring.gpg && \
+    test -f /opt/kali-archive-keyring.gpg && echo " Keyring created" || (echo " Failed to create keyring"; exit 1) && \
+    chmod 644 /opt/kali-archive-keyring.gpg && \
+    echo "Verifying keyring is readable..." && \
+    gpg --list-packets /opt/kali-archive-keyring.gpg && \
+    echo " Keyring verified" && \
+    rm /tmp/kali-key.asc
 
 # CIS Benchmark - 2.2.x: Install only required packages (--no-install-recommends)
 # CIS Docker Benchmark v1.6.0 - 4.7: Combine multiple RUN commands to reduce image layers
