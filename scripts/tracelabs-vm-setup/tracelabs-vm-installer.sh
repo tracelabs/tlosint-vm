@@ -26,7 +26,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ASSET_SCRIPT="${SCRIPT_DIR}/asset-setup.sh"
 PRIVACY_SCRIPT="${SCRIPT_DIR}/privacy-settings.sh"
 SECURITY_SCRIPT="${SCRIPT_DIR}/security-hardening.sh"
-OSINT_SCRIPT="${SCRIPT_DIR}/tlosint-tools.zsh"
+OSINT_SCRIPT="${SCRIPT_DIR}/tlosint-tools-deb.zsh"
 
 # Log (use /var/log so sudo/pkexec doesn't shove logs into /root)
 LOG_FILE="/var/log/tracelabs-installer.log"
