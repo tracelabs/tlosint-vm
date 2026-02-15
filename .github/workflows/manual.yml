@@ -1,4 +1,4 @@
-name: Manual OVA Build
+name: Manual workflow
 
 on:
   workflow_dispatch:
@@ -18,44 +18,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Install host dependencies
+      - name: Build OVA (via build.sh)
+        shell: bash
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends debos p7zip qemu-utils zerofree e2fsprogs
+          sudo apt-get install -y --no-install-recommends debos p7zip qemu-utils zerofree
           sudo rm -rf /var/lib/apt/lists/*
 
-      - name: Build tlvm-builder image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          tags: tlvm-builder:latest
-          load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          pull: true
+          chmod +x scripts/tl/*.sh
+          chmod +x ./build.sh
 
-      - name: Run OVA build in container
-        run: |
-          set -euo pipefail
-          docker run --rm \
-          --user "$(id -u):$(id -g)" \
-          --net host \
-          --privileged \
-          --group-add "$(stat -c '%g' /dev/kvm || echo 0)" \
-          --volume "$(pwd):/recipes" \
-          --volume "$(pwd)/images/:/images" \
-          --workdir /recipes \
-          tlvm-builder:latest \
-          ./build.sh
+          sudo ./build.sh
 
-      - name: Upload OVA Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
-        if: success()
         with:
-          name: OVA-Build
+          name: OVA
           path: images/*.7z
-          retention-days: 30
