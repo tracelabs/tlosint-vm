@@ -1,0 +1,126 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║              TRACE LABS OSINT VM                              ║
+║           Usage & Best Practices Guide                        ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+READ THIS ONCE BEFORE USING THE VM
+
+This guide explains:
+ - how to start the VM correctly
+ - how to update safely
+ - how to avoid breaking your environment
+
+You do NOT need to memorize this.
+You can always return to this guide from the menu.
+
+───────────────────────────────────────────────────────────────
+
+QUICK START — FIRST BOOT (REQUIRED)
+
+1) Boot the Trace Labs OSINT VM normally
+2) Log in using the provided credentials
+3) Launch the Trace Labs Menu Installer
+4) Select:
+
+   Run Full Setup (Recommended)
+
+This establishes a safe, consistent baseline.
+
+Rule: Always use the menu installer on first boot.
+
+───────────────────────────────────────────────────────────────
+
+DAILY USAGE WORKFLOW
+
+Each time you begin OSINT work:
+
+ - Boot the VM cleanly
+ - Allow the system to fully load
+ - Work inside designated workspace folders
+ - Keep notes and outputs organized
+
+Avoid unnecessary system changes.
+
+───────────────────────────────────────────────────────────────
+
+UPDATING THE VIRTUAL MACHINE
+
+Preferred update method:
+ - Use the Trace Labs Menu Installer
+
+When to update:
+ - Before a new CTF or challenge
+ - After long periods of inactivity
+ - When instructed by Trace Labs
+
+Avoid running random system updates unless directed.
+
+Rule: If unsure, do not update mid-investigation.
+
+───────────────────────────────────────────────────────────────
+
+SNAPSHOTS — YOUR SAFETY NET
+
+Snapshots protect your work and save recovery time.
+
+Take a snapshot:
+ - Before major updates
+ - Before competitions
+ - Before experimenting or troubleshooting
+
+Recommended snapshot names:
+ - TL-Clean-Baseline
+ - TL-Pre-CTF-Week-03
+
+To recover:
+ - Power off the VM
+ - Restore the snapshot
+ - Restart cleanly
+
+Revert instead of repairing.
+
+───────────────────────────────────────────────────────────────
+
+LONG-TERM VM CARE
+
+To keep the VM stable:
+
+ - Avoid random package installs
+ - Avoid running unknown scripts
+ - Avoid modifying system directories
+ - Archive important work externally when finished
+
+If something breaks:
+ 1) Stop
+ 2) Revert to the last snapshot
+ 3) Continue working
+
+This is expected behavior.
+
+───────────────────────────────────────────────────────────────
+
+TRACE LABS EXPECTATIONS
+
+The OSINT VM is a controlled investigation environment.
+
+ - Consistency matters
+ - Clean environments ensure fairness
+ - Customization is discouraged
+
+Use the VM as provided.
+Trust the workflow.
+
+───────────────────────────────────────────────────────────────
+
+FINAL CHECKLIST
+
+ [ ] Used the menu installer
+ [ ] Took a snapshot before changes
+ [ ] Kept the environment clean
+ [ ] Reverted instead of repairing
+
+Happy sleuthing.
+
+— Trace Labs
