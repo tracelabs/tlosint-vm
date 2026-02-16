@@ -4,11 +4,11 @@ This Trace Labs OSINT VM is built for OSINT work, not as a “install everything
 
 This policy governs how suggestions for new tools are evaluated, accepted, or rejected for inclusion in the TL VM. 
 
-All tools should be suggested by creating a ["Tool Request Issue"](https://github.com/tracelabs/tlosint-vm/issues). After the issue is created, it will be labeled as `tool/triaged`. During our review, we will follow the evaluation criteria and proceed to classify the tool based on the tool classification below.
+All tools should be suggested by creating a ["Tool Request Issue"](https://github.com/tracelabs/tlosint-vm/issues). After the issue is created, it will be labeled as `tool/triaged`. During our review, we will follow the evaluation criteria and proceed to classify the tool based on the classification below.
 
 ## Tool Classification
 
-As part of evluating tool, we categorize the tools using github labels as referenced below (our triage process is in progress of maturing, so for simplicity, we will mark tools either as `accepted` or `rejected`):
+As part of evaluating a tool, we categorize it using github labels as referenced below (our triage process is in progress of maturing, so for simplicity, we will mark tools either as `accepted` or `rejected`):
 
 - core (installed in the VM by default, `tool/accepted`)
 - recommended (optional script to run, script available in the VM, `tool/accepted`)

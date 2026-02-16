@@ -2,12 +2,22 @@
 
 Thanks for your interest in contributing! This project builds a full OSINT virtual machine, so we keep our development process structured to ensure stability and predictable releases. This document outlines the essentials you need to know before opening a PR.
 
+By participating in this project, you agree to abide by our [Code of Conduct](../CODE_OF_CONDUCT.md).
+
+---
+
+## Where to Get Help
+
+- **Bugs and feature requests:** Use the [issue templates](https://github.com/tracelabs/tlosint-vm/issues/new/choose).
+- **Tool requests:** Open an issue and choose the "Tool Request" template; see [TOOLING_POLICY.md](../TOOLING_POLICY.md) for evaluation criteria.
+
 ---
 
 ## Before You Start
 
 - Read the README to understand the purpose and design of the VM.  
-- Look through open issues to avoid duplicating work.  
+- Look through [open issues](https://github.com/tracelabs/tlosint-vm/issues) to avoid duplicating work.  
+- Issues labeled `good first issue` are good entry points for new contributors.  
 - If you plan to work on an issue, **assign it to yourself**.
 
 ---
