@@ -89,11 +89,6 @@ actions:
     action: run
     chroot: true
     script: scripts/create-user.sh {{ $username }} "{{ $password }}"
-  # pull down the Obsidian for note taking
-  - description: "Install obsidian"
-    action: run
-    chroot: true
-    script: scripts/tl/install-obsidian.sh {{ $username }}
 
   - description: "chmod +x files that need it"
     action: run
