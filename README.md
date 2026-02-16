@@ -14,7 +14,7 @@ If you want to recommend a tool to add to the VM, report a bug, or have any issu
 
 # Introduction
 
-The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - <https://gitlab.com/kalilinux/build-scripts/kali-vm>
+The repository includes a [recipe file](./tlosint.yaml) to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - <https://gitlab.com/kalilinux/build-scripts/kali-vm>
 
 # Using the VM
 
@@ -23,7 +23,7 @@ The repository includes a recipe file to build a Linux OSINT Distribution for Tr
 Use this if you just want to import and go.
 
 - **GitHub Releases (canonical):**  
-  https://github.com/tracelabs/tlosint-vm/releases (2024 VM release)
+  https://github.com/tracelabs/tlosint-vm/releases (2025 VM release)
 
 - **Mirror (Google)**  
   - [**Click here to download the VirtualBox OVA**](https://drive.google.com/file/d/1Ylid1Yf3JVRR7hn9sa5vWUnfNXZkJMpr/view?usp=drive_link) (2025 VM Release)
@@ -55,25 +55,25 @@ password: `osint`
 
 ---
 
-## Option 2: Customize your own VM with our tools script
+## Option 2: Customize your own system with our tools script
 
-Use this if you want a lean Kali image and then install/update OSINT tools + Firefox hardening on demand.
+Use this option if you want to start with your own base OS and then install OSINT tools and apply Firefox hardening on demand.
 
-> **Note:** `tlosint-tools.sh` is a **standalone script** that is not part of the VM build process. It's designed to be downloaded and run manually by end-users on any Kali or Debian-based system to install OSINT tools on-demand. This keeps the VM image size small while giving users flexibility to customize their toolset.
+> **Note:** [`tlosint-tools.sh`](https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh) is a **standalone script** that is not part of the VM build process. It's designed to be downloaded and run manually by end-users on any Kali or Debian-based system to install OSINT tools on-demand. This keeps the VM image size small while giving users flexibility to customize their toolset.
 
 > **Download the raw file, not the GitHub "blob" page.**
 
 ```bash
-# Inside Kali (or your Debian-based VM)
+# Inside Kali (or other Debian-based OS)
 cd ~/Desktop  # or any folder you prefer
 
 # Fetch the script (RAW URL)
 wget https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh
 
-#Give the script executable permission
+# Give the script executable permission
 chmod +x tlosint-tools.sh
 
-#Execute the script
+# Execute the script
 ./tlosint-tools.sh
 ```
 
