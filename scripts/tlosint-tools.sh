@@ -125,8 +125,13 @@ install_base_packages() {
 
 setup_python_envs() {
   log "[*] pip/pipx PATH for target user"
+<<<<<<< HEAD
+  run "${SUDO} -u \"$TARGET_USER\" bash -lc 'grep -qxF \"export PATH=\\\"\\\$HOME/.local/bin:\\\$PATH\\\"\" \"\\\$HOME/.zprofile\" 2>/dev/null || echo \"export PATH=\\\"\\\$HOME/.local/bin:\\\$PATH\\\"\" >> \"\\\$HOME/.zprofile\"'"
+  run "${SUDO} -u \"$TARGET_USER\" bash -lc 'grep -qxF \"export PATH=\\\"\\\$HOME/.local/bin:\\\$PATH\\\"\" \"\\\$HOME/.profile\"  2>/dev/null || echo \"export PATH=\\\"\\\$HOME/.local/bin:\\\$PATH\\\"\" >> \"\\\$HOME/.profile\"'"
+=======
   # Persist PATH for common shells (zsh login + interactive, bash)
   run "${SUDO} -u \"$TARGET_USER\" bash -lc 'for f in \"\\\$HOME/.zprofile\" \"\\\$HOME/.profile\" \"\\\$HOME/.zshrc\" \"\\\$HOME/.bashrc\"; do grep -qxF \"export PATH=\\\"\\\$HOME/.local/bin:\\\$PATH\\\"\" \"\\\$f\" 2>/dev/null || echo \"export PATH=\\\"\\\$HOME/.local/bin:\\\$PATH\\\"\" >> \"\\\$f\"; done'"
+>>>>>>> main
   run "${SUDO} -u \"$TARGET_USER\" python3 -m ensurepip --upgrade || true"
   run "${SUDO} -u \"$TARGET_USER\" python3 -m pip install --user -U pip wheel setuptools || true"
   run "${SUDO} -u \"$TARGET_USER\" pipx ensurepath || true"
@@ -265,6 +270,8 @@ install_brave_browser() {
   command -v brave-browser >/dev/null 2>&1 && log "[*] Brave Browser installed successfully" || logerr "Brave Browser installation failed"
 }
 
+<<<<<<< HEAD
+=======
 # ---------- Brave: force-install OSINT extension ----------
 install_brave_forced_extension_forensic_osint() {
   # Chrome Web Store extension ID from your link:
@@ -526,6 +533,7 @@ ensure_docker_engine_available() {
   command -v docker >/dev/null 2>&1 && log "[*] docker now present: $(docker --version 2>/dev/null || echo OK)" || logerr "docker still missing after fallback"
 }
 
+>>>>>>> main
 # ---------- Shodan helper ----------
 maybe_init_shodan() {
   if [[ -n "${SHODAN_API_KEY-}" ]]; then
@@ -543,6 +551,10 @@ install_tools_from_list() {
   # Shodan
   pipx_user_install_or_upgrade "shodan" "shodan"
   run "${SUDO} -u \"$TARGET_USER\" bash -lc 'pipx runpip shodan install -U \"setuptools>=68\" \"pip>=23\" wheel || true'"
+<<<<<<< HEAD
+  write_wrapper "/usr/local/bin/shodan" "${TARGET_HOME}/.local/bin/shodan"
+=======
+>>>>>>> main
 
   # Sherlock
   pipx_user_install_or_upgrade "sherlock" "git+https://github.com/sherlock-project/sherlock.git"
@@ -583,16 +595,22 @@ install_tools_from_list() {
   # Brave Browser
   install_brave_browser
 
+<<<<<<< HEAD
+=======
   # Force-install Brave extension (Forensic OSINT Full Page Screenshot)
   install_brave_forced_extension_forensic_osint
 
+>>>>>>> main
   # Ensure visibility & wrappers
   ensure_global_symlinks
   ensure_pipx_wrappers
 
+<<<<<<< HEAD
+=======
   # ADD: hard guarantee shodan exists (fixes validator FAIL)
   ensure_shodan_available
 
+>>>>>>> main
   # Shodan init (auto if env; otherwise defer cleanly)
   maybe_init_shodan
 }
@@ -810,9 +828,12 @@ Updater:
 - GUI:   Double-click "OSINT Updater" on Desktop (pkexec)
 - CLI:   pkexec /usr/local/bin/osint-updater
 
+<<<<<<< HEAD
+=======
 Owlculus:
 - CLI:   owlculus   (starts Docker stack; open browser manually; see /opt/owlculus/docker-compose.yml)
 
+>>>>>>> main
 Workspaces:
 - Outputs in  ~/osint-workspaces/<target>/<timestamp>/
 
@@ -871,7 +892,11 @@ validator() {
     if [[ ":$PATH:" == *":${needle}:"* ]]; then ok "PATH contains ${needle}"
     else
       if command -v sudo >/dev/null 2>&1 && [[ -n "${REAL_USER}" ]]; then
+<<<<<<< HEAD
+        if sudo -u "$REAL_USER" bash -lc "grep -q 'export PATH=\"\\\$HOME/.local/bin:\\\$PATH\"' ~/.zprofile ~/.profile 2>/dev/null"; then
+=======
         if sudo -u "$REAL_USER" bash -lc "grep -q 'export PATH=\"\\\$HOME/.local/bin:\\\$PATH\"' ~/.zprofile ~/.profile ~/.zshrc ~/.bashrc 2>/dev/null"; then
+>>>>>>> main
           ok "PATH will include ${needle} for ${REAL_USER} on next login"; return
         fi
       fi
@@ -953,6 +978,8 @@ validator() {
   else if command -v sudo >/dev/null 2>&1; then sudo -u "$REAL_USER" mkdir -p "$WS" 2>/dev/null || true; fi
        [[ -d "$WS" ]] && ok "Workspace base created: $WS" || warn "Workspace base missing (created on first run): $WS"; fi
 
+<<<<<<< HEAD
+=======
   # ---------- OPTIONAL VALIDATOR ADD-ONS (Brave forced extension + Docker/Compose + Owlculus CLI) ----------
   local brave_pol="/etc/brave/policies/managed/forensic-osint-extension.json"
   if [[ -f "$brave_pol" ]]; then
@@ -994,6 +1021,7 @@ validator() {
 
   check_exec "/usr/local/bin/owlculus" "owlculus launcher"
 
+>>>>>>> main
   echo
   if (( FAILS == 0 )); then
     printf "\033[1;32mAll good!\033[0m  Passes: %d  Warnings: %d  Fails: %d\n" "$PASSES" "$WARNINGS" "$FAILS"
@@ -1008,13 +1036,25 @@ validator() {
   fi
 }
 
+<<<<<<< HEAD
+# Ensure current process PATH includes ~/.local/bin (fixes validator warning now)
+ensure_runtime_path_now() {
+  [[ ":$PATH:" == *":${TARGET_HOME}/.local/bin:"* ]] || export PATH="${TARGET_HOME}/.local/bin:$PATH"
+  hash -r
+}
+
+=======
+>>>>>>> main
 # ===================== MAIN =====================
 main() {
   local MODE="${1:-}"  # --no-validate | --validate-only | (default: install+validate)
 
   if [[ "$MODE" == "--validate-only" ]]; then
     ensure_runtime_path_now
+<<<<<<< HEAD
+=======
     ensure_runtime_path_now_plus
+>>>>>>> main
     validator
     exit $?
   fi
@@ -1022,6 +1062,16 @@ main() {
   log "==== Ultimate OSINT Setup starting ===="
   apt_self_heal
   install_base_packages
+<<<<<<< HEAD
+  setup_python_envs
+  setup_go_env
+  setup_rust_env
+  setup_sn0int_repo
+
+  ensure_runtime_path_now
+  install_tools_from_list
+  fetch_tracelabs_pdf
+=======
 
   # Docker + Compose (if missing) and Owlculus (CLI only; NO Desktop launcher)
   install_docker_and_compose_if_missing
@@ -1039,6 +1089,7 @@ main() {
   install_tools_from_list
   fetch_tracelabs_pdf
   ensure_tracelabs_pdf_present
+>>>>>>> main
   install_osint_updater
   harden_firefox
 
@@ -1050,8 +1101,11 @@ main() {
   if [[ "$MODE" != "--no-validate" ]]; then
     echo
     log "[*] Running built-in validator…"
+<<<<<<< HEAD
+=======
     ensure_runtime_path_now
     ensure_runtime_path_now_plus
+>>>>>>> main
     validator || true
   fi
 }

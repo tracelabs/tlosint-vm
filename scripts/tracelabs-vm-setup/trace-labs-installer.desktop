@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Trace Labs VM Installer
+Comment=Install OSINT Tools, Privacy & Security Hardening, and Assets
+Exec=xfce4-terminal --hold -e "tracelabs-setup"
+Icon=utilities-terminal
+Terminal=false
+Categories=System;Utility;
