@@ -9,7 +9,7 @@ By participating in this project, you agree to abide by our [Code of Conduct](..
 ## Where to Get Help
 
 - **Bugs and feature requests:** Use the [issue templates](https://github.com/tracelabs/tlosint-vm/issues/new/choose).
-- **Tool requests:** Open an issue and choose the "Tool Request" template; see [TOOLING_POLICY.md](../TOOLING_POLICY.md) for evaluation criteria.
+- **Tool requests:** Open an issue and choose the "Tool Request" template; see [TOOLING_POLICY.md](TOOLING_POLICY.md) for evaluation criteria.
 
 ---
 
@@ -70,5 +70,5 @@ We follow a tooling policy to avoid VM bloat and maintain stability.
 If you want to propose a new tool:
 
 1. Open an issue describing the tool and its OSINT use case.  
-2. Follow the guidelines in [TOOLING_POLICY.md](../TOOLING_POLICY.md).
+2. Follow the guidelines in [TOOLING_POLICY.md](TOOLING_POLICY.md).
 3. Once approved, submit a PR targeting `dev` with your proposed changes.
