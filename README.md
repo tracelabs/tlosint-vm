@@ -8,9 +8,10 @@
 
 This repository is actively maintained by Trace Labs staff.
 
-PRs are always welcome. We do, however, ask that you read the [CONTRIBUTING.md](./docs/CONTRIBUTING.md) guide before opening a PR.
+- **Contributing:** PRs are welcome. Please read [CONTRIBUTING.md](./docs/CONTRIBUTING.md) before opening a PR.
+- **Issues:** To recommend a tool, report a bug, or share feedback, [open an issue](https://github.com/tracelabs/tlosint-vm/issues/new/choose).
+- **Code of conduct:** We follow the [Contributor Covenant](CODE_OF_CONDUCT.md). By participating, you agree to uphold it.
 
-If you want to recommend a tool to add to the VM, report a bug, or have any issues, feedback, or questions about the VM, please [open an issue](https://github.com/tracelabs/tlosint-vm/issues/new/choose).
 
 # Introduction
 
@@ -94,13 +95,11 @@ Release owners and timelines are proposed and confirmed during our quarterly pla
 
 See [RELEASES.md](./docs/RELEASES.md) for more details.
 
-## TODO - Review this section
+## About the releases
 
-These are pre-generated bundles that can either import in to Virtualbox or VMWare. They are generated with the code in the `main` branch of this repo with no interference from us. The goal here is to produce a finished product but give the users insight in to the "recipe" used to build it.
+Releases are pre-built VM images you can import into VirtualBox or VMware. They are built from the `main` branch of this repo. The source here is the "recipe" for the VM; you can build your own or inspect how it was made.
 
-After you've downloaded the release that applies to you, it should be as simple as importing it in to your hypervisor.
-
-<https://github.com/tracelabs/tlosint-vm/releases>
+After downloading a release, import it into your hypervisor. See [Releases](https://github.com/tracelabs/tlosint-vm/releases).
 
 ## Login Credentials
 
@@ -134,10 +133,10 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 
 **Note:** The `tlosint-tools.sh` script is a **standalone utility** that is not executed during the VM build process. It's provided as a convenience script for users who want to install OSINT tools on-demand after importing the VM.
 
-If you want to install the tools using our helper script, run the `tlosint-tools.sh` script found in the `scripts/` folder. Example:
+If you want to install the tools using our helper script, run the `tlosint-tools.sh` script found in the `scripts/` folder:
 
-- Open a terminal
-- From the repository root (or wherever you saved the script), make it executable and run it:
+- Open a terminal.
+- From the repository root (or wherever you saved the script), make it executable and run:
 
 ```bash
 chmod +x scripts/tlosint-tools.sh
@@ -243,6 +242,4 @@ chmod +x scripts/tlosint-tools.sh
 
 ## Contributing
 
-PRs are welcome. We ask that you PR in to the Dev branch.
-
-See [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for more details.
+PRs are welcome; please target the `dev` branch and read [CONTRIBUTING.md](./docs/CONTRIBUTING.md). This project is licensed under [GPL-3.0](LICENSE).

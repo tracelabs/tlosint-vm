@@ -9,9 +9,8 @@ on:
     paths-ignore:
       - ".github/CODEOWNERS"
       - ".github/ISSUE_TEMPLATE/**"
-      - "docs/**"
+      - "**/*.md"
       - LICENSE
-      - README.md
     branches:
       - main
       - dev # Added the dev branch here
@@ -19,9 +18,8 @@ on:
     paths-ignore:
       - ".github/CODEOWNERS"
       - ".github/ISSUE_TEMPLATE/**"
-      - "docs/**"
+      - "**/*.md"
       - LICENSE
-      - README.md
     branches:
       - main
       - dev # And here as well
