@@ -19,7 +19,7 @@ This file gives AI assistants project-specific context so suggestions stay align
 ## Build & Tooling
 
 - **Build:** debos reads `tlosint.yaml`; build is typically run via Docker (e.g. `build-in-container.sh`). CI runs full VM builds on `dev` and `main` (see `.github/workflows/ensure-vm-builds.yml`).
-- **Adding tools:** New tools must be proposed via a **Tool Request** issue and follow **TOOLING_POLICY.md**. The VM is curated for OSINT; we avoid bloat and duplicate functionality. Do not suggest adding tools without referencing the tooling policy and evaluation criteria.
+- **Adding tools:** New tools must be proposed via a **Tool Request** issue and follow **docs/TOOLING_POLICY.md**. The VM is curated for OSINT; we avoid bloat and duplicate functionality. Do not suggest adding tools without referencing the tooling policy and evaluation criteria.
 - **Scripts:** Scripts in `scripts/` are either run by debos (see `tlosint.yaml`) or are standalone utilities (e.g. `tlosint-tools.sh`). Check the playbook and CONTRIBUTING before assuming a script is part of the image build.
 
 ## Key Files & Docs
@@ -28,7 +28,7 @@ This file gives AI assistants project-specific context so suggestions stay align
 |--------|----------|
 | Contributing, workflow, PR guidelines | `docs/CONTRIBUTING.md` |
 | Release process, hotfixes | `docs/RELEASES.md` |
-| Tool evaluation and request process | `TOOLING_POLICY.md` |
+| Tool evaluation and request process | `docs/TOOLING_POLICY.md` |
 | Security reporting | `SECURITY.md` |
 | Code of conduct | `CODE_OF_CONDUCT.md` |
 | Debos playbook | `tlosint.yaml` |
@@ -39,7 +39,7 @@ This file gives AI assistants project-specific context so suggestions stay align
 - **One logical change per PR.** PRs should target `dev`.
 - **No built VM images or large binaries** in PRs.
 - Reference issues with `Closes #123` (or similar) when a PR fixes an issue.
-- When suggesting new tools or packages, remind the user to open a Tool Request issue and to follow TOOLING_POLICY.md (relevance, license, no overlap, etc.).
+- When suggesting new tools or packages, remind the user to open a Tool Request issue and to follow docs/TOOLING_POLICY.md (relevance, license, no overlap, etc.).
 - Documentation: user-facing and process docs live in `docs/`; root-level README, SECURITY, CODE_OF_CONDUCT, LICENSE, CHANGELOG stay at repo root.
 - Changelog format follows [Keep a Changelog](https://keepachangelog.com/); list changes under `[Unreleased]` or the relevant version.
 

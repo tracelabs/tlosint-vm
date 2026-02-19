@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+Please read [docs/TOOLING_POLICY.md](https://github.com/tracelabs/tlosint-vm/blob/main/docs/TOOLING_POLICY.md) for evaluation criteria before submitting.
+
 **Tool Name & Version**
 e.g., htop 3.2
 
