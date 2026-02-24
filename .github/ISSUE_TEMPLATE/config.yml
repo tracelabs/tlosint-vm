@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Contributing guide
+    url: https://github.com/tracelabs/tlosint-vm/blob/main/docs/CONTRIBUTING.md
+    about: Read how to contribute, branch workflow, and PR guidelines.

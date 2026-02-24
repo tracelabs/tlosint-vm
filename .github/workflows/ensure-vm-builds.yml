@@ -9,9 +9,8 @@ on:
     paths-ignore:
       - ".github/CODEOWNERS"
       - ".github/ISSUE_TEMPLATE/**"
-      - "docs/**"
+      - "**/*.md"
       - LICENSE
-      - README.md
     branches:
       - main
       - dev # Added the dev branch here
@@ -19,9 +18,8 @@ on:
     paths-ignore:
       - ".github/CODEOWNERS"
       - ".github/ISSUE_TEMPLATE/**"
-      - "docs/**"
+      - "**/*.md"
       - LICENSE
-      - README.md
     branches:
       - main
       - dev # And here as well
@@ -56,7 +54,7 @@ jobs:
           cache-from: type=gha # pull cache from GitHub Actions cache
           cache-to: type=gha,mode=max # push updated cache
           no-cache: false
-          pull: true  # Always pull latest base image
+          pull: true # Always pull latest base image
 
       # Verify the built image has the GPG key
       - name: Verify GPG key exists in image
@@ -76,6 +74,7 @@ jobs:
         run: |
           set -euo pipefail
           docker run --rm \
+          --user "$(id -u):$(id -g)" \
           --net host \
           --privileged \
           --group-add "$(stat -c '%g' /dev/kvm || echo 0)" \

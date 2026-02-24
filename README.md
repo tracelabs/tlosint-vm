@@ -8,13 +8,14 @@
 
 This repository is actively maintained by Trace Labs staff.
 
-PRs are always welcome. We do, however, ask that you read the [CONTRIBUTING.md](./docs/CONTRIBUTING.md) guide before opening a PR.
+- **Contributing:** PRs are welcome. Please read [CONTRIBUTING.md](./docs/CONTRIBUTING.md) before opening a PR.
+- **Issues:** To recommend a tool, report a bug, or share feedback, [open an issue](https://github.com/tracelabs/tlosint-vm/issues/new/choose).
+- **Code of conduct:** We follow the [Contributor Covenant](CODE_OF_CONDUCT.md). By participating, you agree to uphold it.
 
-If you want to recommend a tool to add to the VM, report a bug, or have any issues, feedback, or questions about the VM, please [open an issue](https://github.com/tracelabs/tlosint-vm/issues/new/choose).
 
 # Introduction
 
-The repository includes a recipe file to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - <https://gitlab.com/kalilinux/build-scripts/kali-vm>
+The repository includes a [recipe file](./tlosint.yaml) to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - <https://gitlab.com/kalilinux/build-scripts/kali-vm>
 
 # Using the VM
 
@@ -23,7 +24,7 @@ The repository includes a recipe file to build a Linux OSINT Distribution for Tr
 Use this if you just want to import and go.
 
 - **GitHub Releases (canonical):**  
-  https://github.com/tracelabs/tlosint-vm/releases (2024 VM release)
+  https://github.com/tracelabs/tlosint-vm/releases (2025 VM release)
 
 - **Mirror (Google)**  
   - [**Click here to download the VirtualBox OVA**](https://drive.google.com/file/d/1Ylid1Yf3JVRR7hn9sa5vWUnfNXZkJMpr/view?usp=drive_link) (2025 VM Release)
@@ -55,25 +56,25 @@ password: `osint`
 
 ---
 
-## Option 2: Customize your own VM with our tools script
+## Option 2: Customize your own system with our tools script
 
-Use this if you want a lean Kali image and then install/update OSINT tools + Firefox hardening on demand.
+Use this option if you want to start with your own base OS and then install OSINT tools and apply Firefox hardening on demand.
 
-> **Note:** `tlosint-tools.sh` is a **standalone script** that is not part of the VM build process. It's designed to be downloaded and run manually by end-users on any Kali or Debian-based system to install OSINT tools on-demand. This keeps the VM image size small while giving users flexibility to customize their toolset.
+> **Note:** [`tlosint-tools.sh`](https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh) is a **standalone script** that is not part of the VM build process. It's designed to be downloaded and run manually by end-users on any Kali or Debian-based system to install OSINT tools on-demand. This keeps the VM image size small while giving users flexibility to customize their toolset.
 
 > **Download the raw file, not the GitHub "blob" page.**
 
 ```bash
-# Inside Kali (or your Debian-based VM)
+# Inside Kali (or other Debian-based OS)
 cd ~/Desktop  # or any folder you prefer
 
 # Fetch the script (RAW URL)
 wget https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh
 
-#Give the script executable permission
+# Give the script executable permission
 chmod +x tlosint-tools.sh
 
-#Execute the script
+# Execute the script
 ./tlosint-tools.sh
 ```
 
@@ -94,13 +95,11 @@ Release owners and timelines are proposed and confirmed during our quarterly pla
 
 See [RELEASES.md](./docs/RELEASES.md) for more details.
 
-## TODO - Review this section
+## About the releases
 
-These are pre-generated bundles that can either import in to Virtualbox or VMWare. They are generated with the code in the `main` branch of this repo with no interference from us. The goal here is to produce a finished product but give the users insight in to the "recipe" used to build it.
+Releases are pre-built VM images you can import into VirtualBox or VMware. They are built from the `main` branch of this repo. The source here is the "recipe" for the VM; you can build your own or inspect how it was made.
 
-After you've downloaded the release that applies to you, it should be as simple as importing it in to your hypervisor.
-
-<https://github.com/tracelabs/tlosint-vm/releases>
+After downloading a release, import it into your hypervisor. See [Releases](https://github.com/tracelabs/tlosint-vm/releases).
 
 ## Login Credentials
 
@@ -134,9 +133,16 @@ The majority of OSINT tools no longer come pre-packaged with the VM. There is an
 
 **Note:** The `tlosint-tools.sh` script is a **standalone utility** that is not executed during the VM build process. It's provided as a convenience script for users who want to install OSINT tools on-demand after importing the VM.
 
-If you want to install the tools using our helper script, run the `tlosint-tools.sh` script found in the `scripts/` folder. Example:
+If you want to install the tools using our helper script, run the `tlosint-tools.sh` script found in the `scripts/` folder:
 
-- Open a terminal
+- Open a terminal.
+- From the repository root (or wherever you saved the script), make it executable and run:
+
+```bash
+chmod +x scripts/tlosint-tools.sh
+./scripts/tlosint-tools.sh
+```
+
 - From the repository root (or wherever you saved the script), make it executable and run it:
 
 ```bash
@@ -243,6 +249,4 @@ chmod +x scripts/tlosint-tools.sh
 
 ## Contributing
 
-PRs are welcome. We ask that you PR in to the Dev branch.
-
-See [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for more details.
+PRs are welcome; please target the `dev` branch and read [CONTRIBUTING.md](./docs/CONTRIBUTING.md). This project is licensed under [GPL-3.0](LICENSE).
