@@ -1,0 +1,10 @@
+[Unit]
+Description=Trace Labs VM Daily Update Check
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=24h
+Unit=tracelabs-update-check.service
+
+[Install]
+WantedBy=timers.target
