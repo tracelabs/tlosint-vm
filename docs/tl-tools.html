@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trace Labs — VM Tool Reference</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg:          #0d1117;
+    --bg-raised:   #161b22;
+    --bg-card:     #1c2130;
+    --border:      #2a3347;
+    --border-soft: #232b3a;
+
+    --cyan:        #8fecb5;
+    --cyan-dim:    rgba(143,236,181,0.12);
+    --cyan-glow:   rgba(143,236,181,0.08);
+    --green:       #34d399;
+    --green-dim:   rgba(52,211,153,0.12);
+    --orange:      #fb923c;
+    --orange-dim:  rgba(251,146,60,0.12);
+    --purple:      #a78bfa;
+    --purple-dim:  rgba(167,139,250,0.12);
+    --red:         #f87171;
+    --red-dim:     rgba(248,113,113,0.12);
+    --yellow:      #fbbf24;
+    --yellow-dim:  rgba(251,191,36,0.12);
+
+    --text:        #e2e8f0;
+    --text-2:      #8b9ab5;
+    --text-3:      #4a5568;
+
+    --radius:      8px;
+    --shadow:      0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 40px;
+  }
+
+  .header-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  }
+
+  .logo-wrap { display: flex; align-items: center; gap: 14px; }
+
+  .tl-mark {
+    width: 40px; height: 40px;
+    background: var(--cyan);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    color: #0a1f14; letter-spacing: 0.5px;
+    flex-shrink: 0;
+    box-shadow: 0 0 16px rgba(143,236,181,0.25);
+  }
+
+  .logo-text h1 {
+    font-size: 17px; font-weight: 700; color: var(--text);
+    letter-spacing: -0.3px; line-height: 1.2;
+  }
+
+  .logo-text p { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+
+  .tool-count-badge {
+    background: var(--cyan-dim);
+    color: var(--cyan);
+    border: 1px solid rgba(143,236,181,0.2);
+    font-size: 12px; font-weight: 500;
+    padding: 5px 14px; border-radius: 20px;
+  }
+
+  /* ── STICKY CONTROLS ── */
+  .controls {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+  }
+
+  .controls-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 11px;
+  }
+
+  .search-wrap { position: relative; }
+
+  .search-icon {
+    position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-3); font-size: 15px; pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'Inter', sans-serif; font-size: 14px;
+    padding: 9px 14px 9px 36px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  #search:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(143,236,181,0.1);
+  }
+  #search::placeholder { color: var(--text-3); }
+
+  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .filter-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 500;
+    padding: 5px 13px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+  .filter-btn.active {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--cyan-dim);
+    font-weight: 600;
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 1200px; margin: 0 auto;
+    padding: 32px 40px 64px;
+  }
+
+  #result-count {
+    font-size: 13px; color: var(--text-2); margin-bottom: 28px;
+  }
+  #result-count strong { color: var(--cyan); font-weight: 600; }
+
+  /* ── CATEGORY ── */
+  .category-section { margin-bottom: 40px; }
+
+  .cat-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .cat-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%; flex-shrink: 0;
+  }
+
+  .cat-label {
+    font-size: 13px; font-weight: 600;
+    color: var(--text); letter-spacing: 0.2px;
+  }
+
+  .cat-rule { flex: 1; height: 1px; background: var(--border); }
+
+  .cat-pill {
+    font-size: 11px; color: var(--text-3);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 1px 9px;
+  }
+
+  /* ── GRID ── */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 12px;
+  }
+
+  /* ── CARD ── */
+  .tool-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    animation: rise 0.2s ease both;
+    display: flex; flex-direction: column;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .tool-card:hover {
+    border-color: var(--card-accent, var(--cyan));
+    box-shadow: 0 0 0 1px var(--card-accent, var(--cyan)),
+                0 8px 24px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
+  }
+
+  .card-top {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border-soft);
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 10px;
+  }
+
+  .card-name {
+    font-size: 15px; font-weight: 600;
+    color: var(--text); margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .card-desc {
+    font-size: 12px; color: var(--text-2); line-height: 1.5;
+  }
+
+  .type-badges {
+    display: flex; gap: 4px; flex-wrap: wrap;
+    justify-content: flex-end; flex-shrink: 0;
+  }
+
+  .type-badge {
+    font-size: 10px; font-weight: 600;
+    padding: 2px 7px; border-radius: 4px;
+    letter-spacing: 0.2px; text-transform: uppercase; border: 1px solid;
+  }
+  .type-cli    { color: var(--cyan);   background: var(--cyan-dim);   border-color: rgba(143,236,181,0.2); }
+  .type-gui    { color: var(--green);  background: var(--green-dim);  border-color: rgba(52,211,153,0.2); }
+  .type-web    { color: var(--yellow); background: var(--yellow-dim); border-color: rgba(251,191,36,0.2); }
+  .type-python { color: var(--purple); background: var(--purple-dim); border-color: rgba(167,139,250,0.2); }
+
+  .card-body { padding: 12px 16px 14px; flex: 1; }
+
+  .use-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+
+  .use-chip {
+    font-size: 11px; color: var(--text-2);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 4px; padding: 2px 8px;
+  }
+
+  /* Command block */
+  .cmd-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .cmd-block:hover { border-color: var(--card-accent, var(--cyan)); }
+
+  .cmd-prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--green);
+    flex-shrink: 0;
+  }
+
+  .cmd-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: #94a3b8;
+    overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; flex: 1;
+  }
+
+  .copy-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px; font-weight: 500;
+    color: var(--text-3); background: none; border: none;
+    cursor: pointer; padding: 2px 6px; flex-shrink: 0;
+    border-radius: 4px; transition: all 0.15s;
+    letter-spacing: 0.2px;
+  }
+  .copy-btn:hover { color: var(--cyan); background: var(--cyan-dim); }
+  .copy-btn.copied { color: var(--green); }
+
+  /* Tip note */
+  .card-note {
+    margin-top: 10px;
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.18);
+    border-radius: 6px;
+    padding: 8px 11px;
+    font-size: 11px; color: #a38a50; line-height: 1.6;
+  }
+  .note-label {
+    font-size: 10px; font-weight: 600;
+    color: var(--yellow); text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 3px;
+  }
+
+  /* Docs footer */
+  .card-footer {
+    padding: 9px 16px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .docs-link {
+    font-size: 12px; color: var(--text-2);
+    text-decoration: none; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: color 0.15s;
+  }
+  .docs-link:hover { color: var(--cyan); }
+  .docs-link svg { width: 12px; height: 12px; opacity: 0.6; }
+
+  /* ── EMPTY ── */
+  #empty-state { text-align: center; padding: 80px 20px; display: none; }
+  .empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.4; }
+  #empty-state h3 { font-size: 16px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+  #empty-state p  { font-size: 13px; color: var(--text-3); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 18px 40px;
+    text-align: center;
+    font-size: 12px; color: var(--text-3);
+  }
+  footer a { color: var(--cyan); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── HIGHLIGHT ── */
+  mark {
+    background: rgba(251,191,36,0.2);
+    color: var(--yellow); border-radius: 2px; padding: 0 1px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    header, .controls, main, footer { padding-left: 16px; padding-right: 16px; }
+    .tool-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="tl-mark">TL</div>
+      <div class="logo-text">
+        <h1>VM Tool Reference</h1>
+        <p>Trace Labs OSINT VM — Search Party Edition</p>
+      </div>
+    </div>
+    <div class="tool-count-badge"><span id="total-count">—</span> tools installed</div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Search by tool name, use case, or command…" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" data-cat="All">All tools</button>
+      <button class="filter-btn" data-cat="People">👤 People</button>
+      <button class="filter-btn" data-cat="Recon">🔎 Recon</button>
+      <button class="filter-btn" data-cat="Images">🖼 Images</button>
+      <button class="filter-btn" data-cat="Steganography">🔒 Steg</button>
+      <button class="filter-btn" data-cat="Dark Web">🌐 Dark Web</button>
+      <button class="filter-btn" data-cat="Utilities">🛠 Utilities</button>
+      <button class="filter-btn" data-cat="Frameworks">⚙️ Frameworks</button>
+      <button class="filter-btn" data-cat="Browser Extensions">🧩 Extensions</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div id="result-count"></div>
+  <div id="tool-container"></div>
+  <div id="empty-state">
+    <div class="empty-icon">🔍</div>
+    <h3>No tools found</h3>
+    <p>Try a different search term or clear the filter.</p>
+  </div>
+</main>
+
+<footer>
+  Trace Labs OSINT VM &nbsp;·&nbsp;
+  <a href="https://www.tracelabs.org" target="_blank">tracelabs.org</a>
+  &nbsp;·&nbsp; To add a tool, edit the TOOLS array in this file's source.
+</footer>
+
+<script>
+// ============================================================
+//  TOOL DATABASE
+//  To add a new tool: copy any entry, paste it at the bottom
+//  of the list (before the closing ]; ) and fill it in.
+//
+//  category options:
+//    People | Recon | Images | Steganography |
+//    Dark Web | Utilities | Frameworks | Browser Extensions
+// ============================================================
+const TOOLS = [
+
+  // ── PEOPLE ────────────────────────────────────────────────
+  {
+    name: "Sherlock",
+    category: "People",
+    desc: "Search for a username across 300+ social media sites simultaneously",
+    type: ["CLI", "Python"],
+    uses: ["username search", "account discovery", "social footprint"],
+    cmd: "sherlock <username>",
+    docs: "https://github.com/sherlock-project/sherlock",
+    notes: "Use --print-found to show only hits. Save results with --output results.txt. Add --timeout 10 to skip slow sites."
+  },
+  {
+    name: "PhoneInfoga",
+    category: "People",
+    desc: "Look up phone numbers — carrier, region, reputation, and linked OSINT sources",
+    type: ["CLI", "Web"],
+    uses: ["phone number lookup", "carrier identification", "number reputation"],
+    cmd: "phoneinfoga serve -p 8080",
+    docs: "https://sundowndev.github.io/phoneinfoga",
+    notes: "Starts a web UI at http://localhost:8080. For a quick CLI scan: phoneinfoga scan -n +1XXXXXXXXXX"
+  },
+
+  // ── RECON ─────────────────────────────────────────────────
+  {
+    name: "sn0int",
+    category: "Recon",
+    desc: "Modular OSINT framework with a community registry of investigation modules",
+    type: ["CLI"],
+    uses: ["domain recon", "username search", "email discovery", "subdomain enum"],
+    cmd: "sn0int",
+    docs: "https://github.com/kpcyrd/sn0int",
+    notes: "Opens an interactive shell. Type 'help' to get started. Install modules with: pkg install <module-name>"
+  },
+  {
+    name: "Sublist3r",
+    category: "Recon",
+    desc: "Find subdomains of a target domain using multiple search engines passively",
+    type: ["CLI", "Python"],
+    uses: ["subdomain discovery", "domain recon", "passive reconnaissance"],
+    cmd: "sublist3r -d <domain.com>",
+    docs: "https://github.com/aboul3la/Sublist3r",
+    notes: "Save results with -o output.txt. Add -b to also run a brute-force. Use -v for verbose output."
+  },
+  {
+    name: "Metagoofil",
+    category: "Recon",
+    desc: "Find and extract metadata from public documents (PDFs, Word docs) on a target domain",
+    type: ["CLI", "Python"],
+    uses: ["document metadata", "author names", "email harvesting", "software versions"],
+    cmd: "metagoofil -d <domain.com> -t pdf,doc,xlsx -o output/",
+    docs: "https://github.com/laramies/metagoofil",
+    notes: "Uses Google to find documents on the domain. Add -l 20 to limit results and avoid rate limiting."
+  },
+
+  // ── IMAGES ────────────────────────────────────────────────
+  {
+    name: "ExifTool",
+    category: "Images",
+    desc: "Extract hidden metadata from images — GPS location, camera model, timestamps",
+    type: ["CLI"],
+    uses: ["GPS coordinates", "camera info", "timestamps", "metadata extraction"],
+    cmd: "exiftool <image.jpg>",
+    docs: "https://exiftool.org",
+    notes: "Show only GPS: exiftool -gps:all <file>. Strip all metadata: exiftool -all= <file>. Batch: exiftool *.jpg"
+  },
+
+  // ── STEGANOGRAPHY ─────────────────────────────────────────
+  {
+    name: "steghide",
+    category: "Steganography",
+    desc: "Extract data hidden inside image or audio files (JPEG, BMP, WAV)",
+    type: ["CLI"],
+    uses: ["hidden data extraction", "passphrase steg", "steg analysis"],
+    cmd: "steghide extract -sf <image.jpg>",
+    docs: "https://steghide.sourceforge.net",
+    notes: "When prompted for a passphrase, try pressing Enter (blank) first. Embed: steghide embed -cf image.jpg -ef secret.txt"
+  },
+  {
+    name: "stegseek",
+    category: "Steganography",
+    desc: "Automatically crack steghide passphrases using a wordlist — extremely fast",
+    type: ["CLI"],
+    uses: ["passphrase cracking", "CTF steg challenges", "steghide brute force"],
+    cmd: "stegseek <image.jpg> /usr/share/wordlists/rockyou.txt",
+    docs: "https://github.com/RickdeJager/stegseek",
+    notes: "Only works on steghide-embedded files. Cracks most CTF challenges in under a second using rockyou.txt."
+  },
+  {
+    name: "StegOSuite",
+    category: "Steganography",
+    desc: "Graphical tool for hiding and extracting data from image files",
+    type: ["GUI"],
+    uses: ["GUI steg analysis", "image steganography", "visual extraction"],
+    cmd: "stegosuite",
+    docs: "https://github.com/osde8info/stegosuite",
+    notes: "If it won't launch, try: java -jar /opt/stegosuite/stegosuite.jar. Supports BMP, GIF, JPG, PNG."
+  },
+
+  // ── DARK WEB ──────────────────────────────────────────────
+  {
+    name: "Tor Browser",
+    category: "Dark Web",
+    desc: "Browse anonymously and access .onion sites on the Tor network",
+    type: ["GUI"],
+    uses: ["anonymous browsing", ".onion sites", "identity protection"],
+    cmd: "tor-browser",
+    docs: "https://www.torproject.org",
+    notes: "Never log into personal accounts while using Tor. To route CLI tools through Tor, prefix commands with: torsocks"
+  },
+
+  // ── UTILITIES ─────────────────────────────────────────────
+  {
+    name: "translate-shell",
+    category: "Utilities",
+    desc: "Translate foreign text from the terminal — auto-detects language",
+    type: ["CLI"],
+    uses: ["language translation", "foreign content", "auto language detect"],
+    cmd: "trans :en \"text to translate here\"",
+    docs: "https://github.com/soimort/translate-shell",
+    notes: "Auto-detect source language: trans \"bonjour monde\". Translate a file: trans :en -i input.txt"
+  },
+
+  // ── FRAMEWORKS ────────────────────────────────────────────
+  {
+    name: "SpiderFoot",
+    category: "Frameworks",
+    desc: "Automated OSINT tool that pulls from 200+ sources and maps relationships visually",
+    type: ["CLI", "Web"],
+    uses: ["automated OSINT", "target profiling", "relationship mapping"],
+    cmd: "spiderfoot -l 127.0.0.1:5001",
+    docs: "https://www.spiderfoot.net/documentation",
+    notes: "After launching, open http://127.0.0.1:5001 in your browser. Add API keys in Settings for richer results."
+  },
+  {
+    name: "Owlculus",
+    category: "Frameworks",
+    desc: "Case management — keep subjects, notes, and evidence organized during a CTF",
+    type: ["GUI", "Web"],
+    uses: ["case management", "evidence tracking", "subject notes", "CTF organization"],
+    cmd: "cd /opt/owlculus && python3 app.py",
+    docs: "https://github.com/be0vlk/owlculus",
+    notes: "Perfect for Trace Labs CTFs with multiple missing persons subjects. Keeps all evidence organized per subject."
+  },
+
+  // ── BROWSER EXTENSIONS ────────────────────────────────────
+  {
+    name: "Forensic OSINT Full Page Screen Capture",
+    category: "Browser Extensions",
+    desc: "Capture full-page screenshots with a timestamp, URL, and SHA-256 hash for evidence integrity",
+    type: ["Web"],
+    uses: ["evidence capture", "forensic screenshots", "page archiving", "hash verification"],
+    cmd: "Install via Chrome Web Store in Chromium",
+    docs: "https://chrome.google.com/webstore/search/forensic+osint+full+page+screen+capture",
+    notes: "Essential for TL submissions — the SHA-256 hash proves the screenshot hasn't been altered."
+  }
+
+];
+
+// ── Category config ─────────────────────────────────────────
+const CAT_META = {
+  "People":             { color: "#8fecb5" },
+  "Recon":              { color: "#34d399" },
+  "Images":             { color: "#fbbf24" },
+  "Steganography":      { color: "#fb923c" },
+  "Dark Web":           { color: "#f87171" },
+  "Utilities":          { color: "#34d399" },
+  "Frameworks":         { color: "#a78bfa" },
+  "Browser Extensions": { color: "#fbbf24" },
+};
+
+const CAT_ORDER = [
+  "People","Recon","Images","Steganography",
+  "Dark Web","Utilities","Frameworks","Browser Extensions"
+];
+
+let activeFilter = "All";
+let searchTerm   = "";
+
+// ── Helpers ─────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function highlight(str, term) {
+  if (!term) return esc(str);
+  const re = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+  return esc(str).replace(re, m=>`<mark>${m}</mark>`);
+}
+
+// ── Render ───────────────────────────────────────────────────
+function renderTools() {
+  const container  = document.getElementById('tool-container');
+  const emptyState = document.getElementById('empty-state');
+  const term       = searchTerm.toLowerCase();
+
+  const filtered = TOOLS.filter(t => {
+    if (activeFilter !== "All" && t.category !== activeFilter) return false;
+    if (!term) return true;
+    return (
+      t.name.toLowerCase().includes(term)     ||
+      t.desc.toLowerCase().includes(term)     ||
+      t.category.toLowerCase().includes(term) ||
+      t.uses.some(u => u.toLowerCase().includes(term)) ||
+      t.cmd.toLowerCase().includes(term)      ||
+      (t.notes && t.notes.toLowerCase().includes(term))
+    );
+  });
+
+  document.getElementById('result-count').innerHTML = term
+    ? `Showing <strong>${filtered.length}</strong> result${filtered.length!==1?'s':''} for "<strong>${esc(searchTerm)}</strong>"`
+    : `<strong>${filtered.length}</strong> tool${filtered.length!==1?'s':''} available`;
+
+  if (!filtered.length) {
+    container.innerHTML = '';
+    emptyState.style.display = 'block';
+    return;
+  }
+  emptyState.style.display = 'none';
+
+  const grouped = {};
+  filtered.forEach(t => { (grouped[t.category] = grouped[t.category]||[]).push(t); });
+
+  let html = '';
+  CAT_ORDER.forEach(cat => {
+    if (!grouped[cat]) return;
+    const color = (CAT_META[cat]||{}).color || '#8fecb5';
+    html += `
+    <div class="category-section">
+      <div class="cat-header">
+        <div class="cat-dot" style="background:${color}; box-shadow:0 0 6px ${color}55"></div>
+        <div class="cat-label">${cat}</div>
+        <div class="cat-rule"></div>
+        <div class="cat-pill">${grouped[cat].length}</div>
+      </div>
+      <div class="tool-grid">
+        ${grouped[cat].map(t => cardHtml(t, term, color)).join('')}
+      </div>
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function cardHtml(tool, term, color) {
+  const types = tool.type.map(t =>
+    `<span class="type-badge type-${t.toLowerCase()}">${t}</span>`
+  ).join('');
+
+  const chips = tool.uses.map(u =>
+    `<span class="use-chip">${highlight(u, term)}</span>`
+  ).join('');
+
+  const note = tool.notes ? `
+    <div class="card-note">
+      <div class="note-label">Tip</div>
+      ${esc(tool.notes)}
+    </div>` : '';
+
+  const footer = tool.docs ? `
+    <div class="card-footer">
+      <a class="docs-link" href="${esc(tool.docs)}" target="_blank">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/>
+        </svg>
+        View documentation
+      </a>
+    </div>` : '';
+
+  const cmdEsc = tool.cmd.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+
+  return `
+  <div class="tool-card" style="--card-accent:${color}">
+    <div class="card-top">
+      <div>
+        <div class="card-name">${highlight(tool.name, term)}</div>
+        <div class="card-desc">${highlight(tool.desc, term)}</div>
+      </div>
+      <div class="type-badges">${types}</div>
+    </div>
+    <div class="card-body">
+      <div class="use-chips">${chips}</div>
+      <div class="cmd-block" onclick="copyCmd(this,'${cmdEsc}')">
+        <span class="cmd-prompt">$</span>
+        <span class="cmd-text">${highlight(tool.cmd, term)}</span>
+        <button class="copy-btn">Copy</button>
+      </div>
+      ${note}
+    </div>
+    ${footer}
+  </div>`;
+}
+
+function copyCmd(el, cmd) {
+  const btn = el.querySelector('.copy-btn');
+  const done = () => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copy'; btn.classList.remove('copied'); }, 1500);
+  };
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(cmd).then(done).catch(()=>fallbackCopy(cmd,done));
+  } else { fallbackCopy(cmd,done); }
+}
+
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e){}
+  document.body.removeChild(ta); cb();
+}
+
+// ── Init ─────────────────────────────────────────────────────
+document.getElementById('total-count').textContent = TOOLS.length;
+
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value.trim();
+  renderTools();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.cat;
+    renderTools();
+  });
+});
+
+renderTools();
+</script>
+</body>
+</html>
