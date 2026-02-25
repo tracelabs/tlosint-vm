@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trace Labs — Investigation Workflow Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg:          #0d1117;
+    --bg-raised:   #161b22;
+    --bg-card:     #1c2130;
+    --border:      #2a3347;
+    --border-soft: #232b3a;
+
+    --cyan:        #8fecb5;
+    --cyan-dim:    rgba(143,236,181,0.12);
+    --green:       #34d399;
+    --green-dim:   rgba(52,211,153,0.12);
+    --orange:      #fb923c;
+    --orange-dim:  rgba(251,146,60,0.12);
+    --purple:      #a78bfa;
+    --purple-dim:  rgba(167,139,250,0.12);
+    --red:         #f87171;
+    --red-dim:     rgba(248,113,113,0.12);
+    --yellow:      #fbbf24;
+    --yellow-dim:  rgba(251,191,36,0.12);
+    --blue:        #60a5fa;
+    --blue-dim:    rgba(96,165,250,0.12);
+
+    --text:        #e2e8f0;
+    --text-2:      #8b9ab5;
+    --text-3:      #4a5568;
+
+    --radius:      8px;
+    --shadow:      0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 40px;
+  }
+
+  .header-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  }
+
+  .logo-wrap { display: flex; align-items: center; gap: 14px; }
+
+  .tl-mark {
+    width: 40px; height: 40px;
+    background: var(--cyan);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    color: #0a1f14; letter-spacing: 0.5px;
+    flex-shrink: 0;
+    box-shadow: 0 0 16px rgba(143,236,181,0.25);
+  }
+
+  .logo-text h1 {
+    font-size: 17px; font-weight: 700; color: var(--text);
+    letter-spacing: -0.3px; line-height: 1.2;
+  }
+
+  .logo-text p { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+
+  .header-links {
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+
+  .nav-link {
+    font-size: 12px; font-weight: 500;
+    color: var(--text-2);
+    text-decoration: none;
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    transition: all 0.15s;
+  }
+  .nav-link:hover { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-dim); }
+  .nav-link.active { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-dim); font-weight: 600; }
+
+  /* ── STICKY CONTROLS ── */
+  .controls {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+  }
+
+  .controls-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 11px;
+  }
+
+  .search-wrap { position: relative; }
+
+  .search-icon {
+    position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-3); font-size: 15px; pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'Inter', sans-serif; font-size: 14px;
+    padding: 9px 14px 9px 36px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  #search:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(143,236,181,0.1);
+  }
+  #search::placeholder { color: var(--text-3); }
+
+  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .filter-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 500;
+    padding: 5px 13px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+  .filter-btn.active { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); font-weight: 600; }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 1200px; margin: 0 auto;
+    padding: 32px 40px 64px;
+  }
+
+  #result-count {
+    font-size: 13px; color: var(--text-2); margin-bottom: 28px;
+  }
+  #result-count strong { color: var(--cyan); font-weight: 600; }
+
+  /* ── PIVOT CARD ── */
+  .pivot-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    animation: rise 0.2s ease both;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .pivot-card:hover {
+    border-color: var(--card-accent, var(--cyan));
+    box-shadow: 0 0 0 1px var(--card-accent, var(--cyan)), 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  /* Card header — clickable toggle */
+  .pivot-header {
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .pivot-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+
+  .pivot-title-group { flex: 1; }
+
+  .pivot-title {
+    font-size: 15px; font-weight: 600; color: var(--text);
+    line-height: 1.2; margin-bottom: 3px;
+  }
+
+  .pivot-subtitle { font-size: 12px; color: var(--text-2); }
+
+  .pivot-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+  .pivot-count {
+    font-size: 11px; color: var(--text-3);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 2px 9px;
+  }
+
+  .chevron {
+    width: 18px; height: 18px; color: var(--text-3);
+    transition: transform 0.2s;
+  }
+  .pivot-card.open .chevron { transform: rotate(90deg); }
+
+  /* Card body */
+  .pivot-body {
+    display: none;
+    border-top: 1px solid var(--border-soft);
+    padding: 20px;
+  }
+  .pivot-card.open .pivot-body { display: block; }
+
+  /* Section intro */
+  .pivot-intro {
+    font-size: 13px; color: var(--text-2); margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* Pivot steps grid */
+  .pivot-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+  }
+
+  .step {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 14px;
+    transition: border-color 0.15s;
+  }
+  .step:hover { border-color: var(--step-color, var(--cyan)); }
+
+  .step-label {
+    display: flex; align-items: center; gap: 7px;
+    margin-bottom: 8px;
+  }
+
+  .step-num {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--step-color, var(--cyan));
+    color: #0a1f14;
+    font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-size: 13px; font-weight: 600; color: var(--text);
+  }
+
+  .step-desc {
+    font-size: 12px; color: var(--text-2); line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  /* Tool chips inside steps */
+  .step-tools { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+
+  .tool-chip {
+    font-size: 11px; font-weight: 500;
+    padding: 2px 9px; border-radius: 4px;
+    border: 1px solid;
+    text-decoration: none;
+    transition: opacity 0.15s;
+    cursor: default;
+  }
+  .tool-chip:hover { opacity: 0.75; }
+  .chip-vm   { color: var(--cyan);   background: var(--cyan-dim);   border-color: rgba(143,236,181,0.2); }
+  .chip-web  { color: var(--yellow); background: var(--yellow-dim); border-color: rgba(251,191,36,0.2); }
+  .chip-tip  { color: var(--orange); background: var(--orange-dim); border-color: rgba(251,146,60,0.2); }
+
+  .step-links { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .step-link {
+    font-size: 11px; color: var(--text-2);
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .step-link:hover { color: var(--cyan); border-color: rgba(143,236,181,0.3); background: var(--cyan-dim); }
+  .step-link svg { width: 10px; height: 10px; opacity: 0.6; }
+
+  /* Flag hint */
+  .flag-hint {
+    margin-top: 14px;
+    background: rgba(143,236,181,0.05);
+    border: 1px solid rgba(143,236,181,0.15);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px; color: #5aab7a; line-height: 1.6;
+  }
+  .flag-label {
+    font-size: 10px; font-weight: 700; color: var(--cyan);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;
+  }
+
+  /* ── EMPTY ── */
+  #empty-state { text-align: center; padding: 80px 20px; display: none; }
+  .empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.4; }
+  #empty-state h3 { font-size: 16px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+  #empty-state p  { font-size: 13px; color: var(--text-3); }
+
+  /* ── HIGHLIGHT ── */
+  mark {
+    background: rgba(251,191,36,0.2);
+    color: var(--yellow); border-radius: 2px; padding: 0 1px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 18px 40px;
+    text-align: center;
+    font-size: 12px; color: var(--text-3);
+  }
+  footer a { color: var(--cyan); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    header, .controls, main, footer { padding-left: 16px; padding-right: 16px; }
+    .pivot-steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="tl-mark">TL</div>
+      <div class="logo-text">
+        <h1>Investigation Workflow</h1>
+        <p>Trace Labs OSINT VM — Pivot Guide</p>
+      </div>
+    </div>
+    <div class="header-links">
+      <a href="tl-tools.html" class="nav-link">🛠 Tool Reference</a>
+      <a href="#" class="nav-link active">🔁 Workflows</a>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Search by data type, technique, or tool…" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" data-cat="All">All types</button>
+      <button class="filter-btn" data-cat="Identity">👤 Identity</button>
+      <button class="filter-btn" data-cat="Online Presence">🌐 Online Presence</button>
+      <button class="filter-btn" data-cat="Contact Info">📞 Contact Info</button>
+      <button class="filter-btn" data-cat="Location">📍 Location</button>
+      <button class="filter-btn" data-cat="Media">🖼 Media</button>
+      <button class="filter-btn" data-cat="Associates">🤝 Associates</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div id="result-count"></div>
+  <div id="pivot-container"></div>
+  <div id="empty-state">
+    <div class="empty-icon">🔍</div>
+    <h3>No workflows found</h3>
+    <p>Try a different search term or clear the filter.</p>
+  </div>
+</main>
+
+<footer>
+  Trace Labs OSINT VM &nbsp;·&nbsp;
+  <a href="https://www.tracelabs.org" target="_blank">tracelabs.org</a>
+  &nbsp;·&nbsp;
+  <a href="tl-tools.html">VM Tool Reference</a>
+  &nbsp;·&nbsp; To add a workflow, edit the PIVOTS array in this file's source.
+</footer>
+
+<script>
+
+// ============================================================
+//  PIVOT DATABASE
+//  Each entry = one data type you might have during an investigation.
+//  "steps" = ordered pivot actions.
+//  chip types: "vm" (VM tool), "web" (external resource), "tip" (advisory)
+// ============================================================
+const PIVOTS = [
+
+  // ─────────────────────────────────────────────────────────
+  {
+    id: "name",
+    category: "Identity",
+    icon: "👤",
+    color: "#8fecb5",
+    title: "Full Name",
+    subtitle: "You have a person's real name — first, last, or both",
+    intro: "A name alone is a starting point, not an answer. Your job is to narrow it down using location context, age, associated usernames, and photos. Prioritize platforms where your subject is most likely active based on age group and region.",
+    steps: [
+      {
+        num: 1,
+        title: "Search Google with operators",
+        desc: "Start broad, then add context to isolate the right person. Combine name with city, school, employer, or hobby.",
+        tools: [{ label: "Google", type: "web" }],
+        links: [
+          { label: "Google Operators Cheatsheet", url: "https://ahrefs.com/blog/google-advanced-search-operators/" }
+        ]
+      },
+      {
+        num: 2,
+        title: "Search social platforms directly",
+        desc: "Search Facebook, LinkedIn, Instagram, TikTok, and X directly — Google doesn't always index private profiles.",
+        tools: [{ label: "Facebook", type: "web" }, { label: "LinkedIn", type: "web" }, { label: "Instagram", type: "web" }],
+        links: [
+          { label: "Facebook People Search", url: "https://www.facebook.com/people-search" }
+        ]
+      },
+      {
+        num: 3,
+        title: "People aggregator sites",
+        desc: "Run the name through aggregators to surface addresses, relatives, phone numbers, and age data.",
+        tools: [{ label: "TruthFinder", type: "web" }, { label: "Spokeo", type: "web" }, { label: "Intelius", type: "web" }],
+        links: [
+          { label: "IntelTechniques People Search", url: "https://inteltechniques.com/tools/People.html" }
+        ]
+      },
+      {
+        num: 4,
+        title: "Reverse image search for the person",
+        desc: "If you have a photo, run reverse image searches to find other profiles or appearances.",
+        tools: [{ label: "PimEyes", type: "web" }, { label: "Google Lens", type: "web" }, { label: "TinEye", type: "web" }],
+        links: []
+      }
+    ],
+    flagHint: "Potential TL flags: current/last known location, social media profiles, employer, associates, vehicle."
+  },
+
+  // ─────────────────────────────────────────────────────────
+  {
+    id: "username",
+    category: "Online Presence",
+    icon: "🔑",
+    color: "#34d399",
+    title: "Username / Handle",
+    subtitle: "You have a username or alias used on any platform",
+    intro: "Usernames are one of the most powerful pivots in missing person cases — people reuse handles across platforms without realizing it creates a cross-platform identity trail. Even slight variations (adding numbers, underscores) are worth checking.",
+    steps: [
+      {
+        num: 1,
+        title: "Run Sherlock across 300+ platforms",
+        desc: "The fastest way to find all accounts using this exact username. Save the output and check each hit manually.",
+        tools: [{ label: "Sherlock", type: "vm" }],
+        links: [{ label: "Sherlock docs", url: "https://github.com/sherlock-project/sherlock" }]
+      },
+      {
+        num: 2,
+        title: "Check username variants",
+        desc: "Try common variations: add/remove numbers, dots, underscores, or append birth year. People often do this when their username is taken.",
+        tools: [{ label: "Sherlock", type: "vm" }, { label: "WhatsMyName", type: "web" }],
+        links: [{ label: "WhatsMyName", url: "https://whatsmyname.app" }]
+      },
+      {
+        num: 3,
+        title: "Search the username as a keyword",
+        desc: "Google the username in quotes. It may appear in forum posts, old profiles, comments, or mentions that Sherlock won't catch.",
+        tools: [{ label: "Google", type: "web" }],
+        links: []
+      },
+      {
+        num: 4,
+        title: "Check for linked accounts",
+        desc: "Once you find one active profile, look at the bio/about section for links to other accounts, email hints, or real name fragments.",
+        tools: [{ label: "sn0int", type: "vm" }],
+        links: [{ label: "OSINT Framework — Username", url: "https://osintframework.com/" }]
+      }
+    ],
+    flagHint: "Potential TL flags: new/active social profiles, username on dark web forums, linked email addresses, location hints in bio or posts."
+  },
+
+  // ─────────────────────────────────────────────────────────
+  {
+    id: "email",
+    category: "Contact Info",
+    icon: "✉️",
+    color: "#a78bfa",
+    title: "Email Address",
+    subtitle: "You have a full or partial email address",
+    intro: "Email addresses are high-value because they're used as account identifiers across virtually every platform. Even a partial address (e.g. knowing the domain or prefix) can yield account confirmation if tested carefully.",
+    steps: [
+      {
+        num: 1,
+        title: "Check breach databases",
+        desc: "Run the email through breach lookup tools. Leaked data often reveals passwords (pivot to other accounts), usernames, and registration details.",
+        tools: [{ label: "HaveIBeenPwned", type: "web" }, { label: "Dehashed", type: "web" }],
+        links: [
+          { label: "HaveIBeenPwned", url: "https://haveibeenpwned.com" },
+          { label: "Dehashed (paid)", url: "https://dehashed.com" }
+        ]
+      },
+      {
+        num: 2,
+        title: "Reverse search to find linked profiles",
+        desc: "Many platforms allow searching by email. Also try Googling the email in quotes — it may appear in public registrations, GitHub commits, or forum posts.",
+        tools: [{ label: "Holehe", type: "web" }, { label: "Google", type: "web" }],
+        links: [
+          { label: "Holehe (email→accounts)", url: "https://github.com/megadose/holehe" }
+        ]
+      },
+      {
+        num: 3,
+        title: "Extract the username prefix",
+        desc: "The part before the @ is often the same username the person uses elsewhere. Pivot to username workflow.",
+        tools: [{ label: "Sherlock", type: "vm" }],
+        links: []
+      },
+      {
+        num: 4,
+        title: "Domain intelligence (for custom domains)",
+        desc: "If the email uses a custom domain (not Gmail/Yahoo), look up the domain registration for name and address data.",
+        tools: [{ label: "whois", type: "vm" }, { label: "Sublist3r", type: "vm" }],
+        links: [
+          { label: "WHOIS Lookup", url: "https://who.is" }
+        ]
+      }
+    ],
+    flagHint: "Potential TL flags: account registrations, physical address from breach data, associated usernames, employer from domain."
+  },
+
+  // ─────────────────────────────────────────────────────────
+  {
+    id: "phone",
+    category: "Contact Info",
+    icon: "📞",
+    color: "#fb923c",
+    title: "Phone Number",
+    subtitle: "You have a phone number (full or partial)",
+    intro: "Phone numbers can confirm identity, reveal carrier/region, and surface linked accounts on messaging apps and social platforms. Format matters — always try both national and E.164 international formats.",
+    steps: [
+      {
+        num: 1,
+        title: "Run PhoneInfoga for carrier and region",
+        desc: "Identifies carrier, country/region, line type (mobile vs landline), and scans OSINT sources automatically.",
+        tools: [{ label: "PhoneInfoga", type: "vm" }],
+        links: [{ label: "PhoneInfoga docs", url: "https://sundowndev.github.io/phoneinfoga" }]
+      },
+      {
+        num: 2,
+        title: "Reverse lookup aggregators",
+        desc: "Check Truecaller, Sync.me, and NumLookup for name and carrier data. Truecaller is especially powerful for international numbers.",
+        tools: [{ label: "Truecaller", type: "web" }, { label: "NumLookup", type: "web" }],
+        links: [
+          { label: "Truecaller", url: "https://www.truecaller.com" },
+          { label: "NumLookup", url: "https://www.numlookup.com" }
+        ]
+      },
+      {
+        num: 3,
+        title: "Check messaging apps",
+        desc: "WhatsApp, Telegram, and Signal use phone numbers as IDs. Searching or adding the number can reveal a profile photo, name, or status.",
+        tools: [{ label: "WhatsApp", type: "web" }, { label: "Telegram", type: "web" }],
+        links: []
+      },
+      {
+        num: 4,
+        title: "Google the number",
+        desc: "Search the number with and without country code, in different formats. It may appear in classifieds, public posts, or forum spam.",
+        tools: [{ label: "Google", type: "web" }],
+        links: []
+      }
+    ],
+    flagHint: "Potential TL flags: carrier confirms region, WhatsApp profile photo, name from reverse lookup, messaging app activity."
+  },
+
+  // ─────────────────────────────────────────────────────────
+  {
+    id: "photo",
+    category: "Media",
+    icon: "🖼",
+    color: "#fbbf24",
+    title: "Photo / Image",
+    subtitle: "You have a photo of the subject or taken by them",
+    intro: "Images carry two types of intelligence: hidden metadata (GPS, timestamps, device info) and visual content (face, location identifiers, context clues). Always extract EXIF first, then analyze the content.",
+    steps: [
+      {
+        num: 1,
+        title: "Extract EXIF metadata",
+        desc: "May contain GPS coordinates, exact timestamp, camera model, and software. GPS data is gold for location pivots.",
+        tools: [{ label: "ExifTool", type: "vm" }],
+        links: [{ label: "ExifTool docs", url: "https://exiftool.org" }]
+      },
+      {
+        num: 2,
+        title: "Reverse image search (face search)",
+        desc: "PimEyes is the most powerful for facial recognition — it finds other photos of the same person. Google Lens finds visually similar images. TinEye tracks exact copies.",
+        tools: [{ label: "PimEyes", type: "web" }, { label: "Google Lens", type: "web" }, { label: "TinEye", type: "web" }],
+        links: [
+          { label: "PimEyes", url: "https://pimeyes.com" },
+          { label: "TinEye", url: "https://tineye.com" }
+        ]
+      },
+      {
+        num: 3,
+        title: "Geolocate background details",
+        desc: "Look for street signs, landmarks, business names, license plates, or architectural styles visible in the photo. Use Google Street View to confirm.",
+        tools: [{ label: "Google Street View", type: "web" }, { label: "GeoGuessr", type: "web" }],
+        links: [
+          { label: "GeoHints (geolocation tips)", url: "https://geohints.com" }
+        ]
+      },
+      {
+        num: 4,
+        title: "Check for steganographic data",
+        desc: "In rare CTF/challenge scenarios, data may be hidden inside the image file itself.",
+        tools: [{ label: "steghide", type: "vm" }, { label: "stegseek", type: "vm" }, { label: "StegOSuite", type: "vm" }],
+        links: []
+      }
+    ],
+    flagHint: "Potential TL flags: GPS coordinates from EXIF, timestamp of last photo, new social profiles found via face search, location identified from background."
+  },
+
+  // ─────────────────────────────────────────────────────────
+  {
+    id: "location",
+    category: "Location",
+    icon: "📍",
+    color: "#f87171",
+    title: "Location / Address",
+    subtitle: "You have a city, address, or GPS coordinates",
+    intro: "Location data narrows the search radius and opens pivots to local platforms, regional social groups, and geographic databases. Even a city name can yield meaningful intel when combined with other identifiers.",
+    steps: [
+      {
+        num: 1,
+        title: "Search local Facebook groups",
+        desc: "Missing person posts, local buy/sell groups, and community boards often have activity from the subject or sightings. Search the location + subject name.",
+        tools: [{ label: "Facebook", type: "web" }],
+        links: []
+      },
+      {
+        num: 2,
+        title: "Reverse geocode coordinates",
+        desc: "Convert GPS coordinates to a street address, then search for businesses, residences, or points of interest at that location.",
+        tools: [{ label: "Google Maps", type: "web" }, { label: "What3Words", type: "web" }],
+        links: [
+          { label: "Reverse Geocode", url: "https://www.latlong.net/lat-long-to-address.html" }
+        ]
+      },
+      {
+        num: 3,
+        title: "Search geo-tagged social posts",
+        desc: "Instagram, Twitter/X, and Snapchat allow location-based searches. Look for posts from the location around the time of disappearance.",
+        tools: [{ label: "Snap Map", type: "web" }, { label: "Twitter Advanced Search", type: "web" }],
+        links: [
+          { label: "Twitter/X Advanced Search", url: "https://twitter.com/search-advanced" },
+          { label: "Snap Map", url: "https://map.snapchat.com" }
+        ]
+      },
+      {
+        num: 4,
+        title: "Property and public records",
+        desc: "US addresses can be cross-referenced with county assessor records, voter rolls, and business registrations to confirm residency or employment.",
+        tools: [{ label: "County Assessor", type: "web" }, { label: "OpenCorporates", type: "web" }],
+        links: [
+          { label: "OpenCorporates", url: "https://opencorporates.com" },
+          { label: "Black Book Online (public records)", url: "https://www.blackbookonline.info" }
+        ]
+      }
+    ],
+    flagHint: "Potential TL flags: last known address confirmed, employer location, new sighting via geo-tagged post, vehicle registered at address."
+  },
+
+  // ─────────────────────────────────────────────────────────
+  {
+    id: "social-profile",
+    category: "Online Presence",
+    icon: "📱",
+    color: "#60a5fa",
+    title: "Social Media Profile",
+    subtitle: "You have a link to or knowledge of a specific social profile",
+    intro: "An active social profile is a goldmine. Work the profile systematically: who they follow, who follows them, what they post, where they tag themselves, and what they're interested in. Don't forget to archive everything before it disappears.",
+    steps: [
+      {
+        num: 1,
+        title: "Archive the profile immediately",
+        desc: "Profiles can be deleted or set to private at any time. Use the forensic screenshot extension or archive tools to preserve the evidence with a hash.",
+        tools: [{ label: "Forensic Screen Capture", type: "vm" }, { label: "Wayback Machine", type: "web" }],
+        links: [
+          { label: "Archive.today", url: "https://archive.ph" },
+          { label: "Wayback Machine", url: "https://web.archive.org" }
+        ]
+      },
+      {
+        num: 2,
+        title: "Map followers and following",
+        desc: "Identify close associates, family members, and significant others. These people may have more recent information or location hints.",
+        tools: [{ label: "SpiderFoot", type: "vm" }],
+        links: []
+      },
+      {
+        num: 3,
+        title: "Analyze post content and timing",
+        desc: "Look at post history for location tags, check-ins, workplace mentions, and timestamps. Establish a pattern of life — where they go, when, and with whom.",
+        tools: [{ label: "Owlculus", type: "vm" }],
+        links: []
+      },
+      {
+        num: 4,
+        title: "Extract linked accounts",
+        desc: "Bio links, pinned posts, and cross-platform mentions often reveal additional accounts. Also check the URL structure for username hints.",
+        tools: [{ label: "Sherlock", type: "vm" }, { label: "sn0int", type: "vm" }],
+        links: []
+      }
+    ],
+    flagHint: "Potential TL flags: last post timestamp, location check-ins, tagged photos, associates found via followers, linked accounts discovered."
+  },
+
+  // ─────────────────────────────────────────────────────────
+  {
+    id: "domain",
+    category: "Online Presence",
+    icon: "🌐",
+    color: "#34d399",
+    title: "Domain / Website",
+    subtitle: "You have a domain name or personal website",
+    intro: "A domain registration is a public record that can reveal a real name, address, email, phone number, or hosting provider. Even privacy-protected registrations leave fingerprints.",
+    steps: [
+      {
+        num: 1,
+        title: "Run WHOIS lookup",
+        desc: "Reveals registrant name, email, address, creation date, and registrar. Many people don't use WHOIS privacy on older domains.",
+        tools: [{ label: "whois", type: "vm" }],
+        links: [
+          { label: "WHOIS Lookup", url: "https://who.is" },
+          { label: "DomainTools", url: "https://whois.domaintools.com" }
+        ]
+      },
+      {
+        num: 2,
+        title: "Find subdomains",
+        desc: "Subdomains may reveal additional services, blogs, or applications tied to the person.",
+        tools: [{ label: "Sublist3r", type: "vm" }],
+        links: [{ label: "crt.sh (SSL certs)", url: "https://crt.sh" }]
+      },
+      {
+        num: 3,
+        title: "Extract document metadata",
+        desc: "Files hosted on the domain (PDFs, Word docs) may contain author names, internal paths, and software details.",
+        tools: [{ label: "Metagoofil", type: "vm" }],
+        links: []
+      },
+      {
+        num: 4,
+        title: "Check historical snapshots",
+        desc: "The Wayback Machine may have snapshots from before privacy was enabled, revealing original contact information or content.",
+        tools: [{ label: "Wayback Machine", type: "web" }],
+        links: [{ label: "Wayback Machine", url: "https://web.archive.org" }]
+      }
+    ],
+    flagHint: "Potential TL flags: registrant real name/address, author metadata from documents, associated email address, historical content."
+  },
+
+  // ─────────────────────────────────────────────────────────
+  {
+    id: "associates",
+    category: "Associates",
+    icon: "🤝",
+    color: "#a78bfa",
+    title: "Known Associate",
+    subtitle: "You've identified a friend, family member, or associate of the subject",
+    intro: "Associates are often the fastest path to locating a missing person — they may have more recent contact or unknowingly post information about the subject's whereabouts. Treat each associate as a mini-subject with their own investigation.",
+    steps: [
+      {
+        num: 1,
+        title: "Document the relationship",
+        desc: "Note how they're connected (tagged together, listed as relative, mutual followers). Use Owlculus to link them to the main subject in your case notes.",
+        tools: [{ label: "Owlculus", type: "vm" }],
+        links: []
+      },
+      {
+        num: 2,
+        title: "Check their profiles for subject mentions",
+        desc: "Search the associate's posts for the subject's name or username. Check photo tags — they may have posted a recent photo of the subject.",
+        tools: [],
+        links: [{ label: "Facebook Tag Search", url: "https://www.facebook.com" }]
+      },
+      {
+        num: 3,
+        title: "Map mutual connections",
+        desc: "Other mutual followers or friends may have information. Prioritize close or verified relationships over loose online connections.",
+        tools: [{ label: "SpiderFoot", type: "vm" }],
+        links: []
+      },
+      {
+        num: 4,
+        title: "Run the associate as a new lead",
+        desc: "Apply the full name/username/email workflows to the associate. Any information they reveal about their own location or activities may indirectly locate the subject.",
+        tools: [{ label: "Sherlock", type: "vm" }],
+        links: []
+      }
+    ],
+    flagHint: "Potential TL flags: associate posts recent photo of subject, location tag places subject in a specific area, associate's profile links to subject's new account."
+  }
+
+];
+
+// ── Category config ──────────────────────────────────────────
+const CAT_FILTERS = ["All","Identity","Online Presence","Contact Info","Location","Media","Associates"];
+
+let activeFilter = "All";
+let searchTerm   = "";
+
+// ── Helpers ──────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function hl(str, term) {
+  if (!term) return esc(str);
+  const re = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+  return esc(str).replace(re, m=>`<mark>${m}</mark>`);
+}
+
+function matchesTerm(p, term) {
+  if (!term) return true;
+  const t = term.toLowerCase();
+  if (p.title.toLowerCase().includes(t)) return true;
+  if (p.subtitle.toLowerCase().includes(t)) return true;
+  if (p.intro.toLowerCase().includes(t)) return true;
+  if (p.category.toLowerCase().includes(t)) return true;
+  for (const s of p.steps) {
+    if (s.title.toLowerCase().includes(t)) return true;
+    if (s.desc.toLowerCase().includes(t)) return true;
+    for (const tl of (s.tools||[])) if (tl.label.toLowerCase().includes(t)) return true;
+    for (const lk of (s.links||[])) if (lk.label.toLowerCase().includes(t)) return true;
+  }
+  return false;
+}
+
+// ── Render ───────────────────────────────────────────────────
+function render() {
+  const container  = document.getElementById('pivot-container');
+  const emptyState = document.getElementById('empty-state');
+  const term       = searchTerm.toLowerCase();
+
+  const filtered = PIVOTS.filter(p => {
+    if (activeFilter !== "All" && p.category !== activeFilter) return false;
+    return matchesTerm(p, term);
+  });
+
+  document.getElementById('result-count').innerHTML = term
+    ? `Showing <strong>${filtered.length}</strong> workflow${filtered.length!==1?'s':''} for "<strong>${esc(searchTerm)}</strong>"`
+    : `<strong>${filtered.length}</strong> workflow${filtered.length!==1?'s':''} — click any card to expand`;
+
+  if (!filtered.length) {
+    container.innerHTML = '';
+    emptyState.style.display = 'block';
+    return;
+  }
+  emptyState.style.display = 'none';
+
+  container.innerHTML = filtered.map(p => cardHtml(p, term)).join('');
+
+  // Restore open states
+  container.querySelectorAll('.pivot-card').forEach(el => {
+    el.querySelector('.pivot-header').addEventListener('click', () => {
+      el.classList.toggle('open');
+    });
+  });
+}
+
+function chipHtml(tool) {
+  const cls = tool.type === 'vm' ? 'chip-vm' : tool.type === 'web' ? 'chip-web' : 'chip-tip';
+  return `<span class="tool-chip ${cls}">${esc(tool.label)}</span>`;
+}
+
+const EXT_ICON = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/></svg>`;
+
+function cardHtml(p, term) {
+  const stepsHtml = p.steps.map(s => {
+    const tools  = (s.tools||[]).map(chipHtml).join('');
+    const links  = (s.links||[]).map(l => `<a class="step-link" href="${esc(l.url)}" target="_blank">${EXT_ICON}${hl(l.label,term)}</a>`).join('');
+    return `
+    <div class="step" style="--step-color:${p.color}">
+      <div class="step-label">
+        <div class="step-num" style="background:${p.color}">${s.num}</div>
+        <div class="step-title">${hl(s.title,term)}</div>
+      </div>
+      <div class="step-desc">${hl(s.desc,term)}</div>
+      ${tools ? `<div class="step-tools">${tools}</div>` : ''}
+      ${links ? `<div class="step-links">${links}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  const flagHtml = p.flagHint ? `
+    <div class="flag-hint">
+      <div class="flag-label">🚩 Flag Opportunities</div>
+      ${esc(p.flagHint)}
+    </div>` : '';
+
+  return `
+  <div class="pivot-card" style="--card-accent:${p.color}" id="card-${p.id}">
+    <div class="pivot-header">
+      <div class="pivot-icon" style="background:${p.color}20; border:1px solid ${p.color}30">${p.icon}</div>
+      <div class="pivot-title-group">
+        <div class="pivot-title">${hl(p.title,term)}</div>
+        <div class="pivot-subtitle">${hl(p.subtitle,term)}</div>
+      </div>
+      <div class="pivot-meta">
+        <div class="pivot-count">${p.steps.length} pivots</div>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 4l4 4-4 4"/>
+        </svg>
+      </div>
+    </div>
+    <div class="pivot-body">
+      <p class="pivot-intro">${hl(p.intro,term)}</p>
+      <div class="pivot-steps">${stepsHtml}</div>
+      ${flagHtml}
+    </div>
+  </div>`;
+}
+
+// ── Legend ───────────────────────────────────────────────────
+// Inject a small chip legend before the result count
+const legendHtml = `
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px;font-size:12px;color:var(--text-2)">
+  <span style="opacity:0.6">Chip key:</span>
+  <span class="tool-chip chip-vm">VM Tool</span>
+  <span class="tool-chip chip-web">External Resource</span>
+</div>`;
+
+document.querySelector('main').insertAdjacentHTML('afterbegin', legendHtml);
+
+// ── Init ─────────────────────────────────────────────────────
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value.trim();
+  render();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.cat;
+    render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
