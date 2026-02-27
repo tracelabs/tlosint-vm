@@ -1,0 +1,77 @@
+name: Discord Release Notification
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build payload and send to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ github.event.release.tag_name }}
+          NAME: ${{ github.event.release.name }}
+          URL: ${{ github.event.release.html_url }}
+          BODY: ${{ github.event.release.body }}
+          PUBLISHED_AT: ${{ github.event.release.published_at }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${DISCORD_WEBHOOK_URL:-}" ]; then
+            echo "DISCORD_WEBHOOK_URL secret is not set."
+            exit 1
+          fi
+
+          TITLE="${NAME:-$TAG}"
+          TYPE="General"
+
+          TEXT_TO_SCAN="$TITLE"$'\n'"${BODY:-}"
+
+          if echo "$TEXT_TO_SCAN" | grep -Eqi '(\[security\]|\bsecurity\b|CVE-)'; then TYPE="Security"; fi
+          if echo "$TEXT_TO_SCAN" | grep -Eqi '(\[hardening\]|\bhardening\b|apparmor|sandbox)'; then TYPE="Hardening"; fi
+          if echo "$TEXT_TO_SCAN" | grep -Eqi '(\[feature\]|\bfeature\b)'; then TYPE="Feature"; fi
+
+          SUMMARY="$(printf "%s" "${BODY:-}" | tr -d '\r' | head -c 350)"
+          if [ -z "$SUMMARY" ]; then SUMMARY="Release published. See notes for details."; fi
+
+          ACTION="Update when convenient."
+          if [ "$TYPE" = "Security" ]; then ACTION="Action: Update ASAP (security-related changes)."; fi
+          if [ "$TYPE" = "Hardening" ]; then ACTION="Action: Recommended update (hardening improvements)."; fi
+
+          # Build JSON safely (handles quotes/newlines)
+          jq -n \
+            --arg tag "$TAG" \
+            --arg url "$URL" \
+            --arg summary "$SUMMARY" \
+            --arg type "$TYPE" \
+            --arg repo "$REPO" \
+            --arg published "$PUBLISHED_AT" \
+            --arg action "$ACTION" \
+            '{
+              content: null,
+              embeds: [
+                {
+                  title: ("New VM OVA Release: " + $tag),
+                  url: $url,
+                  description: $summary,
+                  fields: [
+                    { name: "Type", value: $type, inline: true },
+                    { name: "Repository", value: $repo, inline: true },
+                    { name: "Published", value: $published, inline: true },
+                    { name: "Next step", value: $action, inline: false }
+                  ]
+                }
+              ]
+            }' > payload.json
+
+          curl -sS -X POST \
+            -H "Content-Type: application/json" \
+            --data @payload.json \
+            "$DISCORD_WEBHOOK_URL"
