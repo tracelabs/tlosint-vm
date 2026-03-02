@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Trace Labs Updater
+Comment=Update system and OSINT tools
+Exec=python3 /usr/local/bin/tl-updater-gui
+Icon=system-software-update
+Terminal=false
+Categories=System;

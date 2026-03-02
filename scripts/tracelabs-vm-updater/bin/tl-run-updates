@@ -1,0 +1,64 @@
+#!/bin/bash
+# ============================================================
+# Trace Labs VM - Full Update Script
+# Runs as root via pkexec from the GUI updater
+# ============================================================
+
+set -e
+
+echo "=== TRACE LABS VM UPDATER ==="
+echo "Started: $(date)"
+echo ""
+
+# ── System Package Updates ──────────────────────────────────
+echo "[*] Updating package lists..."
+apt-get update
+
+echo ""
+echo "[*] Upgrading system packages..."
+DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+
+echo ""
+echo "[*] Cleaning up unused packages..."
+apt-get autoremove -y
+apt-get autoclean
+
+# ── OSINT Tool Updates (git-based) ──────────────────────────
+TL_TOOLS_DIR="/opt/tracelabs/tools"
+
+if [ -d "$TL_TOOLS_DIR" ]; then
+    echo ""
+    echo "[*] Updating OSINT tools in $TL_TOOLS_DIR..."
+    for tool_dir in "$TL_TOOLS_DIR"/*/; do
+        if [ -d "$tool_dir/.git" ]; then
+            tool_name=$(basename "$tool_dir")
+            echo "  --> Updating $tool_name..."
+            git -C "$tool_dir" pull --ff-only 2>&1 || echo "  [!] Could not update $tool_name (skipping)"
+        fi
+    done
+else
+    echo ""
+    echo "[i] No OSINT tools directory found at $TL_TOOLS_DIR — skipping tool updates."
+    echo "    Create $TL_TOOLS_DIR and clone your tools there to enable auto-updates."
+fi
+
+# ── Python Virtual Environment Updates ─────────────────────
+if [ -f "/opt/tracelabs/venv/bin/pip" ]; then
+    echo ""
+    echo "[*] Updating Python OSINT packages..."
+    /opt/tracelabs/venv/bin/pip install --upgrade pip 2>&1
+    /opt/tracelabs/venv/bin/pip list --outdated --format=columns 2>&1
+fi
+
+# ── Trace Labs VM Scripts ───────────────────────────────────
+if [ -d "/opt/tracelabs/vm-scripts/.git" ]; then
+    echo ""
+    echo "[*] Updating Trace Labs VM scripts..."
+    git -C "/opt/tracelabs/vm-scripts" pull --ff-only 2>&1
+fi
+
+echo ""
+echo "================================================"
+echo "[✓] All updates complete."
+echo "    Completed: $(date)"
+echo "================================================"

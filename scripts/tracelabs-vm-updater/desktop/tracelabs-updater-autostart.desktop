@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Trace Labs Update Notifier
+Comment=Checks for Trace Labs VM updates on login
+Exec=/usr/local/bin/tl-notify-updates
+Icon=system-software-update
+Terminal=false
+Hidden=false
+X-GNOME-Autostart-enabled=true
