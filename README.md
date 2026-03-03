@@ -153,8 +153,8 @@ chmod +x scripts/tlosint-tools.sh
 **Resources**
 
 - [Trace Labs OSINT Field Manual](https://github.com/tracelabs/tofm/blob/main/tofm.md)
-- [Trace Labs CTF Participant Guide](https://docs.tracelabs.org/searchparty/searchparty-participant-guide)
-- [Categories & Scoring System](https://docs.tracelabs.org/searchparty/searchparty-scoring-system)
+- [Trace Labs CTF Participant Guide](https://tracelabs.org/participant-guide)
+- [Categories & Scoring System](https://tracelabs.org/searchparty-scoring)
 
 **Reporting**
 

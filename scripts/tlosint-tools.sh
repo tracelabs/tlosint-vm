@@ -467,39 +467,6 @@ EOF
   command -v shodan >/dev/null 2>&1 && log "[*] shodan now present: $(command -v shodan)" || logerr "shodan still missing after fallback attempts"
 }
 
-# Ensure Trace Labs PDF exists (fixes validator FAIL: PDF missing)
-ensure_tracelabs_pdf_present() {
-  local dest="${TARGET_HOME}/Desktop/Trace-Labs-OSINT-Search-Party-CTF-Contestant-Guide_v1.pdf"
-  if [[ -f "$dest" ]]; then
-    log "[*] Trace Labs PDF present: $dest"
-    return 0
-  fi
-
-  log "[*] Trace Labs PDF missing; retrying download (plus alternate URL)"
-  # Retry original function
-  fetch_tracelabs_pdf
-
-  if [[ -f "$dest" ]]; then return 0; fi
-
-  # Alternate URL attempt (best-effort)
-  local alt="https://download.tracelabs.org/Trace-Labs-OSINT-Search-Party-CTF-Contestant-Guide_v1.pdf"
-  if command -v curl >/dev/null 2>&1; then
-    ${SUDO} curl -fsSL "$alt" -o "$dest" 2>>"$LOG_FILE" || true
-  elif command -v wget >/dev/null 2>&1; then
-    ${SUDO} wget -q "$alt" -O "$dest" 2>>"$LOG_FILE" || true
-  fi
-
-  # If still missing, create placeholder so validator doesn’t hard fail
-  if [[ ! -f "$dest" ]]; then
-    logerr "Unable to fetch Trace Labs PDF from known URLs; creating placeholder to satisfy validator."
-    ${SUDO} mkdir -p "${TARGET_HOME}/Desktop" 2>>"$LOG_FILE" || true
-    ${SUDO} bash -lc "printf '%s\n' 'Trace Labs PDF download failed during setup. Please download manually from tracelabs.org.' > \"${dest}\"" 2>>"$LOG_FILE" || true
-    ${SUDO} chmod 0644 "$dest" 2>>"$LOG_FILE" || true
-    if [[ $EUID -eq 0 ]]; then ${SUDO} chown "${TARGET_USER}:${TARGET_USER}" "$dest" 2>>"$LOG_FILE" || true; fi
-  fi
-
-  [[ -f "$dest" ]] && log "[*] Trace Labs PDF ensured: $dest" || logerr "Trace Labs PDF still missing: $dest"
-}
 
 # Ensure docker engine exists (fixes validator WARN: docker not found)
 ensure_docker_engine_available() {
@@ -598,25 +565,6 @@ install_tools_from_list() {
   maybe_init_shodan
 }
 
-# ---------- Trace Labs PDF ----------
-fetch_tracelabs_pdf() {
-  local url="https://download2.tracelabs.org/Trace-Labs-OSINT-Search-Party-CTF-Contestant-Guide_v1.pdf"
-  local dest_dir="${TARGET_HOME}/Desktop"
-  local dest="${dest_dir}/Trace-Labs-OSINT-Search-Party-CTF-Contestant-Guide_v1.pdf"
-  log "[*] Downloading Trace Labs Contestant Guide to ${dest}"
-  ${SUDO} mkdir -p "${dest_dir}" 2>>"$LOG_FILE" || true
-  if command -v curl >/dev/null 2>&1; then
-    ${SUDO} curl -fsSL "$url" -o "$dest" || logerr "curl failed to fetch Trace Labs PDF"
-  elif command -v wget >/dev/null 2>&1; then
-    ${SUDO} wget -q "$url" -O "$dest" || logerr "wget failed to fetch Trace Labs PDF"
-  else
-    logerr "Neither curl nor wget available to fetch Trace Labs PDF"
-  fi
-  ${SUDO} chmod 0644 "$dest" 2>>"$LOG_FILE" || true
-  if [[ $EUID -eq 0 ]]; then
-    ${SUDO} chown "${TARGET_USER}:${TARGET_USER}" "$dest" 2>>"$LOG_FILE" || true
-  fi
-}
 
 # ---------- Updater ----------
 install_osint_updater() {
@@ -932,7 +880,7 @@ validator() {
 
   check_exec "/usr/local/bin/osint-updater" "osint-updater"
   check_file "${REAL_HOME}/Desktop/OSINT-Updater.desktop" "OSINT-Updater.desktop"
-  check_file "${REAL_HOME}/Desktop/Trace-Labs-OSINT-Search-Party-CTF-Contestant-Guide_v1.pdf" "Trace Labs PDF"
+  check_file "${REAL_HOME}/Desktop/participant-guide.desktop" "Trace Labs Participant Guide shortcut"
 
   # StegOSuite optional
   if command -v stegosuite >/dev/null 2>&1; then ok "StegOSuite available via APT"
@@ -1039,8 +987,6 @@ main() {
   ensure_runtime_path_now
   ensure_runtime_path_now_plus
   install_tools_from_list
-  fetch_tracelabs_pdf
-  ensure_tracelabs_pdf_present
   install_osint_updater
   harden_firefox
 
