@@ -29,6 +29,7 @@ jobs:
           docker build -t tlvm-builder .
 
           docker run --rm \
+            --user "$(id -u):$(id -g)" \
             --device /dev/kvm \
             --group-add "$(stat -c '%g' /dev/kvm)" \
             -v "$(pwd):/recipes" \
@@ -36,6 +37,7 @@ jobs:
             tlvm-builder ./build.sh -v virtualbox -f ova
 
           docker run --rm \
+            --user "$(id -u):$(id -g)" \
             --device /dev/kvm \
             --group-add "$(stat -c '%g' /dev/kvm)" \
             -v "$(pwd):/recipes" \
