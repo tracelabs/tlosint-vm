@@ -28,20 +28,17 @@ jobs:
 
           docker build -t tlvm-builder .
 
-          # Read-only source mount; writable output mount
           docker run --rm \
             --device /dev/kvm \
             --group-add "$(stat -c '%g' /dev/kvm)" \
-            -v "$(pwd):/recipes:ro" \
-            -v "$(pwd)/images:/images:rw" \
+            -v "$(pwd):/recipes" \
             -w /recipes \
             tlvm-builder ./build.sh -v virtualbox -f ova
 
           docker run --rm \
             --device /dev/kvm \
             --group-add "$(stat -c '%g' /dev/kvm)" \
-            -v "$(pwd):/recipes:ro" \
-            -v "$(pwd)/images:/images:rw" \
+            -v "$(pwd):/recipes" \
             -w /recipes \
             tlvm-builder ./build.sh -v vmware -f vmware
 
