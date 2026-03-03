@@ -1,0 +1,28 @@
+#!/bin/bash
+# ============================================================
+# Trace Labs VM - Update Notifier
+# Runs at login via XDG autostart, pops desktop notification
+# ============================================================
+
+STATE_FILE="/var/cache/tracelabs/update-available"
+
+# Give the desktop environment time to fully load
+sleep 10
+
+if [ -f "$STATE_FILE" ]; then
+    UPDATES=$(cat "$STATE_FILE")
+
+    # Try to launch GUI via notification action (GNOME/KDE)
+    ACTION=$(notify-send \
+        --icon=system-software-update \
+        --app-name="Trace Labs VM" \
+        --urgency=normal \
+        --action="update=Open Updater" \
+        "Updates Available 🔍" \
+        "$UPDATES package update(s) available.\nClick to open Trace Labs Updater." \
+        2>&1)
+
+    if echo "$ACTION" | grep -q "update"; then
+        python3 /usr/local/bin/tl-updater-gui &
+    fi
+fi

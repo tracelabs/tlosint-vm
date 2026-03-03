@@ -1,0 +1,21 @@
+#!/bin/bash
+# ============================================================
+# Trace Labs VM - Update Checker
+# Runs via systemd timer, writes state file if updates found
+# ============================================================
+
+STATE_FILE="/var/cache/tracelabs/update-available"
+LOG_FILE="/var/log/tracelabs/update-check.log"
+
+mkdir -p /var/cache/tracelabs /var/log/tracelabs
+
+apt-get update -qq 2>/dev/null
+UPDATES=$(apt-get --just-print upgrade 2>/dev/null | grep "^Inst" | wc -l)
+
+if [ "$UPDATES" -gt 0 ]; then
+    echo "$UPDATES" > "$STATE_FILE"
+    echo "$(date): $UPDATES updates available" >> "$LOG_FILE"
+else
+    rm -f "$STATE_FILE"
+    echo "$(date): System up to date" >> "$LOG_FILE"
+fi
