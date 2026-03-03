@@ -94,7 +94,7 @@ Add to Intel Registry with ID + Tier + Confidence
 Confirmed intel → 📦 Submission as FLAG-XXX
         │
         ▼
-Screenshot + source URL → submit to TL judges
+Screenshot + source URL → submit to TL coaches
 ```
 
 ---
