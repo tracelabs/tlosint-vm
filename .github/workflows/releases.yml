@@ -23,12 +23,13 @@ jobs:
           set -euo pipefail
 
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends debos p7zip qemu-utils zerofree
+          sudo apt-get install -y --no-install-recommends debos p7zip qemu-utils zerofree e2fsprogs
           sudo rm -rf /var/lib/apt/lists/*
 
           docker build -t tlvm-builder .
 
           docker run --rm \
+            --user "$(id -u):$(id -g)" \
             --device /dev/kvm \
             --group-add "$(stat -c '%g' /dev/kvm)" \
             -v "$(pwd):/recipes" \
@@ -36,6 +37,7 @@ jobs:
             tlvm-builder ./build.sh -v virtualbox -f ova
 
           docker run --rm \
+            --user "$(id -u):$(id -g)" \
             --device /dev/kvm \
             --group-add "$(stat -c '%g' /dev/kvm)" \
             -v "$(pwd):/recipes" \
