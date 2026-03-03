@@ -82,7 +82,7 @@ chmod +x tlosint-tools.sh
 
 - Refreshes the **Kali archive keyring** and applies updates
 - Installs a curated **OSINT toolset** (Shodan CLI, Sherlock, PhoneInfoga, SpiderFoot, sn0int, Metagoofil, Sublist3r, steghide/stegseek, StegOSuite, exiftool, tor, torbrowser-launcher, translate-shell, etc.)
-- Adds **TraceLabs CTF Contestant Guide (PDF)** and a **Self-Heal & Update** shortcut to the Desktop
+- Adds a **Self-Heal & Update** shortcut to the Desktop
 - Applies **Firefox hardening** (delete cookies/history on shutdown, block geolocation/mic/camera prompts by default, stronger tracking protection, preload OSINT bookmarks)
 
 ---
