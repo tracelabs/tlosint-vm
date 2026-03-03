@@ -24,7 +24,7 @@ submission_status: "⬜ Draft"  # ⬜ Draft | 🟡 Ready | ✅ Submitted | ❌ R
 > - [ ] Screenshots archived locally
 > - [ ] No unverified intel included
 > - [ ] Reviewed by team (if applicable)
-> - [ ] Submitted to TL judge panel
+> - [ ] Submitted to TL coach panel
 
 ---
 

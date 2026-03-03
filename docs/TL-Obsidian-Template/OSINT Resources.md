@@ -31,9 +31,7 @@ pinned: true
 | 📋 **WHOIS** | [who.is](https://who.is/) | Domain registration, registrant info |
 | 🌫️ **GreyNoise Viz** | [viz.greynoise.io](https://viz.greynoise.io/) | IP noise classification, threat context |
 | 🗺️ **OSINT Framework** | [osintframework.com](https://osintframework.com/) | Tool discovery, methodology map |
-| 🏁 **Trace Labs CTF** | [tracelabs.org/ctf](https://www.tracelabs.org/initiatives/search-party-ctf) | Competition portal, active cases |
-| 🏁 **Trace Labs Coach Guide** | [Coach's Guide](https://docs.tracelabs.org/searchparty/searchparty-coach-guide) | Useful info for Coaches during event |
-| 🏁 **Trace Labs Participant Guide** | [Participants Guide](https://docs.tracelabs.org/searchparty/searchparty-participant-guide) | Useful info for Participants during event |
+| 🏁 **Trace Labs Official CTF Docs** | [docs.tracelabs.org](https://docs.tracelabs.org/searchparty/searchparty-intro) | Guides, walkthroughs |
 
 ---
 
