@@ -3,7 +3,7 @@ permissions:
   contents: read
 # This action will trigger whenever main gets updated
 # success on this action would imply success when we push a release and files are generated
-# triggers on PRs or direct commits to main or dev branches
+# triggers on PRs or direct commits to main
 on:
   push:
     paths-ignore:
@@ -13,7 +13,6 @@ on:
       - LICENSE
     branches:
       - main
-      - dev # Added the dev branch here
   pull_request:
     paths-ignore:
       - ".github/CODEOWNERS"
@@ -22,7 +21,6 @@ on:
       - LICENSE
     branches:
       - main
-      - dev # And here as well
 
 jobs:
   run-docker:

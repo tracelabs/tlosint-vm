@@ -11,21 +11,21 @@ This file gives AI assistants project-specific context so suggestions stay align
 
 ## Branch & Release Model
 
-- **All PRs target `dev`.** Nothing goes directly to `main` for normal changes.
-- Flow: `PR → dev` → full VM build on every push to `dev` → when stable, maintainers merge `dev` → `main` → tag → release.
-- **`main`** is only updated from `dev` after the full build passes. Releases are tagged from `main` (e.g. `2025.08`).
-- Do not suggest merging to `main` or changing the release cadence; that is maintainer-owned. Hotfixes follow the process in `docs/RELEASES.md`.
+- **All PRs target `main`** from short-lived feature branches (e.g. `feature/my-change`).
+- Flow: `feature branch → PR → main` → full VM build on every push to `main` → push a version tag → release triggered automatically.
+- Releases are triggered by pushing a version tag (e.g. `2025.08`) to `main`.
+- Do not suggest using a `dev` branch or changing the release cadence; that is maintainer-owned. Hotfixes follow the process in `docs/RELEASES.md`.
 
 ## Build & Tooling
 
-- **Build:** debos reads `tlosint.yaml`; build is typically run via Docker (e.g. `build-in-container.sh`). CI runs full VM builds on `dev` and `main` (see `.github/workflows/ensure-vm-builds.yml`).
+- **Build:** debos reads `tlosint.yaml`; build is typically run via Docker (e.g. `build-in-container.sh`). CI runs minimal VM builds on `main` and open PRs targeting `main` (see `.github/workflows/ensure-vm-builds.yml`).
 - **Adding tools:** New tools must be proposed via a **Tool Request** issue and follow **docs/TOOLING_POLICY.md**. The VM is curated for OSINT; we avoid bloat and duplicate functionality. Do not suggest adding tools without referencing the tooling policy and evaluation criteria.
 - **Scripts:** Scripts in `scripts/` are either run by debos (see `tlosint.yaml`) or are standalone utilities (e.g. `tlosint-tools.sh`). Check the playbook and CONTRIBUTING before assuming a script is part of the image build.
 
 ## Key Files & Docs
 
 | Purpose | Location |
-|--------|----------|
+| -------- | ---------- |
 | Contributing, workflow, PR guidelines | `docs/CONTRIBUTING.md` |
 | Release process, hotfixes | `docs/RELEASES.md` |
 | Tool evaluation and request process | `docs/TOOLING_POLICY.md` |
@@ -36,7 +36,7 @@ This file gives AI assistants project-specific context so suggestions stay align
 
 ## Conventions to Follow
 
-- **One logical change per PR.** PRs should target `dev`.
+- **One logical change per PR.** PRs should target `main` from a feature branch.
 - **No built VM images or large binaries** in PRs.
 - Reference issues with `Closes #123` (or similar) when a PR fixes an issue.
 - When suggesting new tools or packages, remind the user to open a Tool Request issue and to follow docs/TOOLING_POLICY.md (relevance, license, no overlap, etc.).
@@ -45,7 +45,7 @@ This file gives AI assistants project-specific context so suggestions stay align
 
 ## What Not to Do
 
-- Do not suggest merging feature PRs to `main` or bypassing `dev`.
+- Do not suggest using a `dev` branch or bypassing the feature-branch → `main` PR workflow.
 - Do not suggest adding tools without going through the Tool Request process and TOOLING_POLICY criteria.
 - Do not assume `tlosint-tools.sh` runs during the VM build; it is a post-import user script.
 - Do not propose changes that conflict with the tooling policy (e.g. non-OSINT tools, duplicate tools, license-incompatible tools).
