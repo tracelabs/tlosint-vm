@@ -9,7 +9,16 @@ Release owners and timelines are proposed and confirmed during our quarterly pla
 
 ## Overview
 
-Development happens in the **`dev`** branch. Once `dev` is stable and the full VM build passes, changes are merged into **`main`**. Tagging `main` triggers the automated release workflow.
+Development happens in short-lived **feature branches**. Once a feature branch is reviewed and CI passes, it is merged into **`main`** via a PR. Pushing a version tag triggers the automated release workflow.
+
+Releases are tied to a specific commit, not necessarily the HEAD of `main`. If `main` has commits that are not ready to ship, tag the last commit you want to include:
+
+```sh
+git tag <version> <commit-sha>
+git push origin <version>
+```
+
+This means unfinished or in-progress changes can continue landing on `main` without blocking a release.
 
 We follow a predictable release cadence, with additional hotfix releases when needed. The process is mostly automated but includes a small number of manual steps.
 
@@ -72,16 +81,15 @@ Hotfixes address urgent issues such as upstream breakage, major tool failures, o
 ### Hotfix Policy
 
 - Hotfix PRs should be **minimal** and focused solely on the fix.  
-- Hotfix PRs land in `dev`, then are cherry-picked or merged into `main`.  
+- Hotfix PRs are submitted directly to `main` from a short-lived `hotfix/` branch.  
 - Hotfix releases should not include unrelated changes.
 
 ### Hotfix Workflow
 
 1. Identify the issue requiring a hotfix.  
-2. Submit a PR to `dev` with the minimal fix.  
-3. After merging, wait for CI to run a full build on `dev` to confirm stability.  
-4. Cherry-pick the fix into `main`.  
-5. Tag a hotfix release (e.g., `yyyy.mm.1`).  
-6. Follow the release procedure to publish the hotfix release.
+2. Create a `hotfix/<description>` branch from `main` and submit a PR.  
+3. After merging, wait for CI to confirm the full build is stable on `main`.  
+4. Push a hotfix release tag (e.g., `yyyy.mm.1`) to `main` to trigger the automated release workflow.  
+5. Follow the release procedure to publish the hotfix release.
 
 Hotfixes should be used sparingly and only when necessary.

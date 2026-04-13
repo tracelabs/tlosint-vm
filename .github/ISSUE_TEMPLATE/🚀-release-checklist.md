@@ -8,14 +8,12 @@ labels: kind/release
 Release Owner: [@username](https://github.com/username)
 Release Date: yyyy-mm-dd
 
-### Pre-Release
+## Pre-Release
 
-- [ ] Ensure CI is passing on the `dev` branch
-- [ ] PR `dev` into `main`
 - [ ] Build full VM images (VirtualBox + VMware)
 - [ ] Generate SHA256 checksums for both images
 
-### Release Tagging & Publishing
+## Release Tagging & Publishing
 
 - [ ] Select a version tag matching the format (`YYYY.MM`)
 - [ ] Tag the `main` branch (`git checkout main && git tag <version> && git push origin <version>`)
@@ -29,7 +27,7 @@ Release Date: yyyy-mm-dd
 
 Once published, the release is considered official.
 
-### Post-Release
+## Post-Release
 
 - [ ] Make an announcement in the `#tools-n-tech` channel in the Trace Labs Discord
 - [ ] Monitor early user feedback.
