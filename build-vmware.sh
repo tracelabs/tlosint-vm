@@ -10,7 +10,7 @@ WELL_KNOWN_CACHING_PROXIES="\
 DETECTED_CACHING_PROXY=
 
 SUPPORTED_ARCHITECTURES="amd64 i386"
-SUPPORTED_BRANCHES="kali-dev kali-last-snapshot kali-rolling"
+SUPPORTED_BRANCHES="Bookworm Trixie"
 SUPPORTED_DESKTOPS="e17 gnome headless i3 kde lxde mate xfce"
 SUPPORTED_TOOLSETS="default everything large none"
 
@@ -18,10 +18,10 @@ SUPPORTED_FORMATS="ova ovf raw qemu virtualbox vmware"
 SUPPORTED_VARIANTS="generic qemu rootfs virtualbox vmware"
 
 DEFAULT_ARCH=amd64
-DEFAULT_BRANCH=kali-rolling
+DEFAULT_BRANCH=Trixie
 DEFAULT_DESKTOP=xfce
 DEFAULT_LOCALE=en_US.UTF-8
-DEFAULT_MIRROR=http://http.kali.org/kali
+DEFAULT_MIRROR=https://deb.debian.org/debian
 DEFAULT_TIMEZONE=Etc/UTC
 DEFAULT_TOOLSET=default
 DEFAULT_USERPASS=osint:osint
@@ -47,7 +47,7 @@ ZIP=true
 OUTDIR=images
 
 default_toolset() { [ ${DESKTOP:-$DEFAULT_DESKTOP} = headless ] && echo none || echo default; }
-default_version() { echo ${BRANCH:-$DEFAULT_BRANCH} | sed "s/^kali-//"; }
+default_version() { echo ${BRANCH:-$DEFAULT_BRANCH} | sed "s/^debian-//"; }
 
 # Output bold only if both stdout/stderr are opened on a terminal
 if [ -t 1 -a -t 2 ]; then
@@ -58,7 +58,7 @@ fi
 warn() { echo "WARNING:" "$@" >&2; }
 fail() { echo "ERROR:" "$@" >&2; exit 1; }
 
-kali_message() {
+os_message() {
     local line=
     echo "┏━━($(b "$@"))"
     while IFS= read -r line; do echo "┃ $line"; done
@@ -125,12 +125,12 @@ fi
 
 USAGE="Usage: $(basename $0) [<option>...] [-- <debos option>...]
 
-Build a TL OSINT VM image, base image is Kali Rolling.
+Build a TL OSINT VM image, base image is Debian.
 
 Build options:
   -a ARCH     Build an image for this architecture, default: $(b $DEFAULT_ARCH)
               Supported values: $SUPPORTED_ARCHITECTURES
-  -b BRANCH   Kali branch used to build the image, default: $(b $DEFAULT_BRANCH)
+  -b BRANCH   Debian branch used to build the image, default: $(b $DEFAULT_BRANCH)
               Supported values: $SUPPORTED_BRANCHES
   -f FORMAT   Format to export the image to, default depends on the VARIANT
               Supported values: $SUPPORTED_FORMATS
@@ -304,10 +304,10 @@ fi
 [ "$USERNAME" ] && echo "* username & password: $(b $USERNAME $PASSWORD)"
 [ "$LOCALE"   ] && echo "* locale: $(b $LOCALE)"
 [ "$TIMEZONE" ] && echo "* timezone: $(b $TIMEZONE)"
-} | kali_message "TL OSINT VM Build"
+} | os_message "TL OSINT VM Build"
 
-# Notes regarding the scratch size needed to build a Kali image from scratch
-# (ie. in one step, no intermediary rootfs), using the kali-rolling branch and
+# Notes regarding the scratch size needed to build a Debian image from scratch
+# (ie. in one step, no intermediary rootfs), using the Debian branch and
 # xfce desktop, and changing only the toolset. Default toolset needs 14G,
 # large toolset 24G and everything toolset 40G. That was back in June 2022.
 # Now set default debos options, unless user passed it explicitly after '--'.

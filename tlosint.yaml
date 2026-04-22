@@ -1,7 +1,7 @@
 # playbook that dictates the installation of the TLOSINT VM
-# This playbook is based on the Kali Linux playbook from debos
+# This playbook is based on the Debian Linux playbook from debos
 # each action is a step in the installation process
-# this playbook will create a bare bones kali linux installation
+# this playbook will create a bare bones debian linux installation
 # most of our additions will be happening in the overlay section of the playbook
 # in the overaly section we will add in browser bookmarks, custom scripts, and other customizations
 {{ $arch := .arch }}
@@ -31,7 +31,6 @@ actions:
     mirror: {{ $mirror }}
     suite: {{ $branch }}
     components: [ main, contrib, non-free ]
-    keyring-file: kali-archive-keyring.gpg
 
   - description: "Install usr-is-merged (cf. debos #361 and #362)"
     action: apt
@@ -62,12 +61,6 @@ actions:
     chroot: false
     command: echo {{ $hostname }} > $ROOTDIR/etc/hostname
 
-  - description: "Install core and desktop {{ $desktop }}"
-    action: apt
-    recommends: true
-    packages:
-      - kali-linux-core
-      - kali-desktop-xfce
   # this action "layers" a lot of extra stuff on to the installed filesystem
   # this is where we can add things to the desktop or other parts of the filesystem
   # note: the user's home directory does not yet exist at this point
@@ -146,13 +139,6 @@ actions:
     action: run
     chroot: true
     script: scripts/install-virt-support.sh {{ $variant }}
-
-  {{ if eq $variant "vmware" }}
-  - description: "Finish install for {{ $variant }}"
-    action: run
-    chroot: true
-    script: scripts/finish-install-vmware.sh
-  {{ end }}
 
   - description: "Configure apt sources.list"
     action: run
