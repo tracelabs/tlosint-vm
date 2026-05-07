@@ -56,7 +56,7 @@ name=${disk_file%.*}
 
 arch=${name##*-}
 [ "$arch" ] || fail "Failed to get arch from image name '$name'"
-version=$(echo "$name" | sed -E 's/^kali-linux-(.+)-.+-.+$/\1/')
+version=$(echo "$name" | sed -E 's/^tl-osint-(.+)-.+-.+$/\1/')
 [ "$version" ] || fail "Failed to get version from image name '$name'"
 
 mac_address=$(gen_vbox_mac_address)

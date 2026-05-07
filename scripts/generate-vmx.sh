@@ -51,7 +51,7 @@ nvram=${name}.nvram
 
 arch=${name##*-}
 [ "$arch" ] || fail "Failed to get arch from image name '$name'"
-version=$(echo "$name" | sed -E 's/^kali-linux-(.+)-.+-.+$/\1/')
+version=$(echo "$name" | sed -E 's/^tl-osint-(.+)-.+-.+$/\1/')
 [ "$version" ] || fail "Failed to get version from image name '$name'"
 
 case $arch in

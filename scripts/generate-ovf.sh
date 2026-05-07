@@ -80,7 +80,7 @@ name=${disk_file%.*}
 
 arch=${name##*-}
 [ "$arch" ] || fail "Failed to get arch from image name '$name'"
-version=$(echo "$name" | sed -E 's/^kali-linux-(.+)-.+-.+$/\1/')
+version=$(echo "$name" | sed -E 's/^tl-osint-(.+)-.+-.+$/\1/')
 [ "$version" ] || fail "Failed to get version from image name '$name'"
 
 disk_capacity=$(get_virtual_disk_capacity "$disk_path")
@@ -91,12 +91,12 @@ disk_uuid=$(get_vmdk_disk_uuid "$disk_path")
 [ "$disk_uuid" ] || disk_uuid=$(cat /proc/sys/kernel/random/uuid)
 machine_uuid=$(cat /proc/sys/kernel/random/uuid)
 
-license="GPL v3 ~ https://www.kali.org/docs/policy/kali-linux-open-source-policy/"
-product="Kali Linux"
-product_url="https://www.kali.org/"
-product_version="Rolling ($version)"
-vendor="Offensive Security"
-vendor_url="https://www.offensive-security.com/"
+license="GPL v3 ~ https://www.gnu.org/licenses/gpl-3.0.html"
+product="Trace Labs OSINT VM"
+product_url="https://www.tracelabs.org/initiatives/osint-vm"
+product_version="$version"
+vendor="Trace Labs"
+vendor_url="https://www.tracelabs.org/"
 
 # For OS IDs and types, refer to:
 # https://docs.openlmi.org/en/latest/mof/CIM_SoftwareElement.html

@@ -10,7 +10,7 @@ WELL_KNOWN_CACHING_PROXIES="\
 DETECTED_CACHING_PROXY=
 
 SUPPORTED_ARCHITECTURES="amd64 i386"
-SUPPORTED_BRANCHES="Bookworm Trixie"
+SUPPORTED_BRANCHES="bookworm trixie"
 SUPPORTED_DESKTOPS="e17 gnome headless i3 kde lxde mate xfce"
 SUPPORTED_TOOLSETS="default everything large none"
 
@@ -18,7 +18,7 @@ SUPPORTED_FORMATS="ova ovf raw qemu virtualbox vmware"
 SUPPORTED_VARIANTS="generic qemu rootfs virtualbox vmware"
 
 DEFAULT_ARCH=amd64
-DEFAULT_BRANCH=Trixie
+DEFAULT_BRANCH=trixie
 DEFAULT_DESKTOP=xfce
 DEFAULT_LOCALE=en_US.UTF-8
 DEFAULT_MIRROR=https://deb.debian.org/debian
@@ -42,7 +42,7 @@ TOOLSET=
 USERNAME=
 USERPASS=
 VARIANT=virtualbox
-VERSION=2023.03
+VERSION=2026.5
 ZIP=true
 OUTDIR=images
 

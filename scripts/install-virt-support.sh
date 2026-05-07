@@ -4,7 +4,7 @@ set -eu
 
 variant=$1
 
-if dpkg -s kali-desktop-core 2>/dev/null | grep -q "ok installed"; then
+if dpkg -s xserver-xorg-core 2>/dev/null | grep -q "ok installed"; then
     qemu="qemu-guest-agent spice-vdagent"
     virtualbox="virtualbox-guest-x11"
     vmware="open-vm-tools-desktop"

@@ -10,17 +10,20 @@
 set -e
 
 configure_apt_sources_list() {
-    # make sources.list empty, to force setting defaults
-    echo > /etc/apt/sources.list
+    # The deb822 format (Types:/URIs:/Suites:) only works in
+    # /etc/apt/sources.list.d/*.sources, not /etc/apt/sources.list.
+    local sources=/etc/apt/sources.list.d/debian.sources
 
-    if grep -q '^deb ' /etc/apt/sources.list; then
-        echo "INFO: sources.list is configured, everything is fine"
+    : > /etc/apt/sources.list
+
+    if [ -s "$sources" ]; then
+        echo "INFO: $sources is configured, everything is fine"
         return
     fi
 
-    echo "INFO: sources.list is empty, setting up a default one for Debian"
+    echo "INFO: writing default Debian sources to $sources"
 
-    cat >/etc/apt/sources.list <<END
+    cat >"$sources" <<END
 Types: deb deb-src
 URIs: http://deb.debian.org/debian
 Suites: trixie trixie-updates trixie-backports
@@ -31,7 +34,7 @@ Types: deb deb-src
 URIs: http://security.debian.org/debian-security
 Suites: trixie-security
 Components: main contrib non-free non-free-firmware
-Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg   
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 END
     apt-get update
 }

@@ -1,0 +1,12 @@
+[org/gnome/desktop/background]
+picture-uri='file:///usr/share/backgrounds/tracelabs/tracelabs.png'
+picture-uri-dark='file:///usr/share/backgrounds/tracelabs/tracelabs.png'
+picture-options='zoom'
+
+[org/gnome/desktop/screensaver]
+picture-uri='file:///usr/share/backgrounds/tracelabs/tracelabs.png'
+picture-options='zoom'
+
+[org/mate/desktop/background]
+picture-filename='/usr/share/backgrounds/tracelabs/tracelabs.png'
+picture-options='zoom'

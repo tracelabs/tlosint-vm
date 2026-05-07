@@ -67,6 +67,10 @@ actions:
   - action: overlay
     source: overlays/tl-overlays
 
+  - description: "Install desktop environment: {{ $desktop }}"
+    action: run
+    chroot: true
+    script: scripts/install-desktop.sh {{ $desktop }}
 
   {{ if ne $packages "" }}
   - description: "Install extra packages: {{ $packages }}"

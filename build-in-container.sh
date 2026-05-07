@@ -6,6 +6,11 @@
 set -eu
 
 IMAGE=tlvm-builder
+
+# Pre-create the output dir so Docker's bind-mount setup doesn't mkdir it
+# as root (which would lock out the in-container uid 1000 user).
+mkdir -p "$(pwd)/images"
+
 OPTS=(
    --rm --interactive --tty --net host
     --privileged
