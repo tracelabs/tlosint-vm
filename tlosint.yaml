@@ -100,7 +100,7 @@ actions:
   - description: "Finish installation"
     action: run
     chroot: true
-    script: scripts/finish-install.sh debconf etc-hosts usergroups zsh
+    script: scripts/finish-install.sh debconf etc-hosts usergroups
 
   - description: "Setup the disk image"
     action: image-partition
