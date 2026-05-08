@@ -35,7 +35,17 @@ case $desktop in
 esac
 
 apt-get update
-apt-get install -y $pkgs
+
+# Keep our overlaid conffiles (xsettings.xml, lightdm-gtk-greeter.conf, etc.)
+# instead of failing on dpkg's interactive "use new or old?" prompt.
+# --force-confdef + --force-confold means: for any conffile that we've
+# already placed via the overlay, keep our version; otherwise take the
+# package default. DEBIAN_FRONTEND=noninteractive alone does NOT suppress
+# these prompts.
+apt-get install -y \
+    -o Dpkg::Options::="--force-confdef" \
+    -o Dpkg::Options::="--force-confold" \
+    $pkgs
 apt-get clean
 
 # Compile dconf overrides for desktops that use dconf (GNOME, MATE).
