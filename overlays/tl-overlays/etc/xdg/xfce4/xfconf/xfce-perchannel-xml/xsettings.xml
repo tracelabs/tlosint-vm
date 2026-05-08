@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xsettings" version="1.0">
+  <property name="Net" type="empty">
+    <property name="ThemeName" type="string" value="Greybird-dark"/>
+    <property name="IconThemeName" type="string" value="Adwaita"/>
+  </property>
+  <property name="Gtk" type="empty">
+    <property name="ApplicationPreferDarkTheme" type="bool" value="true"/>
+  </property>
+</channel>

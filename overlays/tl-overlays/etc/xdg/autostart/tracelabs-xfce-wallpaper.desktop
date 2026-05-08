@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Trace Labs Wallpaper
+Comment=Apply the Trace Labs wallpaper to all detected monitors on first login
+Exec=/usr/local/bin/tracelabs-xfce-wallpaper.sh
+OnlyShowIn=XFCE;
+NoDisplay=true
+X-GNOME-Autostart-enabled=false

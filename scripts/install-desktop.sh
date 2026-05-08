@@ -19,7 +19,9 @@ case $desktop in
         echo "INFO: headless variant — skipping desktop install"
         exit 0
         ;;
-    xfce)     pkgs="task-xfce-desktop" ;;
+    # greybird-gtk-theme provides the Greybird-dark variant referenced by
+    # the dark-mode xsettings/lightdm overlay configs.
+    xfce)     pkgs="task-xfce-desktop greybird-gtk-theme" ;;
     gnome)    pkgs="gnome-core dconf-cli" ;;
     kde)      pkgs="task-kde-desktop" ;;
     lxde)     pkgs="task-lxde-desktop" ;;
