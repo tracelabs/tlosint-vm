@@ -1,6 +1,6 @@
 #!/bin/zsh
 # shellcheck disable=SC1071
-# Ultimate OSINT Setup for Kali + Updater + Validator
+# Ultimate OSINT Setup for Debian + Updater + Validator
 # 2025-09-09: fix SpiderFoot venv installer (zsh + set -u), keep Firefox hardening, PATH fix, Shodan deferred OK, StegOSuite optional.
 set -uo pipefail
 export DEBIAN_FRONTEND=noninteractive
@@ -51,27 +51,8 @@ ensure_pipx_wrappers() {
   done
 }
 
-# ---------- Kali keyring (UNCHANGED) ----------
-ensure_kali_keyring() {
-  local KR="/usr/share/keyrings/kali-archive-keyring.gpg"
-  ${SUDO} mkdir -p /usr/share/keyrings 2>>"$LOG_FILE" || logerr "mkdir keyrings failed"
-  log "[*] Forcing Kali archive keyring refresh…"
-  if command -v wget >/dev/null 2>&1; then
-    ${SUDO} wget -q "https://archive.kali.org/archive-keyring.gpg" -o /dev/null -O "$KR" || logerr "Kali keyring download failed (wget)"
-  elif command -v curl >/dev/null 2>&1; then
-    ${SUDO} curl -fsSL "https://archive.kali.org/archive-keyring.gpg" -o "$KR" || logerr "Kali keyring download failed (curl)"
-  else
-    logerr "Neither wget nor curl available to fetch Kali keyring"
-  fi
-  ${SUDO} chmod 0644 "$KR" 2>>"$LOG_FILE" || true
-  ${SUDO} chown root:root "$KR" 2>>"$LOG_FILE" || true
-  ${SUDO} mkdir -p /etc/apt/trusted.gpg.d 2>>"$LOG_FILE" || true
-  ${SUDO} cp -f "$KR" /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg 2>>"$LOG_FILE" || true
-}
-
 apt_self_heal() {
   log "[*] APT self-heal & upgrade"
-  ensure_kali_keyring
   run "${SUDO} apt-get update -y"
   run "${SUDO} apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages dist-upgrade"
   run "${SUDO} apt-get -f install -y || true"
@@ -101,7 +82,6 @@ apt_install_with_alternates() {
 
 install_base_packages() {
   log "[*] Base packages & build deps (robust)"
-  ensure_kali_keyring
   apt_update_once
   local pkgs=(
     ca-certificates apt-transport-https software-properties-common gnupg
@@ -167,7 +147,6 @@ setup_sn0int_repo() {
 apt_try_install() {
   local pkg="$1"
   if dpkg -s "$pkg" >/dev/null 2>&1; then return 0; fi
-  ensure_kali_keyring
   run "${SUDO} apt-get update -y"
   run "${SUDO} apt-get install -y $pkg" || return 1
 }
@@ -299,7 +278,6 @@ install_docker_and_compose_if_missing() {
     log "[*] Docker already installed: $(docker --version 2>/dev/null || echo OK)"
   else
     log "[*] Installing Docker Engine (repo-based)"
-    ensure_kali_keyring
     apt_update_once
 
     apt_install_one curl || true
@@ -411,7 +389,7 @@ ensure_rust_cargo_available() {
     run "${SUDO} -u \"$TARGET_USER\" bash -lc '[ -f \"\\\$HOME/.cargo/env\" ] && source \"\\\$HOME/.cargo/env\" || true; command -v cargo >/dev/null 2>&1 || true'"
   fi
 
-  # If still missing, fallback to APT cargo/rustc (Kali often provides this cleanly)
+  # If still missing, fallback to APT cargo/rustc
   if ! command -v cargo >/dev/null 2>&1; then
     log "[*] cargo still missing; attempting APT install cargo + rustc"
     apt_install_one cargo || true
@@ -579,24 +557,7 @@ log()   { printf '%s [INFO] %s\n' "$(date +'%F %T')" "$*" | tee -a "$LOG_FILE" >
 logerr(){ printf '%s [ERR ] %s\n'  "$(date +'%F %T')" "$*" | tee -a "$LOG_FILE" >&2; }
 run()   { printf '%s [EXEC] %s\n'  "$(date +'%F %T')" "$*" | tee -a "$LOG_FILE" >&2; eval "$@" 2>>"$LOG_FILE"; }
 export DEBIAN_FRONTEND=noninteractive
-ensure_kali_keyring() {
-  local KR="/usr/share/keyrings/kali-archive-keyring.gpg"
-  mkdir -p /usr/share/keyrings 2>>"$LOG_FILE" || true
-  log "[*] Forcing Kali archive keyring refresh…"
-  if command -v wget >/dev/null 2>&1; then
-    wget -q "https://archive.kali.org/archive-keyring.gpg" -O "$KR" || logerr "Kali keyring download failed (wget)"
-  elif command -v curl >/dev/null 2>&1; then
-    curl -fsSL "https://archive.kali.org/archive-keyring.gpg" -o "$KR" || logerr "Kali keyring download failed (curl)"
-  else
-    logerr "Neither wget nor curl available to fetch Kali keyring"
-  fi
-  chmod 0644 "$KR" 2>>"$LOG_FILE" || true
-  chown root:root "$KR" 2>>"$LOG_FILE" || true
-  mkdir -p /etc/apt/trusted.gpg.d 2>>"$LOG_FILE" || true
-  cp -f "$KR" /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg 2>>"$LOG_FILE" || true
-}
 apt_self_heal_update() {
-  ensure_kali_keyring
   run "apt-get update -y"
   run "apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages dist-upgrade"
   run "apt-get -f install -y || true"
@@ -636,7 +597,7 @@ EOF
 [Desktop Entry]
 Type=Application
 Name=OSINT Updater
-Comment=Update Kali & OSINT tools (Trace Labs "grandma mode")
+Comment=Update system & OSINT tools
 Exec=pkexec /usr/local/bin/osint-updater
 Icon=system-software-update
 Terminal=true
@@ -893,7 +854,7 @@ validator() {
   [[ -z "$ff_pol_sys" && -f /usr/lib/firefox/distribution/policies.json ]] && ff_pol_sys="/usr/lib/firefox/distribution/policies.json"
   if [[ -f "$ff_pol_etc" || -n "$ff_pol_sys" ]]; then ok "Firefox policies present"; else warn "Firefox policies not found"; fi
 
-  [[ -f /usr/share/keyrings/kali-archive-keyring.gpg ]] && ok "Kali archive keyring present" || warn "Kali archive keyring missing"
+  [[ -f /usr/share/keyrings/debian-archive-keyring.gpg ]] && ok "Debian archive keyring present" || warn "Debian archive keyring missing"
   [[ -f /etc/apt/trusted.gpg.d/apt-vulns-xyz.gpg ]] && ok "apt.vulns.xyz key installed" || warn "apt.vulns.xyz key not found"
   [[ -f /etc/apt/sources.list.d/apt-vulns-xyz.list ]] && ok "apt.vulns.xyz repo listed" || warn "apt.vulns.xyz repo list missing"
 
