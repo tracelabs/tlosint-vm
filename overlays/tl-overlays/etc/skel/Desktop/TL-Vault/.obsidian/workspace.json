@@ -1,0 +1,199 @@
+{
+  "main": {
+    "id": "ae7b0ec2e786fa72",
+    "type": "split",
+    "children": [
+      {
+        "id": "26e60fa059ebf763",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2c36b9215794c9c9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OSINT Resources.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "OSINT Resources"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "dc06c218592d4a74",
+    "type": "split",
+    "children": [
+      {
+        "id": "aba6682638a928e5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "89b455ab395ccff2",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "c2576a0b63c58b52",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "a19ffdbf051ac1a2",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "39031f6f991c003f",
+    "type": "split",
+    "children": [
+      {
+        "id": "c2e773853dfd65d8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "55607a41d488a7bb",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "README ΓÇö Setup Guide.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for README ΓÇö Setup Guide"
+            }
+          },
+          {
+            "id": "c805724897dbcc93",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "README ΓÇö Setup Guide.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from README ΓÇö Setup Guide"
+            }
+          },
+          {
+            "id": "54c55a1b8321abea",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "200b6c525cb2b857",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "192ae11c6b6e7d2c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "README ΓÇö Setup Guide.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of README ΓÇö Setup Guide"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "obsidian-kanban:Create new board": false,
+      "templater-obsidian:Templater": false
+    }
+  },
+  "active": "89b455ab395ccff2",
+  "lastOpenFiles": [
+    "Templates/Submission — {{TARGET_NAME}}.md",
+    "Templates/Profile — {{TARGET_NAME}}.md",
+    "Templates/Intel — {{TARGET_NAME}}.md",
+    "Templates/CASE — {{TARGET_NAME}}.md",
+    "Templates/MCP Outputs/MCP {{TOOL_NAME}}{{TARGET_NAME}}.md",
+    "README.md",
+    "Untitled.md",
+    "OSINT Resources.md"
+  ]
+}

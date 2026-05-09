@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Obsidian
+Comment=Knowledge base / note-taking app
+Exec=/bin/sh -c "$HOME/Obsidian.AppImage %U"
+Icon=obsidian
+Terminal=false
+Categories=Office;Utility;
+StartupNotify=true
