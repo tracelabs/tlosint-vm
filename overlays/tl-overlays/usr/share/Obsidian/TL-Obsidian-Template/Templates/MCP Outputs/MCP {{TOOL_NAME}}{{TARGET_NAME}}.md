@@ -14,8 +14,8 @@ processed: false
 
 # 🤖 MCP Output — {{TOOL_NAME}}
 
-← Back to [[🔍 CASE — {{TARGET_NAME}}]]
-← See Intel: [[🧩 Intel — {{TARGET_NAME}}]]
+← Back to [[🔍 CASE - {{TARGET_NAME}}]]
+← See Intel: [[🧩 Intel - {{TARGET_NAME}}]]
 
 > [!abstract] Capture Details
 > **Tool:** `{{TOOL_NAME}}` | **Run:** `{{DATE}} {{TIME}}` | **Session:** `{{MCP_SESSION_ID}}`
@@ -57,7 +57,7 @@ Leads to follow:
 
 ## 🚩 Flags Extracted
 
-> Check off each item once moved to [[🧩 Intel — {{TARGET_NAME}}]]
+> Check off each item once moved to [[🧩 Intel - {{TARGET_NAME}}]]
 
 - [ ] FLAG candidate: — → moved to Intel as `INT-XXX`
 - [ ] FLAG candidate: — → moved to Intel as `INT-XXX`

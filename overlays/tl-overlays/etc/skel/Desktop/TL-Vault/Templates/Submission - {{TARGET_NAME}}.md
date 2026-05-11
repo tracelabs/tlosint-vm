@@ -15,8 +15,8 @@ submission_status: "⬜ Draft"  # ⬜ Draft | 🟡 Ready | ✅ Submitted | ❌ R
 
 # 📦 Final Submission — {{TARGET_NAME}}
 
-← Back to [[🔍 CASE — {{TARGET_NAME}}]]
-← See Intel: [[🧩 Intel — {{TARGET_NAME}}]]
+← Back to [[🔍 CASE - {{TARGET_NAME}}]]
+← See Intel: [[🧩 Intel - {{TARGET_NAME}}]]
 
 > [!success] Submission Checklist
 > - [ ] All flags cross-referenced with Intel note IDs

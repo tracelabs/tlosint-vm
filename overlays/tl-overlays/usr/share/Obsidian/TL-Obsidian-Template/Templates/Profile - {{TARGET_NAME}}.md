@@ -15,7 +15,7 @@ mcp_tools_used: []
 > [!warning] Operational Security
 > This note contains PII. Do not share outside of TL competition context.
 
-← Back to [[🔍 CASE — {{TARGET_NAME}}]]
+← Back to [[🔍 CASE - {{TARGET_NAME}}]]
 
 ---
 

@@ -27,9 +27,9 @@ mcp_session_id: "{{MCP_SESSION_ID}}"
 
 | Phase | Template | Status |
 |-------|----------|--------|
-| 🎯 Target Profile | [[🎯 Profile — {{TARGET_NAME}}]] | ⬜ Not Started |
-| 🧩 Intel Collection | [[🧩 Intel — {{TARGET_NAME}}]] | ⬜ Not Started |
-| 📦 Final Submission | [[📦 Submission — {{TARGET_NAME}}]] | ⬜ Not Started |
+| 🎯 Target Profile | [[🎯 Profile - {{TARGET_NAME}}]] | ⬜ Not Started |
+| 🧩 Intel Collection | [[🧩 Intel - {{TARGET_NAME}}]] | ⬜ Not Started |
+| 📦 Final Submission | [[📦 Submission - {{TARGET_NAME}}]] | ⬜ Not Started |
 
 ---
 
@@ -76,9 +76,9 @@ Last run:
 
 ## 🔗 Linked Notes
 
-- [[🎯 Profile — {{TARGET_NAME}}]]
-- [[🧩 Intel — {{TARGET_NAME}}]]
-- [[📦 Submission — {{TARGET_NAME}}]]
+- [[🎯 Profile - {{TARGET_NAME}}]]
+- [[🧩 Intel - {{TARGET_NAME}}]]
+- [[📦 Submission - {{TARGET_NAME}}]]
 - [[🌐 OSINT Resources]] ← Quick launch pad & tool reference
 
 ---

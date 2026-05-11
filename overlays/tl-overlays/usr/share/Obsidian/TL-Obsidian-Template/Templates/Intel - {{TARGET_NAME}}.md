@@ -13,7 +13,7 @@ mcp_tools_used: []
 
 # 🧩 Intel Collection — {{TARGET_NAME}}
 
-← Back to [[🔍 CASE — {{TARGET_NAME}}]]
+← Back to [[🔍 CASE - {{TARGET_NAME}}]]
 
 > [!tip] How to Use This Note
 > Every piece of intel gets its own entry below. Tag each with a **category**, **confidence**, and **flag tier**.
