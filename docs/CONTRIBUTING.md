@@ -26,16 +26,14 @@ By participating in this project, you agree to abide by our [Code of Conduct](..
 
 ### Summary
 
-`PR → dev (can break) → full build passes → dev → main → tag → release`
+`feature branch → PR → main → tag → release`
 
 ### Branch & CI Workflow
 
-- All PRs are merged into the **`dev`** branch.  
+- All PRs are merged into **`main`** from short-lived feature branches.  
 - PRs must pass linting and smoke tests (no full 15-min builds on PRs).  
-- Every push to `dev` triggers a **full VM build**; if it fails, `dev` must be fixed before anything moves to `main`.  
-- The **`main`** branch only receives changes from `dev` once the full build is passing.  
-- On a scheduled cadence (e.g., every three months), maintainers merge `dev` into `main` and tag a release, which triggers the automated release workflow.
-- Automated bi-weekly builds (coming soon) will trigger a release if the build passes.
+- Every push to `main` triggers a **minimal VM build**
+- Releases are triggered by pushing a version tag (e.g., `2025.08`) to `main`, which starts the automated release workflow.
 
 Read more about the release process in [RELEASES.md](./RELEASES.md).
 
@@ -44,7 +42,7 @@ Read more about the release process in [RELEASES.md](./RELEASES.md).
 - Keep PRs focused: **one change, feature, or fix per PR**.  
 - If your PR closes an issue, include `Closes #123` in the description.  
 - Do **not** include built VM images or large binaries in PRs.
-- PRs should target the `dev` branch.
+- PRs should target `main` from a feature branch (e.g., `feature/add-my-tool`).
 
 ---
 
@@ -71,4 +69,4 @@ If you want to propose a new tool:
 
 1. Open an issue describing the tool and its OSINT use case.  
 2. Follow the guidelines in [TOOLING_POLICY.md](TOOLING_POLICY.md).
-3. Once approved, submit a PR targeting `dev` with your proposed changes.
+3. Once approved, submit a PR targeting `main` with your proposed changes.
