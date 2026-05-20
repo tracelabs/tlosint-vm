@@ -60,7 +60,7 @@ jobs:
       - name: Verify GPG key exists in image
         run: |
           echo "Checking image contents..."
-          docker run --rm tlvm-builder:latest ls -lah /opt/kali-archive-keyring.gpg || {
+          docker run --rm tlvm-builder:latest ls -lah /opt/debian-archive-keyring.gpg || {
             echo "ERROR: GPG key not found in image!"
             docker run --rm tlvm-builder:latest ls -lah /opt/ || echo "Cannot list /opt"
             exit 1
