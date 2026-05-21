@@ -12,7 +12,7 @@ set -e
 configure_apt_sources_list() {
     # The deb822 format (Types:/URIs:/Suites:) only works in
     # /etc/apt/sources.list.d/*.sources, not /etc/apt/sources.list.
-    local sources=/etc/apt/sources.list.d/debian.sources
+    sources=/etc/apt/sources.list.d/debian.sources
 
     : > /etc/apt/sources.list
 
@@ -37,6 +37,7 @@ Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 END
     apt-get update
+    unset sources
 }
 
 get_user_list() {
