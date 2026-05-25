@@ -1,4 +1,4 @@
-![Image](https://github.com/Apollo-o/tlosint-vm/assets/22546578/db6e5343-c08c-4ab1-8a1e-41112f80e18f)
+![Image](https://github.com/user-attachments/assets/7d73ef43-25c0-47a7-bff9-be1109cea1b9)
 [![Version](https://img.shields.io/badge/tlosintvm-1.0.0-brightgreen.svg?maxAge=259200)]()
 ![event workflow](https://github.com/tracelabs/tlosint-vm/actions/workflows/releases.yml/badge.svg?event=push)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -24,15 +24,15 @@ The repository includes a [recipe file](./tlosint.yaml) to build a Linux OSINT D
 Use this if you just want to import and go.
 
 - **GitHub Releases (canonical):**  
-  https://github.com/tracelabs/tlosint-vm/releases (2025 VM release)
+  https://github.com/tracelabs/tlosint-vm/releases (2026.05 VM release)
 
 - **Mirror (Google)**  
-  - [**Click here to download the VirtualBox OVA**](https://drive.google.com/file/d/1Ylid1Yf3JVRR7hn9sa5vWUnfNXZkJMpr/view?usp=drive_link) (2025 VM Release)
-  - [**Click here to download the VMware OVA**](https://drive.google.com/file/d/1VnuFDg6TFhcU3crk0nfWdgOg3SY3jhUH/view?usp=drive_link) (2025 VM Release)
+  - [**Click here to download the VirtualBox OVA**](https://drive.google.com/file/d/1DLupmDIKR2REdDvdG2zi1oSYRYcEPb5G/view?usp=sharing) (2026.05 VM Release)
+  - [**Click here to download the VMware OVA**](https://drive.google.com/file/d/1W5EGG4ZgSEs1dsph87fEmnb7Krhb2b94/view?usp=sharing) (2026.05 VM Release)
  
   - **Checksums:**  
-  - VMware: `6f3323b01afff853a35bcfb7e98be751fd17922006f453da2627963975949289`  
-  - VirtualBox: `a6d841c19ed55e5d4338280724238ea5b80e57a33d9462efda24bce965d1666d`
+  - VMware: `d078731e2940e670bdf5af5c20d9602bdbbb0680df59a80259048b2cdcbf078a`  
+  - VirtualBox: `7377109bad57162d45f76c9892305b09897d4a925cfb9db1688e2ca12f0d4187`
 
 ### Verify integrity
 
@@ -80,7 +80,7 @@ chmod +x tlosint-tools.sh
 
 ### What the script does
 
-- Refreshes the **Kali archive keyring** and applies updates
+- Refreshes the **Debian archive keyring** and applies updates
 - Installs a curated **OSINT toolset** (Shodan CLI, Sherlock, PhoneInfoga, SpiderFoot, sn0int, Metagoofil, Sublist3r, steghide/stegseek, StegOSuite, exiftool, tor, torbrowser-launcher, translate-shell, etc.)
 - Adds a **Self-Heal & Update** shortcut to the Desktop
 - Applies **Firefox hardening** (delete cookies/history on shutdown, block geolocation/mic/camera prompts by default, stronger tracking protection, preload OSINT bookmarks)
