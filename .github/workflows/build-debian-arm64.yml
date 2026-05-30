@@ -1,0 +1,111 @@
+name: build-debian-arm64
+# pushes to main that touch ARM64 relevant files.
+# a parallel ARM64 job needs to be added to releases.yml for release builds.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Image version tag. Defaults to dev.'
+        required: false
+        default: 'dev'
+  push:
+    branches: [ main ]
+    paths:
+      - 'tlosint-debian-arm64.yaml'
+      - 'scripts/**'
+      - 'overlays/**'
+      - 'Dockerfile.debian-arm64'
+      - '.github/workflows/build-debian-arm64.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Debian Trixie ARM64 qcow2
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 120
+
+    steps:
+      - name: Free disk space
+        run: |
+          echo "Disk before cleanup:"
+          df -h /
+          sudo rm -rf \
+            /usr/local/lib/android \
+            /usr/local/.ghcup \
+            /opt/ghc \
+            /opt/hostedtoolcache/CodeQL \
+            /usr/share/dotnet \
+            /usr/local/share/powershell \
+            /usr/share/swift || true
+          echo "Disk after cleanup:"
+          df -h /
+
+      - uses: actions/checkout@v5
+
+      - name: Set image version
+        id: version
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          [ -n "$VERSION" ] || VERSION="dev"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Building version: $VERSION"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build tlvm-debian-arm64-builder image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.debian-arm64
+          tags: tlvm-debian-arm64-builder:latest
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          pull: true
+
+      - name: Verify builder image
+        run: |
+          docker run --rm tlvm-debian-arm64-builder:latest \
+            sh -c "which debos && qemu-img --version | head -1 && echo 'Builder OK'"
+
+      - name: Create images output directory
+        run: mkdir -p images
+
+      - name: Run VM build in container
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker run --rm \
+            --user root \
+            --privileged \
+            --net host \
+            --tmpfs /run \
+            --tmpfs /tmp \
+            --volume /dev:/dev \
+            --volume "$(pwd):/recipes" \
+            --volume "$(pwd)/images/:/images" \
+            --workdir /recipes \
+            --env VERSION \
+            tlvm-debian-arm64-builder:latest \
+            ./scripts/build-debian-arm64.sh
+
+      - name: Fix output ownership
+        run: sudo chown -R "$USER:$USER" images/ || true
+
+      - name: List build output
+        run: |
+          echo "Generated files:"
+          ls -lh images/ || echo "(no files found)"
+
+      - name: Upload qcow2 image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tlosint-debian-arm64-${{ steps.version.outputs.version }}
+          path: images/*.qcow2
+          retention-days: 7
+          if-no-files-found: error
+          compression-level: 0

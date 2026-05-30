@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=TL Wallpaper
+Exec=/usr/local/bin/tracelabs-xfce-wallpaper.sh
+Hidden=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
