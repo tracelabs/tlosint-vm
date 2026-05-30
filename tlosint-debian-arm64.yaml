@@ -1,0 +1,160 @@
+# debos recipe for TLOSINT VM - Debian Trixie ARM64
+#  This build produces a qcow2 image for QEMU-based hypervisors (UTM, virt-manager, Proxmox)
+
+{{ $hostname  := or .hostname  "tlosint" }}
+{{ $imagename := .imagename }}
+{{ $keep      := or .keep      "false" }}
+{{ $locale    := or .locale    "en_US.UTF-8" }}
+{{ $password  := or .password  "osint" }}
+{{ $size      := or .size      "40GB" }}
+{{ $timezone  := or .timezone  "Etc/UTC" }}
+{{ $username  := or .username  "osint" }}
+{{ $zip       := or .zip       "false" }}
+
+architecture: arm64
+
+actions:
+  - action: debootstrap
+    mirror: http://deb.debian.org/debian
+    suite: trixie
+    components: [ main, contrib, non-free, non-free-firmware ]
+
+  - description: "Install usr-is-merged (cf. debos #361 and #362)"
+    action: apt
+    packages: [ usr-is-merged ]
+
+  - description: "Preseed package configuration"
+    action: run
+    chroot: true
+    script: scripts/preseed.sh
+
+  - description: "Install standard packages"
+    action: run
+    chroot: true
+    script: scripts/install-standard-packages.sh
+
+  - description: "Set default locale {{ $locale }}"
+    action: run
+    chroot: true
+    script: scripts/setup-locale.sh {{ $locale }}
+
+  - description: "Set default timezone {{ $timezone }}"
+    action: run
+    chroot: true
+    script: scripts/setup-timezone.sh {{ $timezone }}
+
+  - description: "Set hostname to {{ $hostname }}"
+    action: run
+    chroot: false
+    command: echo {{ $hostname }} > $ROOTDIR/etc/hostname
+
+  # layers custom bookmarks, scripts, and desktop customizations
+  - action: overlay
+    source: overlays/tl-overlays
+
+  - action: overlay
+    source: overlays/tl-overlays-arm64
+
+  - description: "Install desktop environment (xfce)"
+    action: run
+    chroot: true
+    script: scripts/install-desktop.sh xfce
+
+  - action: overlay
+    source: overlays/loopback-interface
+
+  - description: "Create user {{ $username }}"
+    action: run
+    chroot: true
+    script: scripts/create-user.sh {{ $username }} "{{ $password }}"
+
+  - description: "Add libz.so symlink required by ARM64 AppImage runtime"
+    action: run
+    chroot: true
+    command: ln -sf /usr/lib/aarch64-linux-gnu/libz.so.1 /usr/lib/aarch64-linux-gnu/libz.so
+
+  - description: "Install Obsidian (ARM64 AppImage)"
+    action: run
+    chroot: true
+    script: scripts/tl/install-obsidian.sh {{ $username }}
+
+  - description: "chmod +x files that need it"
+    action: run
+    chroot: true
+    script: scripts/tl/change-mod.sh
+
+  - description: "Disable tmpfiles.d/systemd-resolve.conf, cf. #1007018"
+    action: run
+    chroot: false
+    command: ln -s /dev/null $ROOTDIR/etc/tmpfiles.d/systemd-resolve.conf
+
+  - description: "Finish installation"
+    action: run
+    chroot: true
+    script: scripts/finish-install.sh debconf etc-hosts usergroups
+
+  - description: "Setup the disk image (GPT + EFI for ARM64 UEFI)"
+    action: image-partition
+    imagename: {{ $imagename }}.raw
+    imagesize: {{ $size }}
+    partitiontype: gpt
+    partitions:
+      - name: efi
+        fs: vfat
+        start: 1MiB
+        end: 257MiB
+        flags: [ boot, esp ]
+      - name: root
+        fs: ext4
+        start: 257MiB
+        end: 100%
+    mountpoints:
+      - mountpoint: /
+        partition: root
+        options: [ errors=remount-ro ]
+      - mountpoint: /boot/efi
+        partition: efi
+
+  - action: filesystem-deploy
+    setup-kernel-cmdline: false
+
+  - description: "Install kernel and EFI bootloader"
+    action: apt
+    recommends: true
+    packages: [ grub-efi-arm64, linux-image-arm64 ]
+
+  - description: "Install QEMU guest support (pointer integration, clipboard)"
+    action: apt
+    recommends: true
+    packages: [ qemu-guest-agent, spice-vdagent ]
+
+  - description: "Install GRUB for ARM64 UEFI (removable/fallback EFI path)"
+    action: run
+    chroot: true
+    command: grub-install --target=arm64-efi --efi-directory=/boot/efi --no-nvram --removable
+
+  - description: "Generate GRUB boot config"
+    action: run
+    chroot: true
+    command: update-grub
+
+  - description: "Configure final apt sources"
+    action: run
+    chroot: true
+    script: scripts/finish-install.sh apt-sources debconf usergroups
+
+  - description: "Final cleanup (from within)"
+    action: run
+    chroot: true
+    script: scripts/cleanup-in.sh
+
+  - description: "Final cleanup (from outside)"
+    action: run
+    chroot: false
+    script: scripts/cleanup-out.sh
+
+  - description: "Export to qemu (.qcow2) image for UTM"
+    label: "export-qemu"
+    action: run
+    postprocess: true
+    script: scripts/export-qemu.sh {{ if eq $keep "true" }}-k{{ end }} {{ if eq $zip "true" }}-z{{ end }} {{ $imagename }}
