@@ -224,6 +224,10 @@ chmod +x scripts/tlosint-tools.sh
 - [Alias Generator (OSRFramework)](https://github.com/i3visio/osrframework)
 - [Usufy (OSRFramework)](https://github.com/i3visio/osrframework)
 
+**Maritime / Geospatial**
+
+- [Phantom Tide](https://phantom.labs.jamessawyer.co.uk/) (web — Firefox bookmark)
+
 **Other Tools**
 
 - [Photon](https://github.com/s0md3v/Photon)

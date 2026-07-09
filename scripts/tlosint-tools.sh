@@ -771,6 +771,7 @@ harden_firefox() {
       { "name": "WHOIS", "url": "https://who.is/" },
       { "name": "GreyNoise Viz", "url": "https://viz.greynoise.io/" },
       { "name": "OSINT Framework", "url": "https://osintframework.com/" },
+      { "name": "Phantom Tide", "url": "https://phantom.labs.jamessawyer.co.uk/" },
       { "name": "Trace Labs CTF", "url": "https://www.tracelabs.org/initiatives/search-party-ctf" }
     ]
   }
