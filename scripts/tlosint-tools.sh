@@ -2,6 +2,7 @@
 # shellcheck disable=SC1071
 # Ultimate OSINT Setup for Debian + Updater + Validator
 # 2025-09-09: fix SpiderFoot venv installer (zsh + set -u), keep Firefox hardening, PATH fix, Shodan deferred OK, StegOSuite optional.
+# 2026-07-08: relax SpiderFoot's lxml<5 pin so pip uses a prebuilt lxml 5.x wheel on Python 3.13 (Debian 13) instead of failing to compile.
 set -uo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
@@ -184,8 +185,21 @@ install_spiderfoot_from_source() {
   local venv="${dest}/venv"
 
   log "[*] Installing SpiderFoot from source into ${dest}"
+  # lxml build deps: only used as a fallback if pip has to compile from source.
+  apt_try_install libxml2-dev || true
+  apt_try_install libxslt1-dev || true
   run "${SUDO} rm -rf \"${dest}\""
   run "${SUDO} git clone --depth=1 \"${repo}\" \"${dest}\""
+  # Drop the upstream 'lxml>=4.9.2,<5' upper bound. lxml 4.9.x has no prebuilt
+  # wheel for Python 3.13 and fails to compile against the 3.13 C-API, so pip
+  # aborts. Removing the '<5' cap lets pip pull a prebuilt manylinux wheel for
+  # 3.13. The regex tolerates whitespace and a '<5.0'-style cap; it only edits
+  # the copy under /opt (upstream repo untouched).
+  if [[ -f "${dest}/requirements.txt" ]] \
+     && ${SUDO} grep -Eq '^[[:space:]]*lxml[[:space:]]*>=[[:space:]]*[0-9.]+[[:space:]]*,[[:space:]]*<[[:space:]]*5' "${dest}/requirements.txt"; then
+    log "[*] Relaxing SpiderFoot lxml '<5' pin for Python 3.13 compatibility"
+    run "${SUDO} sed -i -E 's/^([[:space:]]*lxml[[:space:]]*>=[[:space:]]*[0-9.]+)[[:space:]]*,[[:space:]]*<[[:space:]]*5[0-9.]*/\\1/' \"${dest}/requirements.txt\""
+  fi
   run "${SUDO} python3 -m venv \"${venv}\""
   run "${SUDO} \"${venv}/bin/pip\" -q install --upgrade pip wheel setuptools"
   if [[ -f "${dest}/requirements.txt" ]]; then
