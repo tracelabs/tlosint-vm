@@ -221,6 +221,48 @@ EOF
   log "[*] SpiderFoot installed (wrappers: /usr/local/bin/spiderfoot, /usr/local/bin/sf.py)"
 }
 
+# ---------- Metagoofil source+venv (guaranteed) ----------
+# Upstream metagoofil ships neither setup.py nor pyproject.toml, so pipx/pip
+# cannot install it directly. Clone into /opt, install its requirements into a
+# dedicated venv, and expose a wrapper on PATH — mirroring the SpiderFoot install.
+install_metagoofil_from_source() {
+  local app="metagoofil"
+  local repo="https://github.com/opsdisk/metagoofil.git"
+  local dest="/opt/${app}"
+  local venv="${dest}/venv"
+
+  log "[*] Installing Metagoofil from source into ${dest}"
+  if [[ -d "${dest}/.git" ]]; then
+    log "[*] Metagoofil repo already present; discarding local patch and pulling updates"
+    run "${SUDO} git -C \"${dest}\" checkout -- metagoofil.py || true"
+    run "${SUDO} git -C \"${dest}\" pull --ff-only || true"
+  else
+    run "${SUDO} rm -rf \"${dest}\""
+    run "${SUDO} git clone \"${repo}\" \"${dest}\""
+  fi
+
+  # Make user_agents.txt load from the script's own dir instead of the cwd, so
+  # the wrapper works from anywhere. Idempotent: only patch if still unpatched.
+  if ${SUDO} grep -q 'open("user_agents.txt")' "${dest}/metagoofil.py" 2>/dev/null; then
+    log "[*] Patching Metagoofil to load user_agents.txt from its own directory"
+    run "${SUDO} sed -i 's#open(\"user_agents.txt\")#open(os.path.join(os.path.dirname(os.path.abspath(__file__)), \"user_agents.txt\"))#' \"${dest}/metagoofil.py\""
+  fi
+
+  run "${SUDO} python3 -m venv \"${venv}\""
+  run "${SUDO} \"${venv}/bin/pip\" -q install --upgrade pip wheel setuptools"
+  if [[ -f "${dest}/requirements.txt" ]]; then
+    run "${SUDO} \"${venv}/bin/pip\" -q install -r \"${dest}/requirements.txt\""
+  fi
+
+  ${SUDO} tee /usr/local/bin/metagoofil >/dev/null <<EOF
+#!/usr/bin/env bash
+exec "${venv}/bin/python3" "${dest}/metagoofil.py" "\$@"
+EOF
+  ${SUDO} chmod 0755 /usr/local/bin/metagoofil
+
+  log "[*] Metagoofil installed (wrapper: /usr/local/bin/metagoofil)"
+}
+
 # ---------- translate-shell (trans) ----------
 install_translate_shell() {
   if apt_try_install translate-shell && command -v trans >/dev/null 2>&1; then
@@ -528,7 +570,7 @@ install_tools_from_list() {
   fi
 
   # Metagoofil / Sublist3r
-  if ! apt_try_install metagoofil; then pipx_user_install_or_upgrade "metagoofil" "git+https://github.com/opsdisk/metagoofil.git"; fi
+  if ! apt_try_install metagoofil; then install_metagoofil_from_source; fi
   if ! apt_try_install sublist3r; then pipx_user_install_or_upgrade "sublist3r" "git+https://github.com/aboul3la/Sublist3r.git"; fi
 
   # Stego tools
