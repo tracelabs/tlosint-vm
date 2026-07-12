@@ -93,7 +93,7 @@ install_base_packages() {
     golang-go libssl-dev
     openjdk-11-jdk maven
     exiftool tor torbrowser-launcher
-    whiptail zenity chromium nodejs npm sq firefox-esr
+    whiptail zenity chromium nodejs npm firefox-esr
     steghide stegseek
     translate-shell
   )
@@ -130,9 +130,9 @@ setup_rust_env() {
 # sn0int APT repository
 setup_sn0int_repo() {
   log "[*] Setting up apt.vulns.xyz for sn0int"
-  run "${SUDO} apt-get install -y curl sq"
+  run "${SUDO} apt-get install -y curl"
   if [[ ! -f /etc/apt/trusted.gpg.d/apt-vulns-xyz.gpg ]]; then
-    run "curl -sSf https://apt.vulns.xyz/kpcyrd.pgp | sq dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/apt-vulns-xyz.gpg > /dev/null"
+    run "curl -sSf https://apt.vulns.xyz/kpcyrd.pgp | gpg --dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/apt-vulns-xyz.gpg > /dev/null"
   else
     log "[*] apt.vulns.xyz key already present"
   fi
