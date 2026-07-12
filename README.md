@@ -29,7 +29,7 @@ Use this if you just want to import and go.
 - **Full Build Releases (includes pre-installed OSINT tools)**
   - [**Click here to download the VirtualBox OVA**](https://vm-downloads.tracelabs.org/2026.5/tl-osint-2026.5-vbox-amd64-full.ova) (2026.05 VM Release)
   - [**Click here to download the VMware OVA**](https://vm-downloads.tracelabs.org/2026.5/tl-osint-2026.5-vmware-amd64-full.ova) (2026.05 VM Release)
-  - [**Click here to download the ARM64 qcow2 release supporting Apple silicon**](https://vm-downloads.tracelabs.org/2026.5/tl-osint-2026.5-vmware-amd64-full.ova) (2026.05 VM Release)
+  - [**Click here to download the ARM64 qcow2 release supporting Apple silicon**](https://vm-downloads.tracelabs.org/2026.5/tl-osint-2026.5-arm64-full.qcow2) (2026.05 VM Release)
 
  
 - **Checksums:**  
