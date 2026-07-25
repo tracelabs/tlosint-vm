@@ -14,5 +14,5 @@ for i in $(seq 1 5); do
     fi
 done
 chmod 600 /swapfile
-mkswap /swapfile
+mkswap -f /swapfile
 echo "/swapfile none swap defaults 0 0" >> /etc/fstab

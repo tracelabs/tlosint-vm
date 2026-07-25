@@ -3,8 +3,8 @@ Encoding=UTF-8
 Type=Application
 Name=Obsidian
 Comment=Knowledge base / note-taking app
-Exec=/bin/sh -c "$HOME/Obsidian.AppImage %U"
+Exec=env APPIMAGE_EXTRACT_AND_RUN=1 /home/osint/Obsidian.AppImage --no-sandbox
 Icon=obsidian
 Terminal=false
 Categories=Office;Utility;
-StartupNotify=true
+StartupNotify=false
