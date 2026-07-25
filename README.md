@@ -24,17 +24,17 @@ The repository includes a [recipe file](./tlosint.yaml) to build a Linux OSINT D
 Use this if you just want to import and go.
 
 - **Minimal Build (no tools) Releases (canonical):**  
-  - https://github.com/tracelabs/tlosint-vm/releases (2026.05 VM release)
+  - https://github.com/tracelabs/tlosint-vm/releases (2026.07 VM release)
 
 - **Full Build Releases (includes pre-installed OSINT tools)**
-  - [**Click here to download the VirtualBox OVA**](https://vm-downloads.tracelabs.org/2026.5/tl-osint-2026.5-vbox-amd64-full.ova) (2026.05 VM Release)
-  - [**Click here to download the VMware OVA**](https://vm-downloads.tracelabs.org/2026.5/tl-osint-2026.5-vmware-amd64-full.ova) (2026.05 VM Release)
+  - [**Click here to download the VirtualBox OVA**](https://vm-downloads.tracelabs.org/2026.7/tl-osint-2026.7-vbox-full-amd64.ova) (2026.07 VM Release)
+  - [**Click here to download the VMware OVA**](https://vm-downloads.tracelabs.org/2026.7/tl-osint-2026.7-vmware-amd64-full.ova) (2026.07 VM Release)
   - [**Click here to download the ARM64 qcow2 release supporting Apple silicon**](https://vm-downloads.tracelabs.org/2026.5/tl-osint-2026.5-arm64-full.qcow2) (2026.05 VM Release)
 
  
 - **Checksums:**  
-  - VMware: `d078731e2940e670bdf5af5c20d9602bdbbb0680df59a80259048b2cdcbf078a`  
-  - VirtualBox: `7377109bad57162d45f76c9892305b09897d4a925cfb9db1688e2ca12f0d4187`
+  - VMware: `3b2ee99c52839a7c69d4d07b69aae5019f39f41c271ab5fde809503bf4be75e8`  
+  - VirtualBox: `2ea15eb7804bbbd1b398aa4aa64ba1861a5db4a1866a571d5fb403ff1602e660`
   - Apple Silicon (qcow2): `a718a38acac863443eeecaaf000cb598fc881f887a2e3b22bde6c5c52ee3b0ab`
 
 ### Verify integrity
