@@ -29,19 +29,22 @@ Use this if you just want to import and go.
 - **Full Build Releases (includes pre-installed OSINT tools)**
   - [**Click here to download the VirtualBox OVA**](https://vm-downloads.tracelabs.org/2026.7/tl-osint-2026.7-vbox-full-amd64.ova) (2026.07 VM Release)
   - [**Click here to download the VMware OVA**](https://vm-downloads.tracelabs.org/2026.7/tl-osint-2026.7-vmware-amd64-full.ova) (2026.07 VM Release)
-  - [**Click here to download the ARM64 qcow2 release supporting Apple silicon**](https://vm-downloads.tracelabs.org/2026.5/tl-osint-2026.5-arm64-full.qcow2) (2026.05 VM Release)
+  - [**Click here to download the ARM64 qcow2 release supporting Apple silicon**](https://vm-downloads.tracelabs.org/2026.7/tl-osint-2026.7-arm64-full.qcow2) (2026.07 VM Release)
 
  
 - **Checksums:**  
   - VMware: `3b2ee99c52839a7c69d4d07b69aae5019f39f41c271ab5fde809503bf4be75e8`  
   - VirtualBox: `2ea15eb7804bbbd1b398aa4aa64ba1861a5db4a1866a571d5fb403ff1602e660`
-  - Apple Silicon (qcow2): `a718a38acac863443eeecaaf000cb598fc881f887a2e3b22bde6c5c52ee3b0ab`
+  - Apple Silicon (qcow2): `8d5783f5564afcce96e4816bc2088f26d3a8ee1f0117b32e4241676f623ed562`
 
 ### Verify integrity
 
   ```bash
-  # Linux/macOS
+  # Linux
   sha256sum <downloaded-file>.ova
+
+  # macOS
+  shasum -a 256 <downloaded-file>.qcow2
 
   # Windows (PowerShell)
   Get-FileHash .\<downloaded-file>.ova -Algorithm SHA256
@@ -51,7 +54,7 @@ Use this if you just want to import and go.
 
 - **VirtualBox:** File → Import Appliance… → select `.ova`
 - **VMware (Workstation/Player/Fusion):** File → Open… → select `.ova`
-
+  
 **Default login**  
 
 username: `osint`
