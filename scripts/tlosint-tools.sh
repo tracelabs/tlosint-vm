@@ -41,12 +41,18 @@ symlink_if_exists() { local SRC="$1" DEST_NAME="$2"; [[ -x "$SRC" ]] || return 0
 
 ensure_global_symlinks() {
   local CARGODIR="${TARGET_HOME}/.cargo/bin"
-  for b in cargo rustc rustup sn0int; do
+  for b in cargo rustc rustup sn0int monolith; do
     command -v "$b" >/dev/null 2>&1 || symlink_if_exists "${CARGODIR}/${b}" "${b}"
   done
 }
 ensure_pipx_wrappers() {
-  local bins=(shodan sherlock metagoofil sublist3r sf.py)
+  # Binary names (not pipx package names): internetarchive ships `ia`,
+  # WhatsMyName-Python ships `whatsmyname`. Absent binaries are skipped, so the
+  # opt-in tools (archivebox, twscrape) are safe to list unconditionally.
+  local bins=(shodan sherlock metagoofil sublist3r sf.py
+              maigret whatsmyname instaloader ghunt
+              yt-dlp gallery-dl streamlink
+              ia carbon14 archivebox twscrape)
   for b in "${bins[@]}"; do
     [[ -x "${TARGET_HOME}/.local/bin/${b}" ]] && write_wrapper "/usr/local/bin/${b}" "${TARGET_HOME}/.local/bin/${b}"
   done
@@ -96,6 +102,14 @@ install_base_packages() {
     whiptail zenity chromium nodejs npm firefox-esr
     steghide stegseek
     translate-shell
+    # SOCMINT support (issue #191). ffmpeg MUST land before yt-dlp/streamlink:
+    # without it yt-dlp silently returns single-stream (lower quality) media
+    # instead of merging best video+audio. main() runs install_base_packages
+    # before install_tools_from_list, so that ordering is already guaranteed.
+    ffmpeg
+    tesseract-ocr tesseract-ocr-eng
+    mat2
+    httrack
   )
   local p
   for p in "${pkgs[@]}"; do
@@ -158,7 +172,20 @@ pipx_user_install_or_upgrade() {
 go_install_if_missing() {
   local module="$1" ; local bin="${2:-}" ; local name="$bin"
   if [[ -z "$name" ]]; then name="${module##*/}"; name="${name%@*}"; fi
-  if ! command -v "$name" >/dev/null 2>&1; then run "env GOBIN=/usr/local/bin go install \"$module\""; fi
+  command -v "$name" >/dev/null 2>&1 && return 0
+  # Build into a writable temp dir, then place the binary with elevated rights.
+  # Pointing GOBIN straight at /usr/local/bin fails with "permission denied"
+  # whenever this script is run from an unprivileged account, and building under
+  # sudo instead would discard the user's module/toolchain cache.
+  local tmp; tmp="$(mktemp -d)"
+  if run "env GOBIN=\"${tmp}\" go install \"$module\"" && [[ -x "${tmp}/${name}" ]]; then
+    ${SUDO} install -m 0755 "${tmp}/${name}" "/usr/local/bin/${name}" 2>>"$LOG_FILE" \
+      && log "[*] ${name} installed: /usr/local/bin/${name}" \
+      || logerr "Failed to install ${name} into /usr/local/bin"
+  else
+    logerr "go install failed for ${module}"
+  fi
+  rm -rf "$tmp" || true
 }
 cargo_install_if_missing() { local crate="$1"; if ! command -v "$crate" >/dev/null 2>&1; then run "${SUDO} -u \"$TARGET_USER\" bash -lc 'cargo install --locked ${crate}'"; fi; }
 
@@ -261,6 +288,72 @@ EOF
   ${SUDO} chmod 0755 /usr/local/bin/metagoofil
 
   log "[*] Metagoofil installed (wrapper: /usr/local/bin/metagoofil)"
+}
+
+# ---------- auto-archiver (Docker) ----------
+# Upstream ships a maintained image rather than a pip package suited to a VM
+# install, so mirror the Owlculus pattern: pull the image and expose a thin
+# wrapper that mounts the caller's cwd at /data for output.
+install_auto_archiver_docker() {
+  log "[*] Installing bellingcat/auto-archiver (Docker)"
+
+  install_docker_and_compose_if_missing
+
+  if ! command -v docker >/dev/null 2>&1; then
+    logerr "auto-archiver skipped: docker unavailable"
+    return 0
+  fi
+
+  run "${SUDO} docker pull bellingcat/auto-archiver" \
+    || logerr "auto-archiver image pull failed (wrapper still installed; retry via osint-updater)"
+
+  ${SUDO} tee /usr/local/bin/auto-archiver >/dev/null <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+# The current directory is mounted at /data inside the container; point
+# auto-archiver's config and output paths there.
+# Only allocate a TTY when there is one, so piping/redirecting still works.
+# Note: an `[[ ... ]] && ...` one-liner would abort under `set -e` whenever the
+# test fails, so branch explicitly.
+TTY_FLAGS=(-i)
+if [[ -t 0 && -t 1 ]]; then
+  TTY_FLAGS=(-i -t)
+fi
+exec docker run --rm "${TTY_FLAGS[@]}" -v "${PWD}:/data" bellingcat/auto-archiver "$@"
+EOF
+  ${SUDO} chmod 0755 /usr/local/bin/auto-archiver
+  ${SUDO} chown root:root /usr/local/bin/auto-archiver
+
+  log "[*] auto-archiver installed (wrapper: /usr/local/bin/auto-archiver)"
+}
+
+# ---------- ArchiveBox (opt-in) ----------
+# ArchiveBox pulls a large dependency tree plus its own Chromium, so it is
+# gated to keep the default VM image small.
+install_archivebox_optional() {
+  if [[ "${TLOSINT_INSTALL_ARCHIVEBOX:-0}" != "1" ]]; then
+    log "[*] ArchiveBox skipped (VM image size; set TLOSINT_INSTALL_ARCHIVEBOX=1 to install)"
+    return 0
+  fi
+  log "[*] Installing ArchiveBox (TLOSINT_INSTALL_ARCHIVEBOX=1)"
+  pipx_user_install_or_upgrade "archivebox" "archivebox"
+  [[ -x "${TARGET_HOME}/.local/bin/archivebox" ]] \
+    && write_wrapper "/usr/local/bin/archivebox" "${TARGET_HOME}/.local/bin/archivebox"
+}
+
+# ---------- twscrape (opt-in, policy-gated) ----------
+# twscrape works by driving logged-in X/Twitter accounts, which plausibly meets
+# the "violation of terms of service" disqualifier in docs/TOOLING_POLICY.md.
+# Left out of the default install pending a Trace Labs policy decision.
+install_twscrape_optional() {
+  if [[ "${TLOSINT_ENABLE_TWSCRAPE:-0}" != "1" ]]; then
+    log "[*] twscrape skipped — pending Trace Labs ToS review (docs/TOOLING_POLICY.md); set TLOSINT_ENABLE_TWSCRAPE=1 to install"
+    return 0
+  fi
+  log "[*] Installing twscrape (TLOSINT_ENABLE_TWSCRAPE=1 — operator accepted ToS risk)"
+  pipx_user_install_or_upgrade "twscrape" "git+https://github.com/vladkens/twscrape.git"
+  [[ -x "${TARGET_HOME}/.local/bin/twscrape" ]] \
+    && write_wrapper "/usr/local/bin/twscrape" "${TARGET_HOME}/.local/bin/twscrape"
 }
 
 # ---------- translate-shell (trans) ----------
@@ -537,6 +630,21 @@ maybe_init_shodan() {
   fi
 }
 
+# ---------- GHunt helper ----------
+# GHunt needs Google account cookies, which cannot be provisioned unattended.
+# Follow the Shodan precedent: install unconditionally, drop a marker so the
+# validator reports "deferred" rather than failing an otherwise-clean install.
+maybe_defer_ghunt_login() {
+  command -v ghunt >/dev/null 2>&1 || return 0
+  if [[ -d "${TARGET_HOME}/.malfrats/ghunt" ]]; then
+    log "[*] GHunt credentials already present"
+    return 0
+  fi
+  ${SUDO} mkdir -p /etc/osint 2>>"$LOG_FILE" || true
+  ${SUDO} bash -lc 'echo "no-credentials" > /etc/osint/skip-ghunt-login' 2>>"$LOG_FILE" || true
+  log "[*] GHunt login deferred (run: ghunt login)"
+}
+
 # ---------- install tools ----------
 install_tools_from_list() {
   log "[*] Installing OSINT tools"
@@ -578,6 +686,37 @@ install_tools_from_list() {
   apt_try_install steghide || true
   apt_try_install stegseek || true
 
+  # ---------- SOCMINT (issue #191) ----------
+  # apt-sourced members of this set (ffmpeg, tesseract-ocr, mat2, httrack) are
+  # handled in install_base_packages, which main() runs first.
+
+  # 1 · Username & account enumeration
+  pipx_user_install_or_upgrade "maigret" "maigret"
+  pipx_user_install_or_upgrade "whatsmyname-python" "git+https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python.git"
+
+  # 2 · Platform-specific collection
+  pipx_user_install_or_upgrade "instaloader" "instaloader"
+  pipx_user_install_or_upgrade "ghunt" "ghunt"
+
+  # 3 · Media & evidence acquisition (ffmpeg from base packages)
+  pipx_user_install_or_upgrade "yt-dlp" "yt-dlp"
+  pipx_user_install_or_upgrade "gallery-dl" "gallery-dl"
+  pipx_user_install_or_upgrade "streamlink" "streamlink"
+
+  # 4 · Capture & archiving
+  pipx_user_install_or_upgrade "internetarchive" "internetarchive"   # provides `ia`
+  pipx_user_install_or_upgrade "carbon14" "git+https://github.com/Lazza/Carbon14.git"
+  cargo_install_if_missing "monolith"
+  # gowitness drives the chromium already in install_base_packages.
+  if command -v go >/dev/null 2>&1; then
+    go_install_if_missing "github.com/sensepost/gowitness@latest" "gowitness"
+  fi
+  install_auto_archiver_docker
+  install_archivebox_optional
+
+  # Opt-in / policy-gated
+  install_twscrape_optional
+
   # translate-shell
   install_translate_shell
 
@@ -597,6 +736,9 @@ install_tools_from_list() {
 
   # Shodan init (auto if env; otherwise defer cleanly)
   maybe_init_shodan
+
+  # GHunt needs Google cookies; defer like Shodan rather than failing
+  maybe_defer_ghunt_login
 }
 
 
@@ -622,8 +764,17 @@ apt_self_heal_update() {
   run "apt-get -y clean || true"
 }
 upgrade_pipx_tools() {
-  if command -v pipx >/dev/null 2>&1; then
-    log "[*] Upgrading pipx apps"
+  # This script runs as root (pkexec), but the pipx apps live in the target
+  # user's ~/.local/pipx — root's own pipx home is empty, so the upgrade has to
+  # be run as that user or it silently upgrades nothing. __TARGET_USER__ is
+  # substituted at install time.
+  local PIPX_USER="__TARGET_USER__"
+  if sudo -u "$PIPX_USER" bash -lc 'command -v pipx >/dev/null 2>&1'; then
+    log "[*] Upgrading pipx apps for ${PIPX_USER}"
+    run "sudo -u \"$PIPX_USER\" bash -lc 'pipx upgrade-all' || true"
+    run "sudo -u \"$PIPX_USER\" bash -lc 'pipx runpip shodan install -U setuptools pip wheel' || true"
+  elif command -v pipx >/dev/null 2>&1; then
+    log "[*] Upgrading pipx apps (root)"
     run "pipx upgrade-all || true"
     run "pipx runpip shodan install -U setuptools pip wheel || true"
   fi
@@ -633,17 +784,30 @@ upgrade_go_tools() {
     log "[*] Refreshing PhoneInfoga (Go)"
     run "env GOBIN=/usr/local/bin go install github.com/sundowndev/phoneinfoga/v2/cmd/phoneinfoga@latest"
     chmod 0755 /usr/local/bin/phoneinfoga 2>>"$LOG_FILE" || true
+    log "[*] Refreshing gowitness (Go)"
+    run "env GOBIN=/usr/local/bin go install github.com/sensepost/gowitness@latest || true"
+    chmod 0755 /usr/local/bin/gowitness 2>>"$LOG_FILE" || true
   fi
 }
 upgrade_rust_tools() {
   if command -v cargo >/dev/null 2>&1; then
     log "[*] Refreshing sn0int (Rust)"
     run "cargo install --locked sn0int"
+    log "[*] Refreshing monolith (Rust)"
+    run "cargo install --locked monolith || true"
   fi
 }
-main(){ log "==== OSINT Updater starting ===="; apt_self_heal_update; upgrade_pipx_tools; upgrade_go_tools; upgrade_rust_tools; log "==== OSINT Updater complete. See $LOG_FILE for details. ===="; }
+upgrade_docker_images() {
+  if command -v docker >/dev/null 2>&1; then
+    log "[*] Refreshing auto-archiver image"
+    run "docker pull bellingcat/auto-archiver || true"
+  fi
+}
+main(){ log "==== OSINT Updater starting ===="; apt_self_heal_update; upgrade_pipx_tools; upgrade_go_tools; upgrade_rust_tools; upgrade_docker_images; log "==== OSINT Updater complete. See $LOG_FILE for details. ===="; }
 main "$@"
 EOF
+  # Bake the target user into the updater (same placeholder trick as write_wrapper)
+  ${SUDO} sed -i "s#__TARGET_USER__#${TARGET_USER}#g" "$UPD"
   ${SUDO} chmod +x "$UPD"
   ${SUDO} chown root:root "$UPD"
 
@@ -741,7 +905,11 @@ JSON
 post_install_checks() {
   log "[*] Post-install sanity checks"
   local missing=()
-  for b in shodan sherlock phoneinfoga sn0int metagoofil sublist3r exiftool tor trans steghide; do
+  # Unconditional tools only — the opt-in pair (archivebox, twscrape) must not
+  # be reported missing on a default install.
+  for b in shodan sherlock phoneinfoga sn0int metagoofil sublist3r exiftool tor trans steghide \
+           maigret whatsmyname instaloader ghunt yt-dlp gallery-dl streamlink \
+           ia carbon14 monolith gowitness ffmpeg tesseract mat2 httrack; do
     command -v "$b" >/dev/null 2>&1 || missing+=("$b")
   done
   command -v spiderfoot >/dev/null 2>&1 || command -v sf.py >/dev/null 2>&1 || missing+=("spiderfoot/sf.py")
@@ -767,6 +935,30 @@ Usage:
                    steghide extract -sf out.jpg
 - StegSeek:        stegseek out.jpg /usr/share/wordlists/rockyou.txt
 - Translate:       trans -b :de "Hello, how are you?"
+
+SOCMINT:
+- maigret:         maigret <username> --html
+- WhatsMyName:     whatsmyname -u <username>
+- Instaloader:     instaloader profile <handle>
+- GHunt:           ghunt login        (then: ghunt email <address>)
+- yt-dlp:          yt-dlp <url>       (ffmpeg present: merges best video+audio)
+- gallery-dl:      gallery-dl <url>
+- streamlink:      streamlink <url> best -o capture.ts
+- monolith:        monolith <url> -o profile.html
+- gowitness:       gowitness scan file -f urls.txt
+- internetarchive: ia search '<query>'   /   ia download <identifier>
+- Carbon14:        carbon14 <url>
+- tesseract:       tesseract image.png out && cat out.txt
+- mat2:            mat2 --inplace evidence.jpg
+- HTTrack:         httrack <url> -O ./mirror
+- auto-archiver:   auto-archiver --help   (Docker; your cwd is mounted at /data)
+- shred:           shred -u <file>        (secure delete; from coreutils)
+
+Opt-in tools (not installed by default):
+- ArchiveBox:      TLOSINT_INSTALL_ARCHIVEBOX=1 sudo -E ./tlosint-tools.sh
+                   (large dependency tree + its own Chromium)
+- twscrape:        TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./tlosint-tools.sh
+                   (drives logged-in X accounts — review docs/TOOLING_POLICY.md first)
 
 Firefox:
 - about:policies shows hardened settings; OSINT bookmarks on toolbar.
@@ -894,6 +1086,50 @@ validator() {
   show_ver tor --version || true
   show_ver torbrowser-launcher --help || true
   show_ver trans -V || true
+
+  # ---------- SOCMINT (issue #191) ----------
+  show_ver maigret --version || true
+  show_ver whatsmyname --help || true
+  show_ver instaloader --version || true
+  show_ver yt-dlp --version || true
+  show_ver gallery-dl --version || true
+  show_ver streamlink --version || true
+  show_ver ffmpeg -version || true
+  show_ver ia --version || true
+  show_ver monolith --version || true
+  show_ver gowitness version || true
+  show_ver carbon14 --help || true
+  show_ver tesseract --version || true
+  show_ver mat2 --version || true
+  show_ver httrack --version || true
+
+  # GHunt: credential-dependent, same treatment as Shodan above
+  if has ghunt; then
+    if [[ -d "${REAL_HOME}/.malfrats/ghunt" ]]; then
+      ok "GHunt present and authenticated"
+    elif [[ -f /etc/osint/skip-ghunt-login ]]; then
+      ok "GHunt login deferred (no credentials provided; run: ghunt login)"
+    else
+      warn "GHunt not authenticated (run: ghunt login)"
+    fi
+  else
+    fail "ghunt not found on PATH"
+  fi
+
+  # auto-archiver runs via Docker wrapper
+  check_exec "/usr/local/bin/auto-archiver" "auto-archiver launcher"
+
+  # Opt-in tools: absence is a clean pass, not a failure
+  if has archivebox; then
+    show_ver archivebox version || ok "archivebox present"
+  else
+    ok "ArchiveBox not installed (opt-in via TLOSINT_INSTALL_ARCHIVEBOX=1)"
+  fi
+  if has twscrape; then
+    ok "twscrape present: $(command -v twscrape)"
+  else
+    ok "twscrape not installed (opt-in via TLOSINT_ENABLE_TWSCRAPE=1; pending ToS review)"
+  fi
 
   check_exec "/usr/local/bin/osint-updater" "osint-updater"
   check_file "${REAL_HOME}/Desktop/OSINT-Updater.desktop" "OSINT-Updater.desktop"
