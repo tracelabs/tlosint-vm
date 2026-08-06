@@ -88,6 +88,7 @@ chmod +x tlosint-tools.sh
 
 - Refreshes the **Debian archive keyring** and applies updates
 - Installs a curated **OSINT toolset** (Shodan CLI, Sherlock, PhoneInfoga, SpiderFoot, sn0int, Metagoofil, Sublist3r, steghide/stegseek, StegOSuite, exiftool, tor, torbrowser-launcher, translate-shell, etc.)
+- Installs a **SOCMINT toolset** — username enumeration (maigret, WhatsMyName), platform collection (Instaloader, GHunt), media acquisition (yt-dlp, gallery-dl, streamlink, ffmpeg), capture & archiving (auto-archiver, monolith, gowitness, internetarchive, Carbon14, HTTrack), signal extraction (tesseract-ocr), and investigator OPSEC (mat2)
 - Adds a **Self-Heal & Update** shortcut to the Desktop
 - Applies **Firefox hardening** (delete cookies/history on shutdown, block geolocation/mic/camera prompts by default, stronger tracking protection, preload OSINT bookmarks)
 
@@ -156,6 +157,20 @@ chmod +x scripts/tlosint-tools.sh
 ./scripts/tlosint-tools.sh
 ```
 
+**Optional tools (opt-in)**
+
+Two tools are not installed by default and are enabled with an environment variable. Use `sudo -E` so the variable survives into the script:
+
+```bash
+# ArchiveBox — omitted by default because it pulls a large dependency tree
+# plus its own Chromium, which noticeably grows the VM image.
+TLOSINT_INSTALL_ARCHIVEBOX=1 sudo -E ./scripts/tlosint-tools.sh
+
+# twscrape — omitted by default pending a Trace Labs terms-of-service review.
+# It works by driving logged-in X/Twitter accounts; see docs/TOOLING_POLICY.md.
+TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./scripts/tlosint-tools.sh
+```
+
 **Resources**
 
 - [Trace Labs OSINT Field Manual](https://github.com/tracelabs/tofm/blob/main/tofm.md)
@@ -177,11 +192,21 @@ chmod +x scripts/tlosint-tools.sh
 
 - [OSINT Forensics Full Screen Capture](https://chromewebstore.google.com/detail/forensic-osint-full-page/jojaomahhndmeienhjihojidkddkahcn?pli=1)
 
+**Capture & Archiving**
+
+- [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox) (opt-in — see "Optional tools" above)
+- [auto-archiver](https://github.com/bellingcat/auto-archiver)
+- [Carbon14](https://github.com/Lazza/Carbon14)
+- [gowitness](https://github.com/sensepost/gowitness)
+- [internetarchive (`ia`)](https://github.com/jjjake/internetarchive)
+- [monolith](https://github.com/Y2Z/monolith)
+
 **Data Analysis**
 
 - [DumpsterDiver](https://github.com/securing/DumpsterDiver)
 - [Exifprobe](https://github.com/hfiguiere/exifprobe)
 - [Stegosuite](https://github.com/osde8info/stegosuite)
+- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
 
 **Domains**
 
@@ -191,9 +216,12 @@ chmod +x scripts/tlosint-tools.sh
 **Downloaders**
 
 - [Browse Mirrored Websites](http://www.httrack.com/)
+- [FFmpeg](https://ffmpeg.org/) (required by yt-dlp and Streamlink to merge video+audio)
+- [gallery-dl](https://github.com/mikf/gallery-dl)
 - [Metagoofil](https://github.com/opsdisk/metagoofil)
+- [Streamlink](https://github.com/streamlink/streamlink)
 - [WebHTTrack Website Copier](http://www.httrack.com/)
-- [Youtube-DL](https://github.com/ytdl-org/youtube-dl)
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp)
 
 **Email**
 
@@ -219,17 +247,26 @@ chmod +x scripts/tlosint-tools.sh
 
 **Social Media**
 
+- [GHunt](https://github.com/mxrch/GHunt)
 - [Instaloader](https://github.com/instaloader/instaloader)
 - [Twint](https://github.com/twintproject/twint) (Archived)
 - [Searchfy (OSRFramework)](https://github.com/i3visio/osrframework)
 - [Tiktok Scraper](https://github.com/drawrowfly/tiktok-scraper)
+- [twscrape](https://github.com/vladkens/twscrape) (opt-in — pending terms-of-service review)
 - [Twayback](https://github.com/humandecoded/twayback)
 - [Stweet](https://github.com/markowanga/stweet)
 
 **Usernames**
 
 - [Alias Generator (OSRFramework)](https://github.com/i3visio/osrframework)
+- [maigret](https://github.com/soxoj/maigret)
 - [Usufy (OSRFramework)](https://github.com/i3visio/osrframework)
+- [WhatsMyName-Python](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python)
+
+**Investigator OPSEC**
+
+- [mat2](https://0xacab.org/jvoisin/mat2) (metadata removal)
+- `shred` (secure file deletion; from coreutils)
 
 **Other Tools**
 
