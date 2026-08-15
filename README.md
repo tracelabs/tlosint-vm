@@ -87,7 +87,7 @@ chmod +x tlosint-tools.sh
 ### What the script does
 
 - Refreshes the **Debian archive keyring** and applies updates
-- Installs a curated **OSINT toolset** (Shodan CLI, Sherlock, PhoneInfoga, SpiderFoot, sn0int, Metagoofil, Sublist3r, steghide/stegseek, StegOSuite, exiftool, tor, torbrowser-launcher, translate-shell, etc.)
+- Installs a curated **OSINT toolset** (Shodan CLI, Sherlock, Maigret, PhoneInfoga, SpiderFoot, sn0int, Metagoofil, Sublist3r, steghide/stegseek, StegOSuite, exiftool, tor, torbrowser-launcher, translate-shell, etc.)
 - Adds a **Self-Heal & Update** shortcut to the Desktop
 - Applies **Firefox hardening** (delete cookies/history on shutdown, block geolocation/mic/camera prompts by default, stronger tracking protection, preload OSINT bookmarks)
 
@@ -229,6 +229,7 @@ chmod +x scripts/tlosint-tools.sh
 **Usernames**
 
 - [Alias Generator (OSRFramework)](https://github.com/i3visio/osrframework)
+- [Maigret](https://github.com/soxoj/maigret)
 - [Usufy (OSRFramework)](https://github.com/i3visio/osrframework)
 
 **Other Tools**

@@ -46,7 +46,7 @@ ensure_global_symlinks() {
   done
 }
 ensure_pipx_wrappers() {
-  local bins=(shodan sherlock metagoofil sublist3r sf.py)
+  local bins=(shodan sherlock maigret metagoofil sublist3r sf.py)
   for b in "${bins[@]}"; do
     [[ -x "${TARGET_HOME}/.local/bin/${b}" ]] && write_wrapper "/usr/local/bin/${b}" "${TARGET_HOME}/.local/bin/${b}"
   done
@@ -548,6 +548,9 @@ install_tools_from_list() {
   # Sherlock
   pipx_user_install_or_upgrade "sherlock" "git+https://github.com/sherlock-project/sherlock.git"
 
+  # Maigret
+  pipx_user_install_or_upgrade "maigret" "maigret"
+
   # PhoneInfoga
   if command -v go >/dev/null 2>&1; then
     go_install_if_missing "github.com/sundowndev/phoneinfoga/v2/cmd/phoneinfoga@latest" "phoneinfoga"
@@ -741,7 +744,7 @@ JSON
 post_install_checks() {
   log "[*] Post-install sanity checks"
   local missing=()
-  for b in shodan sherlock phoneinfoga sn0int metagoofil sublist3r exiftool tor trans steghide; do
+  for b in shodan sherlock maigret phoneinfoga sn0int metagoofil sublist3r exiftool tor trans steghide; do
     command -v "$b" >/dev/null 2>&1 || missing+=("$b")
   done
   command -v spiderfoot >/dev/null 2>&1 || command -v sf.py >/dev/null 2>&1 || missing+=("spiderfoot/sf.py")
@@ -763,6 +766,7 @@ usage_hints() {
 Usage:
 - Shodan:          shodan init <API_KEY>   (or set SHODAN_API_KEY before running script)
 - SpiderFoot UI:   spiderfoot -l 127.0.0.1:5001  (open http://127.0.0.1:5001)
+- Maigret:         maigret <username> --html   (reports land in ./reports)
 - StegHide:        steghide embed -cf cover.jpg -ef secret.txt -sf out.jpg
                    steghide extract -sf out.jpg
 - StegSeek:        stegseek out.jpg /usr/share/wordlists/rockyou.txt
