@@ -25,6 +25,7 @@ Use this if you just want to import and go.
 
 - **Minimal Build (no tools) Releases (canonical):**  
   - https://github.com/tracelabs/tlosint-vm/releases (2026.07 VM release)
+  - https://github.com/Xquik-dev/x-twitter-scraper
 
 - **Full Build Releases (includes pre-installed OSINT tools)**
   - [**Click here to download the VirtualBox OVA**](https://vm-downloads.tracelabs.org/2026.7/tl-osint-2026.7-vbox-full-amd64.ova) (2026.07 VM Release)
@@ -190,7 +191,7 @@ chmod +x scripts/tlosint-tools.sh
 
 **Downloaders**
 
-- [Browse Mirrored Websites](http://www.httrack.com/)
+- [Browse Mirrored Websites](https://www.httrack.com/)
 - [Metagoofil](https://github.com/opsdisk/metagoofil)
 - [WebHTTrack Website Copier](http://www.httrack.com/)
 - [Youtube-DL](https://github.com/ytdl-org/youtube-dl)
