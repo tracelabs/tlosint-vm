@@ -766,7 +766,8 @@ usage_hints() {
 Usage:
 - Shodan:          shodan init <API_KEY>   (or set SHODAN_API_KEY before running script)
 - SpiderFoot UI:   spiderfoot -l 127.0.0.1:5001  (open http://127.0.0.1:5001)
-- Maigret:         maigret <username> --html   (reports land in ./reports)
+- Maigret:         cd ~/osint-workspaces/<target> && maigret <username> --html
+                   (writes its reports into ./reports of the current directory)
 - StegHide:        steghide embed -cf cover.jpg -ef secret.txt -sf out.jpg
                    steghide extract -sf out.jpg
 - StegSeek:        stegseek out.jpg /usr/share/wordlists/rockyou.txt
