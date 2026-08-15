@@ -211,6 +211,12 @@ install_sherlock() {
   pipx_install "sherlock-project"
 }
 
+# Maigret (pipx)
+install_maigret() {
+  log "Installing maigret (pipx preferred)"
+  pipx_install "maigret"
+}
+
 # metagoofil (git + venv + reqs) + wrapper
 install_metagoofil() {
   log "Installing metagoofil"
@@ -638,6 +644,7 @@ validate_install() {
   check_cmd "sn0int" "sn0int"
   check_cmd "ExifTool" "exiftool"
   check_cmd "sherlock" "sherlock"
+  check_cmd "maigret" "maigret"
   check_cmd "metagoofil wrapper" "metagoofil"
   check_cmd "sublist3r wrapper" "sublist3r"
   check_cmd "steghide" "steghide"
@@ -730,6 +737,7 @@ main() {
   install_sn0int
   install_exiftool
   install_sherlock
+  install_maigret
   install_metagoofil
   install_sublist3r
   install_steghide
