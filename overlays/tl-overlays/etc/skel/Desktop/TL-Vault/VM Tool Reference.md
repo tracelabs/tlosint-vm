@@ -51,6 +51,41 @@ phoneinfoga scan -n +1XXXXXXXXXX
 
 ---
 
+### maigret
+> Check a username against 3000+ sites and build a structured dossier, not just a hit list
+
+**Type:** `CLI` `Python` | **Use cases:** username search, account discovery, cross-platform profiling
+
+```bash
+maigret <username>                    # console report
+maigret <username> --html             # browsable HTML dossier
+maigret <username> --top-sites 500    # faster pass over the busiest sites
+```
+
+> [!tip] Tips
+> Broader than Sherlock — run both. `--html` writes a report you can attach to case notes. Add `--no-progressbar` when piping output to a file.
+
+[📄 Documentation](https://github.com/soxoj/maigret)
+
+---
+
+### WhatsMyName
+> Username enumeration driven by the community-maintained WhatsMyName dataset
+
+**Type:** `CLI` `Python` | **Use cases:** username search, account discovery
+
+```bash
+whatsmyname -u <username>
+whatsmyname -u <username> --html      # write an HTML report
+```
+
+> [!tip] Tips
+> Pulls the WebBreacher site list at runtime, so coverage stays current without reinstalling the tool. Good cross-check when maigret and Sherlock disagree.
+
+[📄 Documentation](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python)
+
+---
+
 ## 🔎 Recon
 
 ### sn0int
@@ -121,6 +156,23 @@ exiftool *.jpg                # batch process
 > Always run this first on any image from the subject — GPS data is gold for location pivots.
 
 [📄 Documentation](https://exiftool.org)
+
+---
+
+### Tesseract OCR
+> Pull text out of images — screenshots, signs in photos, scanned documents
+
+**Type:** `CLI` | **Use cases:** OCR, text from screenshots, signage in photos, scanned documents
+
+```bash
+tesseract image.png out && cat out.txt   # writes out.txt
+tesseract image.png -                    # print straight to stdout
+```
+
+> [!tip] Tips
+> Accuracy depends heavily on image quality — crop to the text and increase contrast first. Useful for reading usernames or phone numbers baked into a screenshot.
+
+[📄 Documentation](https://tesseract-ocr.github.io)
 
 ---
 
@@ -195,6 +247,224 @@ torsocks <command>   # route any CLI tool through Tor
 
 ---
 
+## 📱 Social Platforms
+
+### Instaloader
+> Download Instagram posts, stories, tagged media, and follower lists
+
+**Type:** `CLI` `Python` | **Use cases:** Instagram collection, post archiving, follower lists, story capture
+
+```bash
+instaloader profile <handle>                  # posts + profile pic
+instaloader --no-posts --stories <handle>     # stories only (needs login)
+instaloader --login <you> <handle>            # authenticated session
+```
+
+> [!warning] OPSEC
+> Logging in ties the collection to that account. Use a research account, never a personal one.
+
+[📄 Documentation](https://instaloader.github.io)
+
+---
+
+### GHunt
+> Turn a Gmail address into Google activity — Maps reviews, Photos, Calendar, YouTube
+
+**Type:** `CLI` `Python` | **Use cases:** Gmail-to-identity mapping, Google Maps reviews, Photos, Calendar
+
+```bash
+ghunt login                    # one-time browser cookie import
+ghunt email <address>
+ghunt gaia <gaia-id>
+ghunt drive <file-or-folder-id>
+```
+
+> [!warning] Requires credentials
+> GHunt does nothing until `ghunt login` imports cookies from a signed-in Google session. Use a research account. Until then the VM validator reports GHunt as "login deferred" — that is expected, not a broken install.
+
+[📄 Documentation](https://github.com/mxrch/GHunt)
+
+---
+
+## 🎥 Media & Capture
+
+### yt-dlp
+> Download video and audio from YouTube, TikTok, X, Instagram, Facebook, and hundreds more
+
+**Type:** `CLI` `Python` | **Use cases:** video download, evidence capture, audio extraction, metadata
+
+```bash
+yt-dlp <url>                              # best quality, merged
+yt-dlp -F <url>                           # list available formats
+yt-dlp --write-info-json --no-download <url>   # metadata only, no media
+```
+
+> [!tip] Tips
+> ffmpeg is installed, so yt-dlp merges the best separate video and audio streams automatically. `--write-info-json` captures upload time, uploader ID, and description — often more useful for an investigation than the video itself.
+
+[📄 Documentation](https://github.com/yt-dlp/yt-dlp)
+
+---
+
+### gallery-dl
+> Bulk-download image galleries and media from social and image-hosting sites
+
+**Type:** `CLI` `Python` | **Use cases:** image galleries, bulk media download, social media images
+
+```bash
+gallery-dl <url>
+gallery-dl --write-metadata <url>     # save per-file JSON metadata
+gallery-dl -g <url>                   # print direct media URLs only
+```
+
+> [!tip] Tips
+> Complements yt-dlp: yt-dlp for video, gallery-dl for image sets. `--write-metadata` preserves the post context alongside each file.
+
+[📄 Documentation](https://github.com/mikf/gallery-dl)
+
+---
+
+### Streamlink
+> Capture live streams to disk before they disappear
+
+**Type:** `CLI` `Python` | **Use cases:** live stream capture, real-time evidence, time-sensitive collection
+
+```bash
+streamlink <url> best -o capture.ts
+streamlink <url> --json                # list available streams
+```
+
+> [!tip] Tips
+> Live content is the most perishable evidence there is — start the capture first and sort out quality later. Uses ffmpeg for muxing.
+
+[📄 Documentation](https://streamlink.github.io)
+
+---
+
+### FFmpeg
+> Convert, trim, and extract frames from video and audio
+
+**Type:** `CLI` | **Use cases:** video conversion, frame extraction, audio extraction, trimming
+
+```bash
+ffmpeg -i in.mp4 -ss 00:01:30 -t 10 clip.mp4   # 10s clip from 1:30
+ffmpeg -i in.mp4 -vf fps=1 frame_%04d.png      # one frame per second
+ffmpeg -i in.mp4 -vn -acodec copy audio.m4a    # strip audio track
+```
+
+> [!tip] Tips
+> Also the dependency that lets yt-dlp and Streamlink merge separate video and audio streams. Extracting frames makes a video reverse-image-searchable.
+
+[📄 Documentation](https://ffmpeg.org/documentation.html)
+
+---
+
+### gowitness
+> Bulk-screenshot a list of URLs so many leads can be triaged at once
+
+**Type:** `CLI` `Go` | **Use cases:** bulk screenshots, lead triage, profile URL sweeps
+
+```bash
+gowitness scan single --url <url>
+gowitness scan file -f urls.txt          # one URL per line
+gowitness report server                  # browse results in a local web UI
+```
+
+> [!tip] Tips
+> Point it at a list of candidate profile URLs from a username search and review the screenshots instead of opening tabs one by one. Drives the system Chromium.
+
+[📄 Documentation](https://github.com/sensepost/gowitness)
+
+---
+
+## 🗄 Archiving
+
+### auto-archiver
+> Archive a social post with screenshot, metadata, and content hash in one command
+
+**Type:** `CLI` `Docker` | **Use cases:** social post archiving, evidence integrity, hashed captures
+
+```bash
+auto-archiver --help
+# Your current directory is mounted at /data inside the container.
+auto-archiver --config /data/orchestration.yaml
+```
+
+> [!tip] Tips
+> Runs as a Docker container, so paths must be relative to `/data`. The content hash it records is what makes the capture defensible later.
+
+[📄 Documentation](https://github.com/bellingcat/auto-archiver)
+
+---
+
+### monolith
+> Freeze a live page into one self-contained HTML file — images, CSS, and JS inlined
+
+**Type:** `CLI` `Rust` | **Use cases:** page snapshots, offline evidence, profile freezing
+
+```bash
+monolith <url> -o profile.html
+monolith -j <url> -o profile.html    # exclude JavaScript
+```
+
+> [!tip] Tips
+> One file, no external requests when reopened — much stronger evidence than a screenshot because the page text stays searchable and selectable.
+
+[📄 Documentation](https://github.com/Y2Z/monolith)
+
+---
+
+### internetarchive (`ia`)
+> Search, download from, and submit pages to the Internet Archive
+
+**Type:** `CLI` `Python` | **Use cases:** Wayback retrieval, archive submission, durable storage
+
+```bash
+ia search '<query>'
+ia download <identifier>
+ia configure                     # optional: log in for uploads
+```
+
+> [!tip] Tips
+> Check the Wayback Machine before assuming deleted content is gone. Submitting a live URL creates a third-party timestamped copy you do not control — useful corroboration.
+
+[📄 Documentation](https://archive.org/services/docs/api/internetarchive/)
+
+---
+
+### Carbon14
+> Estimate when web content was actually published or last changed
+
+**Type:** `CLI` `Python` | **Use cases:** content dating, timeline building, claim verification
+
+```bash
+carbon14 <url>
+```
+
+> [!tip] Tips
+> Useful when a post has no visible timestamp, or when the displayed date looks wrong. Treat the result as evidence for a timeline, not proof on its own.
+
+[📄 Documentation](https://github.com/Lazza/Carbon14)
+
+---
+
+### HTTrack
+> Mirror an entire website locally for offline review
+
+**Type:** `CLI` `GUI` | **Use cases:** site mirroring, offline review, bulk page capture
+
+```bash
+httrack <url> -O ./mirror
+webhttrack                        # GUI front-end
+```
+
+> [!tip] Tips
+> Set a depth limit on large sites or the mirror will run for a very long time. Best for small sites and forum threads.
+
+[📄 Documentation](https://www.httrack.com/html/index.html)
+
+---
+
 ## 🛠 Utilities
 
 ### translate-shell
@@ -209,6 +479,43 @@ trans :en -i input.txt               # translate a file
 ```
 
 [📄 Documentation](https://github.com/soimort/translate-shell)
+
+---
+
+## 🛡 Investigator OPSEC
+
+### mat2
+> Strip metadata from files before you share or submit them
+
+**Type:** `CLI` `Python` | **Use cases:** metadata removal, safe file sharing, OPSEC hygiene
+
+```bash
+mat2 --show evidence.jpg        # see what metadata is present
+mat2 evidence.jpg              # writes evidence.cleaned.jpg
+mat2 --inplace evidence.jpg     # overwrite the original
+```
+
+> [!warning] OPSEC
+> Anything you produce on this VM may carry your own metadata — usernames, paths, software versions. Run `--show` before sending a file outside the team.
+
+[📄 Documentation](https://0xacab.org/jvoisin/mat2)
+
+---
+
+### shred
+> Overwrite a file's contents before deleting it
+
+**Type:** `CLI` | **Use cases:** secure deletion, disposing of sensitive downloads
+
+```bash
+shred -u <file>            # overwrite, then remove
+shred -u -n 3 <file>       # three passes
+```
+
+> [!tip] Tips
+> Part of coreutils, already present. Note that on SSDs and copy-on-write filesystems overwriting in place is not guaranteed — full-disk encryption is the real protection.
+
+[📄 Documentation](https://www.gnu.org/software/coreutils/manual/html_node/shred-invocation.html)
 
 ---
 
