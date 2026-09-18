@@ -171,6 +171,12 @@ TLOSINT_INSTALL_ARCHIVEBOX=1 sudo -E ./scripts/tlosint-tools.sh
 TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./scripts/tlosint-tools.sh
 ```
 
+Or install both optional tools at the same time with:
+
+```bash
+TLOSINT_INSTALL_ARCHIVEBOX=1 TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./scripts/tlosint-tools.sh
+```
+
 **Resources**
 
 - [Trace Labs OSINT Field Manual](https://github.com/tracelabs/tofm/blob/main/tofm.md)
