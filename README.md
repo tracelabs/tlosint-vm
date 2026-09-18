@@ -221,7 +221,6 @@ TLOSINT_INSTALL_ARCHIVEBOX=1 TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./scripts/tlosint
 
 **Downloaders**
 
-- [Browse Mirrored Websites](http://www.httrack.com/)
 - [FFmpeg](https://ffmpeg.org/) (required by yt-dlp and Streamlink to merge video+audio)
 - [gallery-dl](https://github.com/mikf/gallery-dl)
 - [Metagoofil](https://github.com/opsdisk/metagoofil)
