@@ -70,6 +70,7 @@ jobs:
       # Run the VM build inside the container
       # this test only checks the default build but others should work
       # added user group for docker key to allow kvm access, must match Dockerfile USER
+      # added read permission to the current user to ensure they can access the recipes directory
       - name: Run VM build in container
         run: |
           set -euo pipefail
@@ -82,4 +83,4 @@ jobs:
           --volume "$(pwd)/images/:/images" \
           --workdir /recipes \
           tlvm-builder:latest \
-          bash -c "chmod -R +r ./recipes && ./build.sh"
+          bash -c "chmod -R +r . && ./build.sh"
