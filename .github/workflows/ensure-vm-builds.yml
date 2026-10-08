@@ -81,5 +81,5 @@ jobs:
           --volume "$(pwd):/recipes" \
           --volume "$(pwd)/images/:/images" \
           --workdir /recipes \
-          tlvm-builder:latest \ 
+          tlvm-builder:latest \
           bash -c "chmod -R +r ./recipes && ./build.sh"
