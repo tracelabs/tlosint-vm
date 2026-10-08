@@ -32,5 +32,7 @@ esac
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
-apt-get install -y "$pkgs"
+# $pkgs is a space-separated package list and must word-split (e.g. "qemu-guest-agent spice-vdagent")
+# shellcheck disable=SC2086
+apt-get install -y $pkgs
 apt-get clean
