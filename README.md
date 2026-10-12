@@ -33,7 +33,7 @@ Use this if you just want to import and go.
 
  
 - **Checksums:**  
-  - VMware: `3b2ee99c52839a7c69d4d07b69aae5019f39f41c271ab5fde809503bf4be75e8`  
+  - VMware: `e8a318732db963008553309a9523d857ab09927631bc9ddc0df86c1674225fd8`  
   - VirtualBox: `cbefe65bec41235f1f08ae393519cd6b5262e823f5202b869f52e67c9ffbcf85`
   - Apple Silicon (qcow2): `0b69a400b320c4c07ad67f528b5cfc06e1492a0b488ac95d9fc514d2f34f8924`
 
