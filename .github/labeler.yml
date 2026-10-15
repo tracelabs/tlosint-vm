@@ -1,0 +1,19 @@
+kind/tooling:
+  - changed-files:
+    - any-glob-to-any-file: 'scripts/tlosint-tools.sh'
+
+kind/build:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'tlosint.yaml'
+      - 'scripts/**'
+      - 'overlays/**'
+      - 'Dockerfile'
+
+kind/docs:
+  - changed-files:
+    - any-glob-to-any-file: 'docs/**'
+
+kind/ci:
+  - changed-files:
+    - any-glob-to-any-file: '.github/**'
