@@ -15,7 +15,7 @@ This repository is actively maintained by Trace Labs staff.
 
 # Introduction
 
-The repository includes a [recipe file](./tlosint.yaml) to build a Linux OSINT Distribution for Trace Labs based on the Kali Linux kali-vm script - <https://gitlab.com/kalilinux/build-scripts/kali-vm>
+The repository includes a [recipe file](./tlosint.yaml) to build a Linux OSINT Distribution for Trace Labs based on Debian 13.
 
 # Using the VM
 
@@ -66,12 +66,12 @@ password: `osint`
 
 Use this option if you want to start with your own base OS and then install OSINT tools and apply Firefox hardening on demand.
 
-> **Note:** [`tlosint-tools.sh`](https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh) is a **standalone script** that is not part of the VM build process. It's designed to be downloaded and run manually by end-users on any Kali or Debian-based system to install OSINT tools on-demand. This keeps the VM image size small while giving users flexibility to customize their toolset.
+> **Note:** [`tlosint-tools.sh`](https://raw.githubusercontent.com/tracelabs/tlosint-vm/main/scripts/tlosint-tools.sh) is a **standalone script** that is not part of the VM minimal build process. It's designed to be downloaded and run manually by end-users on any Debian-based system to install OSINT tools on-demand. This keeps the VM image size small while giving users flexibility to customize their toolset.
 
 > **Download the raw file, not the GitHub "blob" page.**
 
 ```bash
-# Inside Kali (or other Debian-based OS)
+# Inside Debian-based OS
 cd ~/Desktop  # or any folder you prefer
 
 # Fetch the script (RAW URL)
@@ -136,9 +136,9 @@ You can explore the different build options with `-h` flag.
 
 ## Applications
 
-The majority of OSINT tools no longer come pre-packaged with the VM. There is an option to download them via a helper script. This keeps the size of the release small enough to build and host on GitHub.
+In the full build, OSINT tools come pre-packaged with the VM. In the minimal build,the majority of OSINT tool are not included and there is an option to download them via a helper script.
 
-**Note:** The `tlosint-tools.sh` script is a **standalone utility** that is not executed during the VM build process. It's provided as a convenience script for users who want to install OSINT tools on-demand after importing the VM.
+**Note:** The `tlosint-tools.sh` script is a **standalone utility** that is not executed during the minimal VM build process. It's provided as a convenience script for users who want to install OSINT tools on-demand after importing the VM.
 
 If you want to install the tools using our helper script, run the `tlosint-tools.sh` script found in the `scripts/` folder:
 
@@ -216,7 +216,7 @@ TLOSINT_INSTALL_ARCHIVEBOX=1 TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./scripts/tlosint
 
 **Domains**
 
-- [Domainfy (OSRFramework)](https://github.com/i3visio/osrframework)
+- [Domainfy (OSRFramework)](https://github.com/jaykali/osrframework)
 - [Sublist3r](https://github.com/aboul3la/Sublist3r)
 
 **Downloaders**
@@ -230,16 +230,16 @@ TLOSINT_INSTALL_ARCHIVEBOX=1 TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./scripts/tlosint
 
 **Email**
 
-- [Checkfy (OSRFramework)](https://github.com/i3visio/osrframework)
-- [Infoga](https://github.com/m4ll0k/Infoga)
-- [Mailfy (OSRFramework)](https://github.com/i3visio/osrframework)
+- [Checkfy (OSRFramework)](https://github.com/jaykali/osrframework)
+- [Infoga](https://github.com/robertswin/Infoga)
+- [Mailfy (OSRFramework)](https://github.com/jaykali/osrframework)
 - [theHarvester](https://github.com/laramies/theHarvester)
 - [h8mail](https://github.com/khast3x/h8mail)
 
 **Frameworks**
 
 - [Little Brother](https://github.com/lulz3xploit/LittleBrother) (Archived)
-- [OSRFramework](https://github.com/i3visio/osrframework)
+- [OSRFramework](https://github.com/jaykali/osrframework)
 - [sn0int](https://github.com/kpcyrd/sn0int)
 - [Spiderfoot](https://github.com/smicallef/spiderfoot)
 - [Maltego](https://www.maltego.com/downloads/)
@@ -247,7 +247,7 @@ TLOSINT_INSTALL_ARCHIVEBOX=1 TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./scripts/tlosint
 
 **Phone Numbers**
 
-- [Phonefy (OSRFramework)](https://github.com/i3visio/osrframework)
+- [Phonefy (OSRFramework)](https://github.com/jaykali/osrframework)
 - [PhoneInfoga](https://github.com/sundowndev/phoneinfoga)
 
 **Social Media**
@@ -255,7 +255,7 @@ TLOSINT_INSTALL_ARCHIVEBOX=1 TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./scripts/tlosint
 - [GHunt](https://github.com/mxrch/GHunt)
 - [Instaloader](https://github.com/instaloader/instaloader)
 - [Twint](https://github.com/twintproject/twint) (Archived)
-- [Searchfy (OSRFramework)](https://github.com/i3visio/osrframework)
+- [Searchfy (OSRFramework)](https://github.com/jaykali/osrframework)
 - [Tiktok Scraper](https://github.com/drawrowfly/tiktok-scraper)
 - [twscrape](https://github.com/vladkens/twscrape) (opt-in — pending terms-of-service review)
 - [Twayback](https://github.com/humandecoded/twayback)
@@ -263,9 +263,9 @@ TLOSINT_INSTALL_ARCHIVEBOX=1 TLOSINT_ENABLE_TWSCRAPE=1 sudo -E ./scripts/tlosint
 
 **Usernames**
 
-- [Alias Generator (OSRFramework)](https://github.com/i3visio/osrframework)
+- [Alias Generator (OSRFramework)](https://github.com/jaykali/osrframework)
 - [maigret](https://github.com/soxoj/maigret)
-- [Usufy (OSRFramework)](https://github.com/i3visio/osrframework)
+- [Usufy (OSRFramework)](https://github.com/jaykali/osrframework)
 - [WhatsMyName-Python](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python)
 
 **Investigator OPSEC**
