@@ -658,7 +658,7 @@ install_infoga() {
   local venv="${dest}/venv"
   log "[*] Installing Infoga (unmaintained — may not work)"
   run "${SUDO} rm -rf \"${dest}\""
-  run "${SUDO} env GIT_TERMINAL_PROMPT=0 git clone --depth=1 https://github.com/m4ll0k/Infoga.git \"${dest}\"" || {
+  run "${SUDO} env GIT_TERMINAL_PROMPT=0 git clone --depth=1 https://github.com/robertswin/Infoga.git \"${dest}\"" || {
     logerr "Infoga repo unavailable — skipping"
     return 0
   }
