@@ -52,7 +52,9 @@ ensure_pipx_wrappers() {
   local bins=(shodan sherlock metagoofil sublist3r sf.py
               maigret whatsmyname instaloader ghunt
               yt-dlp gallery-dl streamlink
-              ia carbon14 archivebox twscrape)
+              ia carbon14 archivebox twscrape
+              h8mail onionsearch twayback twint stweet
+              domainfy mailfy usufy searchfy phonefy checkfy)
   for b in "${bins[@]}"; do
     [[ -x "${TARGET_HOME}/.local/bin/${b}" ]] && write_wrapper "/usr/local/bin/${b}" "${TARGET_HOME}/.local/bin/${b}"
   done
@@ -288,6 +290,163 @@ EOF
   ${SUDO} chmod 0755 /usr/local/bin/metagoofil
 
   log "[*] Metagoofil installed (wrapper: /usr/local/bin/metagoofil)"
+}
+
+# ---------- theHarvester (source+venv) ----------
+install_theharvester() {
+  local dest="/opt/theHarvester"
+  local venv="${dest}/venv"
+  log "[*] Installing theHarvester"
+  run "${SUDO} rm -rf \"${dest}\""
+  run "${SUDO} git clone --depth=1 https://github.com/laramies/theHarvester.git \"${dest}/src\"" || {
+    logerr "theHarvester git clone failed — skipping"
+    return 0
+  }
+  run "${SUDO} python3 -m venv \"${venv}\""
+  run "${SUDO} \"${venv}/bin/pip\" install --upgrade pip 'setuptools<72' wheel"
+  local req
+  for req in "${dest}/src/requirements/base.txt" "${dest}/src/requirements.txt"; do
+    [[ -f "$req" ]] && { run "${SUDO} \"${venv}/bin/pip\" install -r \"$req\"" || true; break; }
+  done
+  run "${SUDO} \"${venv}/bin/pip\" install -e \"${dest}/src\""
+  ${SUDO} tee /usr/local/bin/theHarvester >/dev/null <<EOF
+#!/usr/bin/env bash
+if [[ -x "${venv}/bin/theHarvester" ]]; then
+  exec "${venv}/bin/theHarvester" "\$@"
+fi
+exec "${venv}/bin/python3" -m theHarvester "\$@"
+EOF
+  ${SUDO} chmod 0755 /usr/local/bin/theHarvester
+  command -v theHarvester >/dev/null 2>&1 && log "[*] theHarvester installed" || logerr "theHarvester install failed"
+}
+
+# ---------- Photon (source+venv) ----------
+install_photon_from_source() {
+  local dest="/opt/photon"
+  local venv="${dest}/venv"
+  log "[*] Installing Photon from source"
+  run "${SUDO} rm -rf \"${dest}\""
+  run "${SUDO} git clone --depth=1 https://github.com/s0md3v/Photon.git \"${dest}\""
+  run "${SUDO} python3 -m venv \"${venv}\""
+  run "${SUDO} \"${venv}/bin/pip\" install --upgrade pip 'setuptools<72' wheel"
+  [[ -f "${dest}/requirements.txt" ]] && run "${SUDO} \"${venv}/bin/pip\" install -r \"${dest}/requirements.txt\""
+  ${SUDO} tee /usr/local/bin/photon >/dev/null <<EOF
+#!/usr/bin/env bash
+cd "${dest}" && exec "${venv}/bin/python3" "${dest}/photon.py" "\$@"
+EOF
+  ${SUDO} chmod 0755 /usr/local/bin/photon
+  command -v photon >/dev/null 2>&1 && log "[*] Photon installed" || logerr "Photon install failed"
+}
+
+# ---------- DumpsterDiver (source+venv) ----------
+install_dumpsterdiver() {
+  local dest="/opt/DumpsterDiver"
+  local venv="${dest}/venv"
+  log "[*] Installing DumpsterDiver"
+  run "${SUDO} rm -rf \"${dest}\""
+  run "${SUDO} git clone --depth=1 https://github.com/securing/DumpsterDiver.git \"${dest}\""
+  run "${SUDO} python3 -m venv \"${venv}\""
+  run "${SUDO} \"${venv}/bin/pip\" install --upgrade pip 'setuptools<72' wheel"
+  run "${SUDO} \"${venv}/bin/pip\" install termcolor colorama 'PyYAML>=6.0' passwordmeter 'setuptools<72'"
+  ${SUDO} touch "${dest}/errors.log" && ${SUDO} chmod 666 "${dest}/errors.log"
+  ${SUDO} tee /usr/local/bin/DumpsterDiver >/dev/null <<EOF
+#!/usr/bin/env bash
+cd "${dest}" && exec "${venv}/bin/python3" "${dest}/DumpsterDiver.py" "\$@"
+EOF
+  ${SUDO} chmod 0755 /usr/local/bin/DumpsterDiver
+  command -v DumpsterDiver >/dev/null 2>&1 && log "[*] DumpsterDiver installed" || logerr "DumpsterDiver install failed"
+}
+
+# ---------- Twayback ----------
+install_twayback() {
+  log "[*] Installing Twayback"
+  pipx_user_install_or_upgrade "twayback" "git+https://github.com/humandecoded/twayback.git" || true
+  if [[ -x "${TARGET_HOME}/.local/bin/twayback" ]]; then
+    write_wrapper "/usr/local/bin/twayback" "${TARGET_HOME}/.local/bin/twayback"
+    log "[*] Twayback installed"
+  else
+    logerr "Twayback install failed"
+  fi
+}
+
+# ---------- Infoga ----------
+install_infoga() {
+  local dest="/opt/infoga"
+  local venv="${dest}/venv"
+  log "[*] Installing Infoga (unmaintained — may not work)"
+  run "${SUDO} rm -rf \"${dest}\""
+  run "${SUDO} env GIT_TERMINAL_PROMPT=0 git clone --depth=1 https://github.com/robertswin/Infoga.git \"${dest}\"" || {
+    logerr "Infoga repo unavailable — skipping"
+    return 0
+  }
+  run "${SUDO} python3 -m venv \"${venv}\""
+  run "${SUDO} \"${venv}/bin/pip\" install --upgrade pip 'setuptools<72' wheel"
+  [[ -f "${dest}/requirements.txt" ]] && run "${SUDO} \"${venv}/bin/pip\" install -r \"${dest}/requirements.txt\"" || true
+  ${SUDO} tee /usr/local/bin/infoga >/dev/null <<EOF
+#!/usr/bin/env bash
+cd "${dest}" && exec "${venv}/bin/python3" "${dest}/infoga.py" "\$@"
+EOF
+  ${SUDO} chmod 0755 /usr/local/bin/infoga
+  command -v infoga >/dev/null 2>&1 && log "[*] Infoga installed (unmaintained — use at own risk)" || logerr "Infoga install failed"
+}
+
+# ---------- Little Brother ----------
+install_little_brother() {
+  local dest="/opt/little-brother"
+  local venv="${dest}/venv"
+  log "[*] Installing Little Brother (archived — may not work)"
+  run "${SUDO} rm -rf \"${dest}\""
+  run "${SUDO} git clone --depth=1 https://github.com/lulz3xploit/LittleBrother.git \"${dest}\"" || {
+    logerr "Little Brother repo unavailable (archived/deleted) — skipping"
+    return 0
+  }
+  run "${SUDO} python3 -m venv \"${venv}\""
+  run "${SUDO} \"${venv}/bin/pip\" install --upgrade pip 'setuptools<72' wheel"
+  [[ -f "${dest}/requirements.txt" ]] && run "${SUDO} \"${venv}/bin/pip\" install -r \"${dest}/requirements.txt\"" || true
+  ${SUDO} tee /usr/local/bin/littlebrother >/dev/null <<EOF
+#!/usr/bin/env bash
+cd "${dest}" && exec "${venv}/bin/python3" "${dest}/LittleBrother.py" "\$@"
+EOF
+  ${SUDO} chmod 0755 /usr/local/bin/littlebrother
+  command -v littlebrother >/dev/null 2>&1 && log "[*] Little Brother installed (archived)" || logerr "Little Brother install failed"
+}
+
+# ---------- Twint & Stweet ----------
+install_twint() {
+  log "[*] Installing Twint (archived — will not work with current Twitter/X API)"
+  pipx_user_install_or_upgrade "twint" "git+https://github.com/twintproject/twint.git@origin/master#egg=twint" || \
+    pipx_user_install_or_upgrade "twint" "twint" || true
+  [[ -x "${TARGET_HOME}/.local/bin/twint" ]] && \
+    write_wrapper "/usr/local/bin/twint" "${TARGET_HOME}/.local/bin/twint" || \
+    logerr "Twint install failed (archived)"
+}
+
+install_stweet() {
+  log "[*] Installing Stweet (archived — may not work)"
+  pipx_user_install_or_upgrade "stweet" "stweet" || true
+  [[ -x "${TARGET_HOME}/.local/bin/stweet" ]] && \
+    write_wrapper "/usr/local/bin/stweet" "${TARGET_HOME}/.local/bin/stweet" || \
+    logerr "Stweet install failed (archived)"
+}
+
+# ---------- Joplin ----------
+install_joplin() {
+  log "[*] Installing Joplin for ${TARGET_USER}"
+  local joplin_bin="${TARGET_HOME}/.joplin/Joplin.AppImage"
+  run "sudo -u \"$TARGET_USER\" mkdir -p \"${TARGET_HOME}/.joplin\""
+
+  run "sudo -u \"$TARGET_USER\" bash -lc 'wget -qO - https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash' || true"
+
+  if [[ -f "$joplin_bin" ]]; then
+    ${SUDO} tee /usr/local/bin/joplin >/dev/null <<EOF
+#!/usr/bin/env bash
+exec env APPIMAGE_EXTRACT_AND_RUN=1 "${joplin_bin}" "\$@"
+EOF
+    ${SUDO} chmod 0755 /usr/local/bin/joplin
+    log "[*] Joplin installed: ${joplin_bin}"
+  else
+    logerr "Joplin AppImage not found after install attempt"
+  fi
 }
 
 # ---------- auto-archiver (Docker) ----------
@@ -686,6 +845,52 @@ install_tools_from_list() {
   apt_try_install steghide || true
   apt_try_install stegseek || true
 
+  # theHarvester (dedicated venv)
+  install_theharvester
+
+  # h8mail
+  pipx_user_install_or_upgrade "h8mail" "h8mail" || true
+  [[ -x "${TARGET_HOME}/.local/bin/h8mail" ]] && write_wrapper "/usr/local/bin/h8mail" "${TARGET_HOME}/.local/bin/h8mail"
+
+  # OSRFramework (provides domainfy, mailfy, usufy, searchfy, phonefy, checkfy)
+  pipx_user_install_or_upgrade "osrframework" "osrframework" || true
+  for osrbin in domainfy mailfy usufy searchfy phonefy checkfy; do
+    [[ -x "${TARGET_HOME}/.local/bin/${osrbin}" ]] && write_wrapper "/usr/local/bin/${osrbin}" "${TARGET_HOME}/.local/bin/${osrbin}"
+  done
+
+  # OnionSearch
+  pipx_user_install_or_upgrade "onionsearch" "onionsearch" || true
+  [[ -x "${TARGET_HOME}/.local/bin/onionsearch" ]] && write_wrapper "/usr/local/bin/onionsearch" "${TARGET_HOME}/.local/bin/onionsearch"
+
+  # Photon (source+venv)
+  install_photon_from_source
+
+  # DumpsterDiver
+  install_dumpsterdiver
+
+  # Twayback
+  install_twayback
+
+  # Tiktok Scraper
+  if command -v npm >/dev/null 2>&1; then
+    run "${SUDO} npm install -g tiktok-scraper" || logerr "tiktok-scraper install failed (tool may be deprecated)"
+  fi
+
+  # Infoga
+  install_infoga
+
+  # Little Brother
+  install_little_brother
+
+  # Twint
+  install_twint
+
+  # Stweet
+  install_stweet
+
+  # Joplin
+  install_joplin
+
   # ---------- SOCMINT (issue #191) ----------
   # apt-sourced members of this set (ffmpeg, tesseract-ocr, mat2, httrack) are
   # handled in install_base_packages, which main() runs first.
@@ -1080,6 +1285,19 @@ validator() {
   show_ver sn0int -V || true
   show_ver metagoofil -h || true
   show_ver sublist3r -h || true
+  show_ver theHarvester -h || true
+  show_ver h8mail -h || true
+  has domainfy && ok "osrframework present (domainfy: $(command -v domainfy))" || warn "osrframework not found"
+  has onionsearch && ok "onionsearch present" || warn "onionsearch not found"
+  has photon && ok "photon present" || warn "photon not found"
+  has DumpsterDiver && ok "DumpsterDiver present" || warn "DumpsterDiver not found"
+  has twayback && ok "twayback present" || warn "twayback not found"
+  has tiktok-scraper && ok "tiktok-scraper present" || warn "tiktok-scraper not found (tool may be deprecated)"
+  has infoga && ok "infoga present" || warn "infoga not found (unmaintained)"
+  has littlebrother && ok "Little Brother present" || warn "Little Brother not found (archived)"
+  has twint && ok "twint present" || warn "twint not found (archived)"
+  has stweet && ok "stweet present" || warn "stweet not found (archived)"
+  has joplin && ok "Joplin present: $(command -v joplin)" || warn "Joplin not found"
   show_ver exiftool -ver || true
   show_ver steghide --version || true
   show_ver stegseek --version || true
