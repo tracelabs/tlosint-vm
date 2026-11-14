@@ -33,7 +33,7 @@ FORMAT=
 KEEP=false
 LOCALE=
 MIRROR=
-PACKAGES=zsh
+PACKAGES="libfuse2 zsh"
 PASSWORD=
 ROOTFS=
 SIZE=40
@@ -51,7 +51,7 @@ default_version() { echo ${BRANCH:-$DEFAULT_BRANCH} | sed "s/^debian-//"; }
 
 # Output bold only if both stdout/stderr are opened on a terminal
 if [ -t 1 -a -t 2 ]; then
-    b() { tput bold; echo -n "$@"; tput sgr0; }
+    b() { tput bold 2>/dev/null || true; echo -n "$@"; tput sgr0 2>/dev/null || true; }
 else
     b() { echo -n "$@"; }
 fi
@@ -140,7 +140,7 @@ Build options:
   -s SIZE     Size of the disk image in GB, default: $(b $SIZE)
   -v VARIANT  Variant of image to build (see below for details), default: $(b $VARIANT)
               Supported values: $SUPPORTED_VARIANTS
-  -z          Zip images and metadata files after the build
+  -z          Do not zip images and metadata files after the build
 
 Customization options:
   -D DESKTOP  Desktop environment installed in the image, default: $(b $DEFAULT_DESKTOP)
@@ -168,7 +168,8 @@ The different formats are:
   vmware      2GbMaxExtentSparse VMDK disk image, VMX metadata file
 
 Supported environment variables:
-  http_proxy  HTTP proxy URL, refer to the README for more details.
+  http_proxy       HTTP proxy URL, refer to the README for more details.
+  NO_PROXY_DETECT  Set to disable auto-detection of local caching proxies.
 
 Refer to the README for examples.
 "
@@ -275,9 +276,22 @@ PACKAGES=$(echo $PACKAGES | sed "s/[, ]\+/\n/g" | LC_ALL=C sort -u \
 
 # Attempt to detect well-known http caching proxies on localhost,
 # cf. bash(1) section "REDIRECTION". This is not bullet-proof.
-if ! [ -v http_proxy ]; then
-    while read port proxy; do
+if [ -z "${NO_PROXY_DETECT:-}" ] && ! [ -v http_proxy ]; then
+    while read -r port proxy; do
         (</dev/tcp/localhost/$port) 2>/dev/null || continue
+        if [ "$port" = "8000" ]; then
+            # Verify port 8000 is an actual HTTP proxy (e.g. squid-deb-proxy)
+            # and not an unrelated web app or dev server (closes #180)
+            if ! (
+                exec 3<>/dev/tcp/localhost/8000
+                printf "HEAD http://deb.debian.org/ HTTP/1.0\r\nHost: deb.debian.org\r\n\r\n" >&3
+                read -r -t 2 response <&3
+                exec 3<&- 3>&-
+                [[ "$response" =~ ^HTTP/[0-9.]+ && ! "$response" =~ ^HTTP/[0-9.]+[[:space:]]+(404|400) ]]
+            ) 2>/dev/null; then
+                continue
+            fi
+        fi
         DETECTED_CACHING_PROXY="$port $proxy"
         export http_proxy="http://10.0.2.2:$port"
         break
